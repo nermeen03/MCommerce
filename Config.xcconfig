@@ -1,0 +1,16 @@
+//
+//  Config.xcconfig
+//  MCommerce
+//
+//  Created by Nermeen Mohamed on 16/06/2025.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+API_KEY = da089fc14c59793f275a1fa3b0083141
+API_SECRET = 579bdf7389e4b17075912f9fe16642ba
+
+ADMIN_TOKEN = shpat_
+ADMIN_TOKEN_VALUE = f6e64636d50fdc93876894e2fce59ba6
+BASE_URL = mad45-ios2-alex.myshopify.com

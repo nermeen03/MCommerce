@@ -6,15 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		8AC4050FCE0DA47C28D057C2 /* Pods_MCommerce.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8CB629D8687A104EFDAAC08 /* Pods_MCommerce.framework */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		52C2859C60673152CC28EA99 /* Pods-MCommerce.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MCommerce.debug.xcconfig"; path = "Target Support Files/Pods-MCommerce/Pods-MCommerce.debug.xcconfig"; sourceTree = "<group>"; };
-		8F6A67227FC1A5E5FEF604F7 /* Pods-MCommerce.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MCommerce.release.xcconfig"; path = "Target Support Files/Pods-MCommerce/Pods-MCommerce.release.xcconfig"; sourceTree = "<group>"; };
-		C48224532DFE1529000E8729 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8CB629D8687A104EFDAAC08 /* Pods_MCommerce.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MCommerce.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C45616552DFFFBA000DF77E9 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = MCommerce.app; path = "/Users/nermeen/Desktop/Project/MCommerce/build/Debug-iphoneos/MCommerce.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -30,46 +23,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AC4050FCE0DA47C28D057C2 /* Pods_MCommerce.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A7D39F0CFE7D47B941E4FE45 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E8CB629D8687A104EFDAAC08 /* Pods_MCommerce.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		C482244A2DFE1529000E8729 = {
 			isa = PBXGroup;
 			children = (
 				C48224552DFE1529000E8729 /* MCommerce */,
-				C48224542DFE1529000E8729 /* Products */,
-				CF3F5F4D8246F1E755277E87 /* Pods */,
-				A7D39F0CFE7D47B941E4FE45 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		C48224542DFE1529000E8729 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C48224532DFE1529000E8729 /* MCommerce.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		CF3F5F4D8246F1E755277E87 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				52C2859C60673152CC28EA99 /* Pods-MCommerce.debug.xcconfig */,
-				8F6A67227FC1A5E5FEF604F7 /* Pods-MCommerce.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -79,7 +43,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C482245E2DFE152B000E8729 /* Build configuration list for PBXNativeTarget "MCommerce" */;
 			buildPhases = (
-				C339374883EAF5F7F952724B /* [CP] Check Pods Manifest.lock */,
 				C482244F2DFE1529000E8729 /* Sources */,
 				C48224502DFE1529000E8729 /* Frameworks */,
 				C48224512DFE1529000E8729 /* Resources */,
@@ -93,7 +56,7 @@
 			);
 			name = MCommerce;
 			productName = MCommerce;
-			productReference = C48224532DFE1529000E8729 /* MCommerce.app */;
+			productReference = C45616552DFFFBA000DF77E9 /* MCommerce.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -121,7 +84,7 @@
 			mainGroup = C482244A2DFE1529000E8729;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = C48224542DFE1529000E8729 /* Products */;
+			productRefGroup = C482244A2DFE1529000E8729;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -139,31 +102,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C339374883EAF5F7F952724B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-MCommerce-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C482244F2DFE1529000E8729 /* Sources */ = {
@@ -297,7 +235,6 @@
 		};
 		C482245F2DFE152B000E8729 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52C2859C60673152CC28EA99 /* Pods-MCommerce.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -325,7 +262,6 @@
 		};
 		C48224602DFE152B000E8729 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F6A67227FC1A5E5FEF604F7 /* Pods-MCommerce.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

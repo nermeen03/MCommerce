@@ -15,7 +15,8 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
             Text("Hello, world!")
             Button("Test", action: {
-                ApiCalling().callRestApi()
+              //  ApiCalling().callRestApi()
+                ApiCalling().createCustomer()
             })
         }
         .padding()

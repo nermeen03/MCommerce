@@ -19,8 +19,6 @@ Temporary Items
 *.icloud
 
 ### Xcode ###
-*.xcconfig
-Config.xcconfig
 xcuserdata/
 *.xcscmblueprint
 *.xccheckout

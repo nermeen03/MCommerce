@@ -19,6 +19,8 @@ Temporary Items
 *.icloud
 
 ### Xcode ###
+*.xcconfig
+Config.xcconfig
 xcuserdata/
 *.xcscmblueprint
 *.xccheckout
@@ -29,3 +31,4 @@ xcuserdata/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
+Config.xcconfig

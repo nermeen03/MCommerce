@@ -6,8 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A43B2C5A2E002D4200585788 /* Alamofire */; };
+		C4BFBA272E0074E200EA1F6F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		C45616552DFFFBA000DF77E9 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = MCommerce.app; path = "/Users/nermeen/Desktop/Project/MCommerce/build/Debug-iphoneos/MCommerce.app"; sourceTree = "<absolute>"; };
+		A43B2C272E00203300585788 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4BFBA262E0074E200EA1F6F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +39,9 @@
 		C482244A2DFE1529000E8729 = {
 			isa = PBXGroup;
 			children = (
+				C4BFBA262E0074E200EA1F6F /* Config.xcconfig */,
 				C48224552DFE1529000E8729 /* MCommerce */,
+				A43B2C272E00203300585788 /* MCommerce.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,7 +65,7 @@
 			);
 			name = MCommerce;
 			productName = MCommerce;
-			productReference = C45616552DFFFBA000DF77E9 /* MCommerce.app */;
+			productReference = A43B2C272E00203300585788 /* MCommerce.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -83,6 +92,9 @@
 			);
 			mainGroup = C482244A2DFE1529000E8729;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;
 			projectDirPath = "";
@@ -98,6 +110,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4BFBA272E0074E200EA1F6F /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +129,7 @@
 /* Begin XCBuildConfiguration section */
 		C482245C2DFE152B000E8729 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -235,13 +249,15 @@
 		};
 		C482245F2DFE152B000E8729 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MCommerce/App/PropertyList.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -268,7 +284,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MCommerce/App/PropertyList.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -309,6 +326,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A43B2C5A2E002D4200585788 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C482244B2DFE1529000E8729 /* Project object */;
 }

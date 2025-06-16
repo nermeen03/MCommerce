@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A43B2C5A2E002D4200585788 /* Alamofire */; };
+		C4E6CFCD2E006FDA0061D31A /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C4E6CFCC2E006FDA0061D31A /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A43B2C272E00203300585788 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4E6CFCC2E006FDA0061D31A /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -37,6 +39,7 @@
 		C482244A2DFE1529000E8729 = {
 			isa = PBXGroup;
 			children = (
+				C4E6CFCC2E006FDA0061D31A /* Config.xcconfig */,
 				C48224552DFE1529000E8729 /* MCommerce */,
 				A43B2C272E00203300585788 /* MCommerce.app */,
 			);
@@ -107,6 +110,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4E6CFCD2E006FDA0061D31A /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

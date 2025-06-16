@@ -32,3 +32,4 @@ xcuserdata/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 Config.xcconfig
+*.pbxproj

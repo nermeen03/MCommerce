@@ -6,8 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A43B2C5A2E002D4200585788 /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		C45616552DFFFBA000DF77E9 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = MCommerce.app; path = "/Users/nermeen/Desktop/Project/MCommerce/build/Debug-iphoneos/MCommerce.app"; sourceTree = "<absolute>"; };
+		A43B2C272E00203300585788 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +38,7 @@
 			isa = PBXGroup;
 			children = (
 				C48224552DFE1529000E8729 /* MCommerce */,
+				A43B2C272E00203300585788 /* MCommerce.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,7 +62,7 @@
 			);
 			name = MCommerce;
 			productName = MCommerce;
-			productReference = C45616552DFFFBA000DF77E9 /* MCommerce.app */;
+			productReference = A43B2C272E00203300585788 /* MCommerce.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -83,6 +89,9 @@
 			);
 			mainGroup = C482244A2DFE1529000E8729;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;
 			projectDirPath = "";
@@ -309,6 +318,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A43B2C5A2E002D4200585788 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C482244B2DFE1529000E8729 /* Project object */;
 }

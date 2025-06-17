@@ -8,17 +8,59 @@
 import SwiftUI
 
 struct WelcomeScreen: View {
+    @State private var goToLogin = false
+    @State private var goToRegister = false
+
     var body: some View {
-        ZStack{
-            Image("welcomeBg").resizable().scaledToFill().edgesIgnoringSafeArea(.all)
-            VStack{ Spacer()
-               
-                CustomButton(text: "Login", textColor: .orangeCustom, backgroundColor: .white ,verticalOffset: -50, action: {})
-                CustomButton(text: "Skip", textColor: .white, backgroundColor: .clear ,verticalOffset: -50, action: {})
+        NavigationView {
+            ZStack {
+                Image("welcomeBg")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+
+                VStack {
+                    Spacer()
+
+                    NavigationLink(destination: Login(), isActive: $goToLogin) { EmptyView() }
+                    NavigationLink(destination: Register(), isActive: $goToRegister) { EmptyView() }
+
+                    CustomButton(
+                        text: "Login",
+                        textColor: .orangeCustom,
+                        backgroundColor: .white,
+                        verticalOffset: -20,
+                        action: {
+                            goToLogin = true
+                        }
+                    )
+
+                    CustomButton(
+                        text: "Register",
+                        textColor: .orangeCustom,
+                        backgroundColor: .white,
+                        verticalOffset: -20,
+                        action: {
+                            goToRegister = true
+                        }
+                    )
+
+                    CustomButton(
+                        text: "Skip",
+                        textColor: .white,
+                        backgroundColor: .clear,
+                        verticalOffset: -20,
+                        action: {
+                            // Add skip logic
+                        }
+                    )
+                }
             }
+            .navigationBarHidden(true)
         }
     }
 }
+
 
 #Preview {
     WelcomeScreen()

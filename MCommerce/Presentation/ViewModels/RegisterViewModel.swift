@@ -17,6 +17,12 @@ class RegisterViewModel : ObservableObject {
     @Published var confirmPasswordError: String = ""
     @Published var nameError : String = ""
     @Published var phoneNumberError : String = ""
+    @Published var showError: Bool = false
+    private let useCase: RegisterUseCase
+    
+    init(registerUseCase: RegisterUseCase) {
+        self.useCase = registerUseCase
+    }
     func validateEmail(_ value: String)  {
         let emailRegex = #"^\S+@\S+\.\S+$"#
         let predicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
@@ -42,9 +48,9 @@ class RegisterViewModel : ObservableObject {
      
      
         
-      else  if digitsOnly.count != 11 {
+      else  if digitsOnly.count < 10 {
          
-            phoneNumberError = "Phone number must be exactly 11 digits"
+            phoneNumberError = "Phone number must be  11 digits"
         }
         else {
             phoneNumberError = ""
@@ -92,6 +98,40 @@ class RegisterViewModel : ObservableObject {
       
     }
     
-    
+    func validateAllFields() -> Bool {
+        return self.nameError.isEmpty && self.phoneNumberError.isEmpty && self.passwordError.isEmpty && self.confirmPasswordError.isEmpty && self.email.isEmpty
+    }
+    func getFirstPart(beforeSpace text: String) -> String? {
+        guard let range = text.range(of: " ") else { return nil }
+        return String(text[..<range.lowerBound])
+    }
+    func getSecondPart(afterSpace text: String) -> String? {
+        guard let range = text.range(of: " ") else { return nil }
+        return String(text[range.upperBound...])
+    }
+    func generatePhoneNumber(from phone: String) -> String {
+        guard !phone.isEmpty else { return "" }
+        return "+2" + phone
+    }
+    func register () {
+        if !self.validateAllFields() {
+            useCase.register(user: User(email: email, firstName: getFirstPart(beforeSpace: name) ?? name, lastName: getSecondPart(afterSpace: name) ??  name, password:  password, phoneNumber: generatePhoneNumber(from: phoneNumber))){
+                result in switch result {
+                case .success(let user):
+                    print("User registered successfully: \(user.id)")
+                    UserDefaultsManager.shared.saveUserId(user.id)
+                    UserDefaultsManager.shared.setLoggedIn(true)
+                case .failure(let error):
+                    print("Error registering user: \(error)")
+                    DispatchQueue.main.async {
+                        self.showError = true
+                    }
+                }
+            }
+        }
+        else{
+            
+        }
+    }
     
 }

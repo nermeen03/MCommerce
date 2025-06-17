@@ -47,28 +47,28 @@ class ApiCalling {
                 }
         }
     
-    func callRestApi(parameters : [String: Any], method : HTTPMethod = .POST, json:String) {
-        
-        guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] ,let apiKey = Bundle.main.infoDictionary?["API_KEY"], let token = Bundle.main.infoDictionary?["ADMIN_TOKEN"],let key = Bundle.main.infoDictionary?["ADMIN_KEY"] else{
-            return
-        }
-        
-
-        let url = "https://\(apiKey):\(token)\(key)@\(baseURL)/admin/api/2022-01/collects.json"
-        print(url)
-
-        networkService.request(url: url, method: .GET , responseType: Test.self, completion: {
-
-            result in
-                switch result {
-                case .success(let response):
-                    print("Collects:", response)
-                case .failure(let error):
-                    print("Error:", error)
-                }
-        })
-
-    }
+//    func callRestApi(parameters : [String: Any], method : HTTPMethod = .POST, json:String) {
+//        
+//        guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] ,let apiKey = Bundle.main.infoDictionary?["API_KEY"], let token = Bundle.main.infoDictionary?["ADMIN_TOKEN"],let key = Bundle.main.infoDictionary?["ADMIN_KEY"] else{
+//            return
+//        }
+//        
+//
+//        let url = "https://\(apiKey):\(token)\(key)@\(baseURL)/admin/api/2022-01/collects.json"
+//        print(url)
+//
+//        networkService.request(url: url, method: .GET , responseType: Test.self, completion: {
+//
+//            result in
+//                switch result {
+//                case .success(let response):
+//                    print("Collects:", response)
+//                case .failure(let error):
+//                    print("Error:", error)
+//                }
+//        })
+//
+//    }
     
     func callQueryApi(query: String, variables: [String: Any]) {
         guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] as? String,
@@ -84,12 +84,14 @@ class ApiCalling {
         ]
        
        networkService.request(
+        
            url: url,
            method: .POST,
            headers: headers,
            graphQLQuery: query,
            variables: variables,
            responseType: Test.self
+           
        ) { result in
            switch result {
            case .success(let response):

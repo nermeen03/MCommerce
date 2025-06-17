@@ -6,5 +6,5 @@
 //
 
 protocol DiscountRepositoryProtocol {
-    func getDiscounts() -> [Discount]
+    func getDiscounts(completion: @escaping (Result<[DiscountData], NetworkError>) -> Void)
 }

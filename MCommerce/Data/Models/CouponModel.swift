@@ -28,7 +28,6 @@ struct DiscountNode: Codable {
 }
 
 struct Discount: Codable {
-    let __typename: String
     let title: String
     let status: String
     let startsAt: String?

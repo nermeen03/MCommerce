@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class ApiCalling {
+struct ApiCalling : RemoteServicesProtocol{
     let networkService = NetworkService.shared
     
     func callRestApi(parameters : [String: Any], method : HTTPMethod = .POST, json:String) {
@@ -30,7 +30,7 @@ class ApiCalling {
 
     }
     
-    func callQueryApi<T: Decodable>(query: String, variables: [String: Any]? = nil, useToken : Bool = false, completion : @escaping (T) -> Void) {
+    func callQueryApi<T: Decodable>(query: String, variables: [String: Any]? = nil, useToken : Bool = false, completion : @escaping (Result<T, NetworkError>) -> Void) {
         guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] as? String,
               let storefrontToken = Bundle.main.infoDictionary?["STOREFRONT_API"] as? String,
         let apiKey = Bundle.main.infoDictionary?["API_KEY"], let token = Bundle.main.infoDictionary?["ADMIN_TOKEN"],let key = Bundle.main.infoDictionary?["ADMIN_KEY"]else {
@@ -55,7 +55,7 @@ class ApiCalling {
            headers: headers,
            graphQLQuery: query,
            variables: variables,
-           responseType: Test.self
+           responseType: T.self
        ) { result in
            completion(result)
            switch result {

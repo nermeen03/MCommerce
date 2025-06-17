@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CouponCardView: View {
+struct DiscountCardView: View {
     let discount: DiscountData
 
     var body: some View {

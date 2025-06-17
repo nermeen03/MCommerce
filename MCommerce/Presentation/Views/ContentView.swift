@@ -8,6 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+
+        init() {
+               if UserDefaultsManager.shared.isLoggedIn() {
+                   print("User ID: \(UserDefaultsManager.shared.getUserId() ?? "No ID")")
+               }
+           }
+
+    
     var body: some View {
 //        VStack {
 //            Image(systemName: "globe")
@@ -29,8 +37,12 @@ struct ContentView: View {
       //  HomeView()
 //        MainTabView()
     //Register()
+        
         if UserDefaultsManager.shared.isLoggedIn() {
+            
+         
                      HomeView()
+            
                  } else {
                      WelcomeScreen()
                  }

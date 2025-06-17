@@ -8,26 +8,33 @@
 import SwiftUI
 
 struct BannerView: View {
-    let banners = ["banner", "banner", "banner"]
+    @StateObject private var viewModel = DIContainer.shared.discountViewModel
     @State private var currentIndex = 0
+    private let maxCount = 4
 
     var body: some View {
         VStack(spacing: 10) {
             TabView(selection: $currentIndex) {
-                ForEach(0..<banners.count, id: \.self) { index in
-                    Image(banners[index])
-                        .resizable()
-                        .scaledToFill()
-                        .cornerRadius(12)
-                        .tag(index)
-                        .padding(.horizontal, 16)
+                Image("staticCoupon")
+                    .resizable()
+                    .scaledToFill()
+                    .cornerRadius(12)
+                    .padding(.horizontal, 16)
+                    .tag(0)
+
+                ForEach(Array(viewModel.discounts.prefix(maxCount).enumerated()), id: \.offset) { index, discount in
+                    DiscountCardView(discount: discount)
+                        .tag(index + 1)
                 }
             }
-            .frame(height: 200)
+            .frame(height: 220)
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            .onAppear {
+                viewModel.fetchDiscounts()
+            }
 
             HStack(spacing: 8) {
-                ForEach(0..<banners.count, id: \.self) { index in
+                ForEach(0..<(1 + min(viewModel.discounts.count, maxCount)), id: \.self) { index in
                     Circle()
                         .fill(currentIndex == index ? Color.orange : Color.gray.opacity(0.4))
                         .frame(width: 8, height: 8)
@@ -35,9 +42,4 @@ struct BannerView: View {
             }
         }
     }
-}
-
-
-#Preview {
-    BannerView()
 }

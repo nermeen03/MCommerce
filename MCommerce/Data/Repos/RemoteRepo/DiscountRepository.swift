@@ -7,13 +7,19 @@
 
 import Foundation
 
-struct DiscountRepository : DiscountRepositoryProtocol {
+class DiscountRepository : DiscountRepositoryProtocol, ObservableObject {
     
-    func getDiscounts() -> [Discount] {
+    let remoteService : RemoteServicesProtocol
+    
+    init(remoteService: RemoteServicesProtocol) {
+        self.remoteService = remoteService
+    }
+    
+    func getDiscounts(completion: @escaping (Result<[DiscountData], NetworkError>) -> Void){
         
         let query = """
           {
-            discountNodes(query: "combines_with:product_discounts", first: 10) {
+            discountNodes(first: 10) {
               edges {
                 node {
                   id
@@ -21,15 +27,10 @@ struct DiscountRepository : DiscountRepositoryProtocol {
                     ... on DiscountCodeBasic {
                       title
                       status
-                      combinesWith {
-                        productDiscounts
-                      }
-                    }
-                    ... on DiscountCodeFreeShipping {
-                      title
-                      status
-                      combinesWith {
-                        productDiscounts
+                      codes(first: 10) {
+                        nodes {
+                          code
+                        }
                       }
                     }
                   }
@@ -37,10 +38,22 @@ struct DiscountRepository : DiscountRepositoryProtocol {
               }
             }
           }
+
+
         """
         
-        let apiCalling = ApiCalling()
-        apiCalling.callRestApi(parameters: <#T##[String : Any]#>, json: <#T##String#>)
+        remoteService.callQueryApi(query: query, variables: [:],useToken: true){
+            (result: Result<DiscountNodesResponse, NetworkError>) in
+            switch result {
+            case .success(let response):
+                completion(.success(Mapper.mapToDiscountData(from: response)))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
+
+
+
 

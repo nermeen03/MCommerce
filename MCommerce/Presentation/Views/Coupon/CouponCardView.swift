@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CouponCardView: View {
-    let discount: Discount
+    let discount: DiscountData
 
     var body: some View {
         let random = Int.random(in: 1...5)
@@ -28,16 +28,18 @@ struct CouponCardView: View {
                     .background(Color.black.opacity(0.3))
                     .cornerRadius(4)
 
-                Text(discount.summary ?? "")
-                    .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.4))
-                    .padding(4)
-                    .background(Color.black.opacity(0.5))
-                    .cornerRadius(4)
+                if let summary = discount.summary{
+                    Text(summary)
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.4))
+                        .padding(4)
+                        .background(Color.black.opacity(0.5))
+                        .cornerRadius(4)
+                }
                 
-                if let codes = discount.codes?.nodes {
-                    ForEach(codes, id: \.code) { code in
-                        Text("Code: \(code.code)")
+                if let codes = discount.codes {
+                    ForEach(codes, id: \.self) { code in
+                        Text("Code: \(code)")
                             .font(.caption)
                             .foregroundColor(.yellow)
                             .padding(4)

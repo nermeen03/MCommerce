@@ -13,6 +13,7 @@
 //  Created by Jailan Medhat on 17/06/2025.
 //
 import Foundation
+import SwiftUI
 
 class LoginViewModel : ObservableObject {
     @Published var email: String = ""
@@ -21,20 +22,18 @@ class LoginViewModel : ObservableObject {
     @Published var emailError: String = ""
     @Published var passwordError: String = ""
     @Published var showError: Bool = false
+    
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     private let useCase : LoginUseCase
     init(useCase : LoginUseCase){
         self.useCase = useCase
     }
     
     func validateEmail(_ value: String)  {
-        let emailRegex = #"^\S+@\S+\.\S+$"#
-        let predicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+      
         if value.isEmpty {
             emailError = "Email is required"
         }
-
-
-      
         else{
             emailError = ""
         }
@@ -68,9 +67,12 @@ class LoginViewModel : ObservableObject {
                         switch result {
                         case .success(let customer):
                             print("User ID: \(customer.id)")
-                            UserDefaultsManager.shared.saveUserId(customer.id)
+                            UserDefaultsManager.shared.saveUserId(customer.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
                             UserDefaultsManager.shared.setLoggedIn(true)
-                            
+                            DispatchQueue.main.async {
+                                self.isLoggedIn = true
+                            }
+                        
                         case .failure(let error):
                             print("Failed to get user ID: \(error)")
                             DispatchQueue.main.async {

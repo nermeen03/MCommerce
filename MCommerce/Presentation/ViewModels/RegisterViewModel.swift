@@ -5,6 +5,7 @@
 //  Created by Jailan Medhat on 17/06/2025.
 //
 import Foundation
+import SwiftUI
 
 class RegisterViewModel : ObservableObject {
     @Published var email: String = ""
@@ -18,6 +19,7 @@ class RegisterViewModel : ObservableObject {
     @Published var nameError : String = ""
     @Published var phoneNumberError : String = ""
     @Published var showError: Bool = false
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     private let useCase: RegisterUseCase
     
     init(registerUseCase: RegisterUseCase) {
@@ -121,6 +123,10 @@ class RegisterViewModel : ObservableObject {
                     print("User registered successfully: \(user.id)")
                     UserDefaultsManager.shared.saveUserId(user.id)
                     UserDefaultsManager.shared.setLoggedIn(true)
+                    DispatchQueue.main.async {
+                       
+                        self.isLoggedIn = true
+                    }
                 case .failure(let error):
                     print("Error registering user: \(error)")
                     DispatchQueue.main.async {

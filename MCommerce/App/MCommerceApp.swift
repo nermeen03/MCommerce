@@ -11,7 +11,7 @@ import SwiftUI
 struct MCommerceApp: App {
     var body: some Scene {
         WindowGroup {
-            DiscountRowView()
+            ContentView()
         }
     }
 }

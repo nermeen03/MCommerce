@@ -8,35 +8,29 @@
 import SwiftUI
 
 struct DiscountRowView: View {
-    @StateObject private var viewModel: DiscountViewModel
-
-    init() {
-        _viewModel = StateObject(wrappedValue: DIContainer.shared.discountViewModel)
-    }
-
+    @ObservedObject var viewModel: DiscountViewModel
+    @Binding var currentIndex: Int
+    let maxCount: Int
+    
     var body: some View {
         VStack {
             if viewModel.isLoading {
                 ProgressView()
             } else if let error = viewModel.errorMessage {
                 Text("Error: \(error)")
+                    .foregroundColor(.red)
             } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack {
-                        ForEach(viewModel.discounts) { discount in
-                            DiscountCardView(discount: discount)
-                        }
+                TabView(selection: $currentIndex) {
+                    ForEach(viewModel.discounts.prefix(maxCount)) { discount in
+                        DiscountCardView(discount: discount)
+                            .tag(discount.id)
                     }
                 }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
             }
         }
         .onAppear {
             viewModel.fetchDiscounts()
         }
     }
-}
-
-
-#Preview {
-    DiscountRowView()
 }

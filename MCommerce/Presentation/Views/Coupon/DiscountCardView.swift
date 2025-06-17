@@ -17,7 +17,7 @@ struct DiscountCardView: View {
             Image("coupon\(random)")
                 .resizable()
                 .scaledToFill()
-                .frame(width: 250, height: 200)
+                .frame(width: UIScreen.main.bounds.width - 60, height: 220)
                 .clipped()
             
             VStack(alignment: .leading, spacing: 8) {
@@ -58,7 +58,7 @@ struct DiscountCardView: View {
             }
             .padding()
         }
-        .frame(width: 250, height: 150)
+        .frame(width: UIScreen.main.bounds.width - 60,height: 150)
         .cornerRadius(12)
         .shadow(radius: 4)
     }

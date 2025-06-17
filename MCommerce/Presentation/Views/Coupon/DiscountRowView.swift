@@ -7,8 +7,12 @@
 
 import SwiftUI
 
-struct CouponsRowView: View {
-    @StateObject private var viewModel = DiscountViewModel()
+struct DiscountRowView: View {
+    @StateObject private var viewModel: DiscountViewModel
+
+    init() {
+        _viewModel = StateObject(wrappedValue: DIContainer.shared.discountViewModel)
+    }
 
     var body: some View {
         VStack {
@@ -20,7 +24,7 @@ struct CouponsRowView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack {
                         ForEach(viewModel.discounts) { discount in
-                            CouponCardView(discount: discount)
+                            DiscountCardView(discount: discount)
                         }
                     }
                 }
@@ -34,5 +38,5 @@ struct CouponsRowView: View {
 
 
 #Preview {
-    CouponsRowView()
+    DiscountRowView()
 }

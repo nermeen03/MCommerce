@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A43B2C5A2E002D4200585788 /* Alamofire */; };
+		C41855A22E0184860086989D /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = C41855A12E0184860086989D /* GoogleMobileAds */; };
 		C4BFBA272E0074E200EA1F6F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C41855A22E0184860086989D /* GoogleMobileAds in Frameworks */,
 				A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +96,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				C41855A02E0184860086989D /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;
@@ -338,6 +341,14 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		C41855A02E0184860086989D /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -345,6 +356,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		C41855A12E0184860086989D /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C41855A02E0184860086989D /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

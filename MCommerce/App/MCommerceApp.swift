@@ -6,35 +6,23 @@
 //
 
 import SwiftUI
-import GoogleMobileAds
-
-//@main
-//struct MCommerceApp: App {
-//    init() {
-//        MobileAds.shared.start(completionHandler: nil)
-//    }
-//    var body: some Scene {
-//        WindowGroup {
-//            ProductFeedView()
-//        }
-//    }
-//}
+//import GoogleMobileAds
 
 @main
 struct MCommerceApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+//    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {
-            ProductFeedView()
+            ContentView()
         }
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        MobileAds.shared.start(completionHandler: nil)
-        return true
-    }
-}
+//class AppDelegate: NSObject, UIApplicationDelegate {
+//    func application(_ application: UIApplication,
+//                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+//        MobileAds.shared.start(completionHandler: nil)
+//        return true
+//    }
+//}

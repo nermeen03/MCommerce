@@ -34,6 +34,7 @@ struct Discount: Codable {
     let endsAt: String?
     let summary: String?
     let codes: CodesContainer?
+    let customerGets: CustomerGets?
 }
 
 struct CodesContainer: Codable {
@@ -44,3 +45,16 @@ struct CodeNode: Codable {
     let code: String
 }
 
+struct CustomerGets: Codable {
+    let value: DiscountValue
+}
+
+struct DiscountValue: Codable {
+    let percentage: Double?
+    let amount: MoneyV2?
+}
+
+struct MoneyV2: Codable {
+    let amount: String
+    let currencyCode: String
+}

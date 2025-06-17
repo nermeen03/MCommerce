@@ -24,12 +24,30 @@ class DiscountRepository : DiscountRepositoryProtocol, ObservableObject {
                 node {
                   id
                   discount {
+                    __typename
                     ... on DiscountCodeBasic {
                       title
                       status
-                      codes(first: 10) {
+                      startsAt
+                      endsAt
+                      summary
+                      codes(first: 5) {
                         nodes {
                           code
+                        }
+                      }
+                      customerGets {
+                        value {
+                          __typename
+                          ... on DiscountPercentage {
+                            percentage
+                          }
+                          ... on DiscountAmount {
+                            amount {
+                              amount
+                              currencyCode
+                            }
+                          }
                         }
                       }
                     }

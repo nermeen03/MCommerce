@@ -17,10 +17,10 @@ struct ContentView: View {
             Button("Test", action: {
 
               //  ApiCalling().callRestApi()
-                ApiCalling().createCustomer()
+               // ApiCalling().createCustomer()
 
-                createCustomer()
-                //getCustomer()
+                //createCustomer()
+                getCustomer()
 
             })
         }
@@ -32,21 +32,38 @@ struct ContentView: View {
     ContentView()
 }
 
-func createCustomer(){
-    let parameters: [String: Any] = [
-            "customer": [
-                "first_name": "Nermeen",
-                "last_name": "Mohamed",
-                "email": "flued1949@teleworm.us",
-                "phone": "+201232864490",
-                "password": "YourSecurePassword",
-                "password_confirmation": "YourSecurePassword",
-                "accepts_marketing": true,
-                "send_email_welcome": true
-            ]
+func createCustomer() {
+    let createCustomerMutation = """
+    mutation customerCreate($input: CustomerCreateInput!) {
+      customerCreate(input: $input) {
+        customer {
+          id
+          email
+          firstName
+          lastName
+        }
+        customerUserErrors {
+          field
+          message
+        }
+      }
+    }
+    """
+
+    let variables: [String: Any] = [
+        "input": [
+            "firstName": "Nermeen",
+            "lastName": "Mohamed",
+            "email": "flued1949@teleworm.us",
+            "phone": "+201232864499",
+            "password": "YourSecurePassword",
+            "acceptsMarketing": true
         ]
-    ApiCalling().callRestApi(parameters: parameters, json: "customers")
+    ]
+
+    ApiCalling().callQueryApi(query: createCustomerMutation, variables: variables)
 }
+
 
 func getCustomer(){
     let loginQuery = """

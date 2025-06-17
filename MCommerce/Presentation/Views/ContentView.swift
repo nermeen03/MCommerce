@@ -15,8 +15,9 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
             Text("Hello, world!")
             Button("Test", action: {
-                createCustomer()
+                //createCustomer()
                 //getCustomer()
+                getCoupons()
             })
         }
         .padding()
@@ -66,5 +67,38 @@ func getCustomer(){
         ]
     ]
 
-    ApiCalling().callQueryApi(query: loginQuery, variables: variables)
+//    ApiCalling().callQueryApi(query: loginQuery, variables: variables)
 }
+
+func getCoupons() {
+    let query = """
+      {
+        discountNodes(query: "combines_with:product_discounts", first: 10) {
+          edges {
+            node {
+              id
+              discount {
+                ... on DiscountCodeBasic {
+                  title
+                  status
+                  combinesWith {
+                    productDiscounts
+                  }
+                }
+                ... on DiscountCodeFreeShipping {
+                  title
+                  status
+                  combinesWith {
+                    productDiscounts
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    """
+    
+//    ApiCalling().callQueryApi(query: query, variables: [:],useToken: true)
+}
+

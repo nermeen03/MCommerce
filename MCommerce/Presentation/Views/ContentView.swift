@@ -25,6 +25,9 @@ struct ContentView: View {
             })
         }
         .padding()
+       
+      //  HomeView()
+//        MainTabView()
     }
 }
 
@@ -90,3 +93,4 @@ func getCustomer(){
 
     ApiCalling().callQueryApi(query: loginQuery, variables: variables)
 }
+

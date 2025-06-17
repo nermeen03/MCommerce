@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class ApiCalling {
+struct ApiCalling : RemoteServicesProtocol{
     let networkService = NetworkService.shared
     func createCustomer() {
         guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] ,let apiKey = Bundle.main.infoDictionary?["API_KEY"], let token = Bundle.main.infoDictionary?["ADMIN_TOKEN"],let key = Bundle.main.infoDictionary?["ADMIN_KEY"] else{
@@ -70,14 +70,20 @@ class ApiCalling {
 //
 //    }
     
-    func callQueryApi(query: String, variables: [String: Any]) {
+    func callQueryApi<T: Decodable>(query: String, variables: [String: Any]? = nil, useToken : Bool = false, completion : @escaping (Result<T, NetworkError>) -> Void) {
         guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] as? String,
-              let storefrontToken = Bundle.main.infoDictionary?["STOREFRONT_API"] as? String else {
+              let storefrontToken = Bundle.main.infoDictionary?["STOREFRONT_API"] as? String,
+        let apiKey = Bundle.main.infoDictionary?["API_KEY"], let token = Bundle.main.infoDictionary?["ADMIN_TOKEN"],let key = Bundle.main.infoDictionary?["ADMIN_KEY"]else {
             return
         }
         
-        let url = "https://\(baseURL)/api/2022-01/graphql.json"
-        
+        let url : String
+        if !useToken {
+            url = "https://\(baseURL)/api/2022-01/graphql.json"
+        }else{
+            url = "https://\(apiKey):\(token)\(key)@\(baseURL)/admin/api/2022-01/graphql.json"
+        }
+
         let headers: [String: String] = [
             "Content-Type": "application/json",
             "X-Shopify-Storefront-Access-Token": storefrontToken
@@ -93,6 +99,7 @@ class ApiCalling {
            responseType: Test.self
            
        ) { result in
+           completion(result)
            switch result {
            case .success(let response):
                print("GraphQL Response:", response)

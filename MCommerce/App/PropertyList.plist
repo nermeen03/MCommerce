@@ -48,6 +48,9 @@
 
     <key>ADMIN_KEY</key>
     <string>$(ADMIN_TOKEN_VALUE)</string>
+    
+    <key>STOREFRONT_API</key>
+    <string>$(STOREFRONT_API)</string>
 
     <key>LSRequiresIPhoneOS</key>
     <true/>

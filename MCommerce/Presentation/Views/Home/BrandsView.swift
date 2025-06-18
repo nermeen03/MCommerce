@@ -4,15 +4,11 @@
 //
 //  Created by abram on 16/06/2025.
 //
-
 import SwiftUI
 
 struct BrandsView: View {
-    let items = [
-        ("Macbook Air M1", "$ 29,999", "laptopcomputer"),
-        ("Sony WH1000XM5", "$ 4,999", "headphones"),
-        ("FreeBuds Huawei", "$ 1,999", "earpods")
-    ]
+    @StateObject var viewModel: BrandViewModel
+    @EnvironmentObject var coordinator: BrandsCoordinator
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -26,36 +22,54 @@ struct BrandsView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(items, id: \.0) { item in
-                        ProductCard(title: item.0, price: item.1, systemImage: item.2)
+                    ForEach(viewModel.brands) { brand in
+                        ProductCard(title: brand.title, imageUrl: brand.imageUrl)
+                            .onTapGesture {
+                                coordinator.navigateToProducts(for: brand)
+                            }
                     }
                 }
             }
         }
+        .padding()
     }
 }
 
 struct ProductCard: View {
     var title: String
-    var price: String
-    var systemImage: String
+    var imageUrl: String?
 
     var body: some View {
         VStack(spacing: 8) {
-            Image(systemName: systemImage)
-                .resizable()
-                .scaledToFit()
+            if let imageUrl = imageUrl, let url = URL(string: imageUrl) {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let image):
+                        image.resizable().scaledToFit()
+                    case .failure:
+                        Image(systemName: "photo")
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
                 .frame(height: 80)
-                .padding()
                 .background(Color(.systemGray5))
                 .cornerRadius(10)
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 80)
+                    .padding()
+                    .background(Color(.systemGray5))
+                    .cornerRadius(10)
+            }
 
             Text(title)
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
-            Text(price)
-                .font(.caption)
-                .foregroundColor(.green)
         }
         .frame(width: 140)
         .padding()
@@ -65,6 +79,6 @@ struct ProductCard: View {
     }
 }
 
-#Preview {
-    BrandsView()
-}
+//#Preview {
+//    BrandsView(viewModel: viewModel)
+//}

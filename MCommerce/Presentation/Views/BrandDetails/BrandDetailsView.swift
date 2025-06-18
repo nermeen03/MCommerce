@@ -31,35 +31,3 @@ struct BrandDetailsView: View {
     }
 }
 
-struct BrandProductCard: View {
-    let product: BrandProduct
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            AsyncImage(url: URL(string: product.imageUrl)) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().scaledToFit()
-                case .failure(_):
-                    Image(systemName: "photo")
-                default:
-                    ProgressView()
-                }
-            }
-            .frame(height: 120)
-            .cornerRadius(10)
-
-            Text(product.title)
-                .font(.headline)
-            Text(product.description)
-                .font(.caption)
-                .foregroundColor(.gray)
-            Text("$\(String(format: "%.2f", product.price))")
-                .bold()
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(radius: 2)
-    }
-}

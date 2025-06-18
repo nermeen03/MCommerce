@@ -11,11 +11,20 @@ import SwiftUI
 @main
 struct MCommerceApp: App {
 //    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject var coordinator = BrandsCoordinator()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-        }
+            NavigationStack(path: $coordinator.path) {
+                    ContentView()
+                        .environmentObject(coordinator)
+                        .navigationDestination(for: Brand.self) { brand in
+                            BrandDetailsView(
+                                brand: brand,
+                                viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
+                            )
+                        }
+                }        }
     }
 }
 

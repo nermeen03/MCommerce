@@ -20,5 +20,10 @@ final class DIContainer {
         let useCase = DiscountsUseCase(repository: repository)
         return DiscountViewModel(discountsUseCase: useCase)
     }
+    func makeBrandViewModel() -> BrandViewModel {
+        let remoteService = ApiCalling()
+        let repository = BrandRepository(service: remoteService)
+        return BrandViewModel(repository: repository)
+    }
 }
 

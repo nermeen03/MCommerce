@@ -6,6 +6,6 @@
 //
 
 protocol RemoteServicesProtocol {
-    func callRestApi(parameters : [String: Any], method : HTTPMethod, json:String)
+//    func callRestApi(parameters : [String: Any], method : HTTPMethod, json:String)
     func callQueryApi<T: Decodable>(query: String, variables: [String: Any]?, useToken : Bool, completion : @escaping (Result<T, NetworkError>) -> Void)
 }

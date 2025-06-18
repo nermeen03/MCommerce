@@ -131,6 +131,8 @@ class RegisterViewModel : ObservableObject {
             useCase.register(user: User(email: email, firstName: getFirstPart(beforeSpace: name) ?? name, lastName: getSecondPart(afterSpace: name) ??  name, password:  password, phoneNumber: generatePhoneNumber(from: phoneNumber))){
                 result in switch result {
                 case .success(let user):
+                    
+                    
                     print("User registered successfully: \(user.id)")
                     UserDefaultsManager.shared.saveUserId(user.id)
                     UserDefaultsManager.shared.setLoggedIn(true)

@@ -9,25 +9,31 @@ import SwiftUI
 
 struct ProductInfo: View {
     @StateObject var viewModel = ProductViewModel()
-    @State private var selectedColor: String? = nil
-    @State private var selectedSize: String? = nil
+//    @State private var selectedColor: String? = nil
+//  @State  var selectedSize: String? = nil
 
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 ProductImagesSliderView(viewModel: viewModel)
-                Text("Product title And info").font(.title).bold().padding()
+                Text(viewModel.product?.title ?? "").font(.title).bold().padding()
                 HStack {
-                    Text("$").font(.title2).foregroundColor(.orangeCustom).bold()
-                  
-                    Text("1000").font(.title2).foregroundColor(.orangeCustom).bold()
+                    if let selectedColor = viewModel.selectedColor,
+                       let selectedSize = viewModel.selectedSize,
+                        let price = viewModel.priceForSelected(color: selectedColor, size: selectedSize) {
+                         
+                         Text("$").font(.title2).foregroundColor(.orangeCustom).bold()
+                         Text(price).font(.title2).foregroundColor(.orangeCustom).bold()
+                     } else {
+                         Text("999").font(.subheadline).foregroundColor(.gray)
+                     }
                     Divider().frame(width: 10)
                     Text("Including Taxes and duties").font(.callout).foregroundColor(.gray)
                 }.padding(.leading)
                 
                 HStack() {
-                    Text("Available Colors")
+                    Text("Available Colors").padding(.leading, 0).bold()
                     Spacer()
                     ForEach(viewModel.availableColors, id: \.self) { colorHex in
                         Circle()
@@ -38,36 +44,13 @@ struct ProductInfo: View {
                                     .stroke( Color.black , lineWidth: 2)
                             )
                             .onTapGesture {
-                                selectedColor = colorHex
+                                viewModel.selectedColor = colorHex
                             }
                     }
-                }.frame(maxWidth: .infinity , alignment: .trailing).padding()
-                HStack{
-                    Text("Select Size")
-                    Spacer()
-                    HStack{
-                        ForEach(viewModel.availableSizes, id: \.self) { size in
-                                Text(size)
-                                    .fontWeight(.medium)
-                                    .frame(width: 40, height: 40)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(selectedSize == size ? Color.black : Color.gray.opacity(0.3), lineWidth: 2)
-                                    )
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .fill(selectedSize == size ? Color.gray.opacity(0.2) : Color.clear)
-                                    )
-                                    .onTapGesture {
-                                        selectedSize = size
-                                    }
-                            }
-                    }
-                }.padding()
+                }.frame(maxWidth: .infinity , alignment: .leading).padding(.vertical , 16).padding(.horizontal)
+                SizePicker(viewModel: viewModel, selectedSize: $viewModel.selectedSize)
                 Text("Description").padding(.top).padding(.leading).foregroundColor(.gray).bold()
-                Text("""
-                This stylish smartwatch blends cutting-edge features with modern design. Stay connected with notifications, track your health, and personalize your experience with a variety of bands and watch faces. Built for both function and fashion, it's your perfect everyday companion.
-                """)
+                Text(viewModel.product?.description ?? "")
                 .font(.body)
                 .foregroundColor(.black)
                 .padding(.horizontal).padding(.top ,8)

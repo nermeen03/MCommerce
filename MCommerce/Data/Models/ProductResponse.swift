@@ -14,14 +14,14 @@ struct ProductDataa: Decodable {
 }
 
 struct ProductEdgeWrapper: Decodable {
-    let edges: [ProductEdge]
+    let edges: [ProductEdgee]
 }
 
-struct ProductEdge: Decodable {
-    let node: ProductNode
+struct ProductEdgee: Decodable {
+    let node: ProductNodee
 }
 
-struct ProductNode: Decodable {
+struct ProductNodee: Decodable {
     let id: String
     let title: String
     let description: String
@@ -31,14 +31,14 @@ struct ProductNode: Decodable {
 }
 
 struct ImageEdgeWrapper: Decodable {
-    let edges: [ImageEdge]
+    let edges: [ImageEdgee]
 }
 
-struct ImageEdge: Decodable {
-    let node: ImageNode
+struct ImageEdgee: Decodable {
+    let node: ImageNodee
 }
 
-struct ImageNode: Decodable {
+struct ImageNodee: Decodable {
     let url: String
 }
 
@@ -47,9 +47,9 @@ struct VariantEdgeWrapper: Decodable {
 }
 
 struct VariantEdge: Decodable {
-    let node: VariantNode
+    let node: VariantNodee
 }
 
-struct VariantNode: Decodable {
+struct VariantNodee: Decodable {
     let price: String
 }

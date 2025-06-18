@@ -10,19 +10,79 @@ import SwiftUI
 
 class ProductViewModel: ObservableObject {
     @Published var imageUrls: [String] = []
-   @Published var availableColors = ["red", "blue", "black"]
-    @Published var availableSizes = ["36" , "35" ]
-
+//   @Published var availableColors = ["red", "blue", "black"]
+//    @Published var availableSizes = ["36" , "35" ]
+    @Published var product : ProductDto?
+    @Published var variantPriceMap: [String: String] = [:]
+    @Published var availableColors: [String] = []
+    @Published var availableSizes: [String] = []
+    @Published  var selectedColor: String? = nil
+  @Published  var selectedSize: String? = nil
     
-    func fetchProductImages() {
-        // Simulating a network call
-  
-            self.imageUrls = [
-                "https://images.unsplash.com/photo-1585386959984-a4155224c3b1", // Sneakers
-                    "https://images.unsplash.com/photo-1606813902283-0278d7a32ae3", // Headphones
-                    "https://images.unsplash.com/photo-1600185365462-8c684c4a6b6b" 
-            ]
+    
+private let useCase = ProductInfoUseCase(repository: ProductInfoRepo())
+    init(){
+        useCase.getProductById(productId: "8596266680458") { [weak self] product in
+            switch product {
+                case .success(let product):
+                DispatchQueue.main.async {
+                                   self?.product = product
+                                   self?.imageUrls = product.images
+                                   self?.extractOptionsAndPrices(from: product.variants)
+                    self?.selectedSize = self?.availableSizes[0]
+                    self?.selectedColor = self?.availableColors[0]
+                    
+                               }
+               
+                product.variants.forEach { variant in
+                    print(variant .price)
+                    print(variant .title)
+                    print("selcted option")
+                    for option in variant .selectedOptions {
+                        print(option .name)
+                        print(option .value)
+                    }
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
         }
+        
+    }
+    private func extractOptionsAndPrices(from variants: [VariantDto]) {
+         var colors: Set<String> = []
+         var sizes: Set<String> = []
+         var priceMap: [String: String] = [:]
+
+         for variant in variants {
+             var color: String?
+             var size: String?
+
+             for option in variant.selectedOptions {
+                 if option.name.lowercased() == "color" {
+                     color = option.value
+                     colors.insert(option.value)
+                 } else if option.name.lowercased() == "size" {
+                     size = option.value
+                     sizes.insert(option.value)
+                 }
+             }
+
+             // Build key like "black|OS"
+             if let c = color, let s = size {
+                 let key = "\(c)|\(s)"
+                 priceMap[key] = variant.price
+             }
+         }
+
+         self.availableColors = Array(colors)
+         self.availableSizes = Array(sizes)
+         self.variantPriceMap = priceMap
+     }
+    
+    func priceForSelected(color: String, size: String) -> String? {
+           return variantPriceMap["\(color)|\(size)"]
+       }
     func colorFromName(_ name: String) -> Color {
         switch name.lowercased() {
         case "red": return .red

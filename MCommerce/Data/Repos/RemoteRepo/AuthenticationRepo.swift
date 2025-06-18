@@ -90,6 +90,7 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
                         }
                     }else{
                         completion(.failure(NetworkError.invalidResponse))
+                       
                     }
                     
                    // print("✅ Customer created: \(response.data.customerCreate.customer?.email ?? "No Email")")
@@ -163,14 +164,10 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
                             completion(.failure(NetworkError.invalidResponse))
                         }
                       
-//                        if let token = response.data.customerAccessTokenCreate.customerAccessToken?.accessToken {
-//                            print("✅ Login successful, token: \(token)")
-//                        } else {
-//                            print("❌ Login failed, error: \(response.data.customerAccessTokenCreate.userErrors.first?.message ?? "Unknown")")
-//                        }
+
                     case .failure(let error):
                         completion(.failure(error))
-                      //  print("❌ GraphQL login error: \(error)")
+                
                     }
                 }
             )
@@ -180,4 +177,9 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
     
     
 }
-
+//class MyError : Error {
+//    var message: String
+//    init(message: String) {
+//        self.message = message
+//    }
+//}

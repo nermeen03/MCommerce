@@ -10,7 +10,7 @@ import SwiftUI
 struct BrandDetailsView: View {
     let brand: Brand
     @StateObject var viewModel: BrandDetailsViewModel
-
+    @EnvironmentObject var coordinator: BrandsCoordinator 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -19,7 +19,9 @@ struct BrandDetailsView: View {
 
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(viewModel.products) { product in
-                        BrandProductCard(product: product)
+                        BrandProductCard(product: product) .onTapGesture {
+                            coordinator.navigateToProductInfo(withId: product.id)
+                        }
                     }
                 }
             }

@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FF3B19512E00B34400A7A7E9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FF3B19502E00B34400A7A7E9 /* Alamofire */; };
-		FF3B19552E00B57300A7A7E9 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = FF3B19542E00B57300A7A7E9 /* Config.xcconfig */; };
+		A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A43B2C5A2E002D4200585788 /* Alamofire */; };
+		C4BFBA272E0074E200EA1F6F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FF3B191C2E00B24A00A7A7E9 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF3B19542E00B57300A7A7E9 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A43B2C272E00203300585788 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4BFBA262E0074E200EA1F6F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -29,7 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF3B19512E00B34400A7A7E9 /* Alamofire in Frameworks */,
+				A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,9 +39,9 @@
 		C482244A2DFE1529000E8729 = {
 			isa = PBXGroup;
 			children = (
+				C4BFBA262E0074E200EA1F6F /* Config.xcconfig */,
 				C48224552DFE1529000E8729 /* MCommerce */,
-				FF3B191C2E00B24A00A7A7E9 /* MCommerce.app */,
-				FF3B19542E00B57300A7A7E9 /* Config.xcconfig */,
+				A43B2C272E00203300585788 /* MCommerce.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,7 +65,7 @@
 			);
 			name = MCommerce;
 			productName = MCommerce;
-			productReference = FF3B191C2E00B24A00A7A7E9 /* MCommerce.app */;
+			productReference = A43B2C272E00203300585788 /* MCommerce.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -93,7 +93,7 @@
 			mainGroup = C482244A2DFE1529000E8729;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				FF3B194F2E00B34400A7A7E9 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;
@@ -110,7 +110,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF3B19552E00B57300A7A7E9 /* Config.xcconfig in Resources */,
+				C4BFBA272E0074E200EA1F6F /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +129,7 @@
 /* Begin XCBuildConfiguration section */
 		C482245C2DFE152B000E8729 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF3B19542E00B57300A7A7E9 /* Config.xcconfig */;
+			baseConfigurationReference = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -249,12 +249,13 @@
 		};
 		C482245F2DFE152B000E8729 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF3B19542E00B57300A7A7E9 /* Config.xcconfig */;
+			baseConfigurationReference = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A8VN75XKR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MCommerce/App/PropertyList.plist;
@@ -283,6 +284,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5A8VN75XKR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = MCommerce/App/PropertyList.plist;
@@ -328,7 +330,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FF3B194F2E00B34400A7A7E9 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -339,9 +341,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FF3B19502E00B34400A7A7E9 /* Alamofire */ = {
+		A43B2C5A2E002D4200585788 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF3B194F2E00B34400A7A7E9 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -28,9 +28,21 @@ struct MCommerceApp: App {
                             ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: productId))
                         }
                 }
-                .environmentObject(coordinator) // ✅ wrap the entire NavigationStack
+                .environmentObject(coordinator)
             }else{
-                WelcomeScreen()
+                NavigationStack(path: $coordinator.path) {
+                    WelcomeScreen()
+                        .navigationDestination(for: Brand.self) { brand in
+                            BrandDetailsView(
+                                brand: brand,
+                                viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
+                            )
+                        }
+                        .navigationDestination(for: String.self) { productId in
+                            ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: productId))
+                        }
+                }
+                .environmentObject(coordinator)
             }
         }
         }

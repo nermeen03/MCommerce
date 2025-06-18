@@ -18,7 +18,7 @@ class ProductViewModel: ObservableObject {
     @Published var availableSizes: [String] = []
     @Published  var selectedColor: String? = nil
   @Published  var selectedSize: String? = nil
-    
+     @Published var price: String? = nil
     
     private let useCase : ProductInfoUseCase
     private let productId : String
@@ -86,6 +86,13 @@ class ProductViewModel: ObservableObject {
     func priceForSelected(color: String, size: String) -> String? {
            return variantPriceMap["\(color)|\(size)"]
        }
+    func updatePriceForSelection() {
+            guard let color = selectedColor, let size = selectedSize else {
+                price = nil
+                return
+            }
+            price = priceForSelected(color: color, size: size)
+        }
     func colorFromName(_ name: String) -> Color {
         switch name.lowercased() {
         case "red": return .red

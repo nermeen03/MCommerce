@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct Register: View {
-    @StateObject private var viewModel = RegisterViewModel(registerUseCase: RegisterUseCase(repository: AuthenticationRepo()))
+    @StateObject private var viewModel = DIContainer.shared.resolveRegisterViewModel()
     
     var body: some View {
         NavigationStack {

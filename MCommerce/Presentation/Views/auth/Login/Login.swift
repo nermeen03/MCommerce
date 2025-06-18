@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct Login: View {
-    @StateObject var viewModel: LoginViewModel = LoginViewModel(useCase: LoginUseCase(repository: AuthenticationRepo()))
+    @StateObject var viewModel: LoginViewModel = DIContainer.shared.resolveLoginViewModel()
     
     var body: some View {
         NavigationStack {

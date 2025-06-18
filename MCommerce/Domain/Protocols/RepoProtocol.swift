@@ -13,3 +13,6 @@ protocol AuthenticationRepositoryProtocol {
     func login(email: String, password: String, completion: @escaping (Result<CustomerAccessToken, NetworkError>) -> Void)
     func getUserId(accessToken: String, completion: @escaping (Result<Customer, NetworkError>) -> Void) 
 }
+protocol ProductInfoRepositoryProtocol {
+    func getProductById(productId: String, completion: @escaping (Result<ProductDto, NetworkError>) -> Void)
+}

@@ -14,7 +14,10 @@ struct ContentView: View {
         if UserDefaultsManager.shared.isLoggedIn() {
             print("User ID: \(UserDefaultsManager.shared.getUserId() ?? "No ID")")
         }
+        //            UserDefaultsManager.shared.saveUserId("")
+        //            UserDefaultsManager.shared.setLoggedIn(false)
     }
+    
     
     var body: some View {
         if UserDefaultsManager.shared.isLoggedIn() {

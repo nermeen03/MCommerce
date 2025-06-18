@@ -18,12 +18,12 @@ import SwiftUI
 class LoginViewModel : ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
-  
     @Published var emailError: String = ""
     @Published var passwordError: String = ""
     @Published var showError: Bool = false
+    @Published var isLoading: Bool = false
+    @Published var isLogged: Bool = false
     
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     private let useCase : LoginUseCase
     init(useCase : LoginUseCase){
         self.useCase = useCase
@@ -59,6 +59,7 @@ class LoginViewModel : ObservableObject {
  
     func login (){
         if emailError.isEmpty && passwordError.isEmpty {
+            isLoading = true
             useCase.login(email: email, password: password) { (result) in
                 switch result {
                 case .success(let data):
@@ -70,7 +71,9 @@ class LoginViewModel : ObservableObject {
                             UserDefaultsManager.shared.saveUserId(customer.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
                             UserDefaultsManager.shared.setLoggedIn(true)
                             DispatchQueue.main.async {
-                                self.isLoggedIn = true
+                                self.isLogged = true
+                                self.isLoading = false
+                           //     self.isLoggedIn = true
                             }
                         
                         case .failure(let error):
@@ -84,7 +87,13 @@ class LoginViewModel : ObservableObject {
                 case .failure(let error):
                     print("Login Error \(error)")
                     DispatchQueue.main.async {
-                        self.showError = true
+                       
+                        self.isLoading = false
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                               self.showError = true
+                           }
+                        self.isLogged = false
                     }
                 }
             }

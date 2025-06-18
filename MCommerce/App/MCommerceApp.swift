@@ -30,5 +30,6 @@ struct MCommerceApp: App {
                 WelcomeScreen()
             }
         }
+        }
     }
-}
+

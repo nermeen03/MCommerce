@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProductInfo: View {
-    @StateObject var viewModel = ProductViewModel()
+    @StateObject var viewModel = DIContainer.shared.resolveProductInfoViewModel()
 //    @State private var selectedColor: String? = nil
 //  @State  var selectedSize: String? = nil
 

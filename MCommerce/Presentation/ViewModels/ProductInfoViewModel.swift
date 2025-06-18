@@ -20,8 +20,9 @@ class ProductViewModel: ObservableObject {
   @Published  var selectedSize: String? = nil
     
     
-private let useCase = ProductInfoUseCase(repository: ProductInfoRepo())
-    init(){
+    private let useCase : ProductInfoUseCase
+    init(useCase : ProductInfoUseCase){
+        self.useCase = useCase
         useCase.getProductById(productId: "8596266680458") { [weak self] product in
             switch product {
                 case .success(let product):

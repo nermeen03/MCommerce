@@ -25,5 +25,24 @@ final class DIContainer {
         let repository = BrandRepository(service: remoteService)
         return BrandViewModel(repository: repository)
     }
+    func resolveProductInfoViewModel() -> ProductViewModel {
+      
+        let repository = ProductInfoRepo()
+        let useCase = ProductInfoUseCase(repository: repository)
+        let ProductInfoViewModel = ProductViewModel(useCase: useCase)
+        return ProductInfoViewModel
+    }
+    func resolveRegisterViewModel() -> RegisterViewModel {
+    
+        let repository = AuthenticationRepo()
+        let useCase = RegisterUseCase(repository: repository)
+        return RegisterViewModel(registerUseCase: useCase)
+    }
+    func resolveLoginViewModel() -> LoginViewModel {
+        
+        let repository = AuthenticationRepo()
+        let useCase = LoginUseCase(repository: repository)
+        return LoginViewModel(useCase: useCase)
+    }
 }
 

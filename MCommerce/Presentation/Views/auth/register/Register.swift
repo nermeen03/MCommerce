@@ -70,9 +70,9 @@ struct Register: View {
                     }
                 }
                 .padding()
-            }.alert("Loading.." , isPresented: $viewModel.isLoading){}
+            }.alert("Loading... \n Verifying your email.." , isPresented: $viewModel.isLoading){}
             .navigationBarBackButtonHidden(true)
-            .alert("Registration Failed", isPresented: $viewModel.showError) {
+            .alert(viewModel.errorMessage, isPresented: $viewModel.showError) {
                 Button("OK", role: .cancel) {}
             }
         }

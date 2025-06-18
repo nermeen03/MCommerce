@@ -125,35 +125,36 @@ class RegisterViewModel : ObservableObject {
             useCase.register(user: User(email: email, firstName: getFirstPart(beforeSpace: name) ?? name, lastName: getSecondPart(afterSpace: name) ??  name, password:  password, phoneNumber: generatePhoneNumber(from: phoneNumber))){
                 result in switch result {
                 case .success(let user):
-                    
-                    
                     print("User registered successfully: \(user.id)")
                     UserDefaultsManager.shared.saveUserId(user.id)
                     UserDefaultsManager.shared.setLoggedIn(true)
                     DispatchQueue.main.async {
                         self.isRegistered = true
                         self.isLoading = false
-                   //     self.isLoggedIn = true
+                 
                     }
                 case .failure(let error):
-                   
-                    print("Error registering user: \(error)")
-                    DispatchQueue.main.async {
-                       
-                        self.isLoading = false
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            self.errorMessage.appending(error.localizedDescription)
+                   switch error {
+                   case .custom(message: let message):
+                       DispatchQueue.main.async {
+                           self.isRegistered = false
+                           self.isLoading = false
+                           DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                               self.errorMessage = message + "\n Try again"
                                self.showError = true
-                           }
-                        self.isRegistered = false
+                              }
+                           
+                       }
+                      
+                   default:
+                       break
                     }
+                   
+                  
                 }
             }
         }
-        else{
-            
-        }
+        
     }
     
 }

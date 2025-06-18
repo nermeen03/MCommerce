@@ -73,7 +73,7 @@ struct Login: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
             .alert("Loading...", isPresented: $viewModel.isLoading) { }
-            .alert("Login Failed", isPresented: $viewModel.showError) {
+            .alert(viewModel.errorMessage, isPresented: $viewModel.showError) {
                 Button("OK", role: .cancel) {}
             }
         }

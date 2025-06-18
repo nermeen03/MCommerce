@@ -19,7 +19,7 @@ struct MainTabView: View {
                 case .home:
                     HomeView()
                 case .search:
-                    SearchView()
+                    CategoriesView()
                 case .cart:
                     CartView()
                 case .profile:

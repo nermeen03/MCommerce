@@ -19,7 +19,9 @@ class RegisterViewModel : ObservableObject {
     @Published var nameError : String = ""
     @Published var phoneNumberError : String = ""
     @Published var showError: Bool = false
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+    @Published var isLoading: Bool = false
+    @Published var isRegistered: Bool = false
+   // @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     private let useCase: RegisterUseCase
     
     init(registerUseCase: RegisterUseCase) {
@@ -117,6 +119,7 @@ class RegisterViewModel : ObservableObject {
     }
     func register () {
         if !self.validateAllFields() {
+            isLoading = true
             useCase.register(user: User(email: email, firstName: getFirstPart(beforeSpace: name) ?? name, lastName: getSecondPart(afterSpace: name) ??  name, password:  password, phoneNumber: generatePhoneNumber(from: phoneNumber))){
                 result in switch result {
                 case .success(let user):
@@ -124,13 +127,20 @@ class RegisterViewModel : ObservableObject {
                     UserDefaultsManager.shared.saveUserId(user.id)
                     UserDefaultsManager.shared.setLoggedIn(true)
                     DispatchQueue.main.async {
-                       
-                        self.isLoggedIn = true
+                        self.isRegistered = true
+                        self.isLoading = false
+                   //     self.isLoggedIn = true
                     }
                 case .failure(let error):
                     print("Error registering user: \(error)")
                     DispatchQueue.main.async {
-                        self.showError = true
+                       
+                        self.isLoading = false
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                               self.showError = true
+                           }
+                        self.isRegistered = false
                     }
                 }
             }

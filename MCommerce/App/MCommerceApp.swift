@@ -9,14 +9,21 @@ import SwiftUI
 
 @main
 struct MCommerceApp: App {
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+   
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
-                HomeView()
-            } else{
-                WelcomeScreen()
+            
+            if UserDefaultsManager.shared.isLoggedIn() {
+                
+                
+                // ProductInfo()
+                 HomeView()
+              //  Register()
+                
+            } else {
+               WelcomeScreen()
             }
         }
+        }
     }
-}
+

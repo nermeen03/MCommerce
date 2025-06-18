@@ -18,7 +18,7 @@ enum Tab: String, CaseIterable {
 
 struct FloatingTabBar: View {
     @Binding var selectedTab: Tab
-    var cartBadgeCount: Int = 0 // <-- Add this for badge
+    var cartBadgeCount: Int = 0 //
 
     var body: some View {
         HStack(spacing: 50) {

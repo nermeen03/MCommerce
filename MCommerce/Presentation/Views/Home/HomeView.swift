@@ -9,22 +9,25 @@ import SwiftUI
 import Alamofire
 
 struct HomeView: View {
+    @EnvironmentObject var coordinator: BrandsCoordinator
+    @StateObject private var brandViewModel = DIContainer.shared.makeBrandViewModel()
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                SearchBarView()
-                BannerView()
-                HotSalesView()
-                RecentlyViewedView()
+        
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    BannerView()
+                    BrandsView(viewModel: brandViewModel)
+                    RecentlyViewedView()
+                }
+                .padding()
             }
-            .padding()
-        }
-//        .padding(.bottom, 60)
-        .safeAreaInset(edge: .bottom) {
-            Color.clear.frame(height: 50)
-        }.onAppear{
-            //createDiscountCode()
-        }
+            //        .padding(.bottom, 60)
+            .safeAreaInset(edge: .bottom) {
+                Color.clear.frame(height: 50)
+            }
+        }.navigationTitle(Text("Home"))
+            .padding(.top)
 
     }
 }

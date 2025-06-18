@@ -1,0 +1,39 @@
+//
+//  MainTabView.swift
+//  MCommerce
+//
+//  Created by abram on 16/06/2025.
+//
+
+import SwiftUI
+
+struct MainTabView: View {
+    @State private var selectedTab: Tab = .home
+    @State private var cartBadgeCount: Int = 3
+
+    @EnvironmentObject var coordinator: BrandsCoordinator
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            Group {
+                switch selectedTab {
+                case .home:
+                    HomeView()
+                        .environmentObject(coordinator)
+                case .search:
+                    SearchView()
+                case .cart:
+                    CartView()
+                case .profile:
+                    ProfileView()
+                }
+            }
+            FloatingTabBar(selectedTab: $selectedTab, cartBadgeCount: cartBadgeCount)
+        }
+    }
+}
+
+
+#Preview {
+    MainTabView()
+}

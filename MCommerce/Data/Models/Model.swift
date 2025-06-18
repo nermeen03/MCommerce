@@ -5,33 +5,19 @@
 //  Created by Nermeen Mohamed on 14/06/2025.
 //
 
-struct Test: Codable {
-    let collects: [Collect]
-}
-
-struct Collect: Codable {
-    let id: Int
-    let collection_id: Int
-    let product_id: Int
-    let created_at: String
-    let updated_at: String
-    let position: Int
-    let sort_value: String
-}
-
 struct ProductTest: Codable {
     let data: ProductData
 }
 
 struct ProductData: Codable {
-    let products: ProductEdges
+    let products: ProductTestEdges
 }
 
-struct ProductEdges: Codable {
-    let edges: [ProductNode]
+struct ProductTestEdges: Codable {
+    let edges: [ProductTestNode]
 }
 
-struct ProductNode: Codable {
+struct ProductTestNode: Codable {
     let node: ProductDetail
 }
 
@@ -41,7 +27,7 @@ struct ProductDetail: Codable {
     let description: String
     let onlineStoreUrl: String?
     let priceRange: PriceRange
-    let images: ImageEdges
+    let images: ProductImageEdges
 }
 
 struct PriceRange: Codable {
@@ -53,14 +39,14 @@ struct VariantPrice: Codable {
     let currencyCode: String
 }
 
-struct ImageEdges: Codable {
-    let edges: [ImageNode]
+struct ProductImageEdges: Codable {
+    let edges: [ProductImageNode]
 }
 
-struct ImageNode: Codable {
-    let node: ImageURL
+struct ProductImageNode: Codable {
+    let node: ProductImageURL
 }
 
-struct ImageURL: Codable {
+struct ProductImageURL: Codable {
     let url: String
 }

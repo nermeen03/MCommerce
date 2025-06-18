@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var coordinator: BrandsCoordinator
+
     @State private var showAd = false
     @State private var adTimer: Timer?
     @State private var repeatAdTimer: Timer?
 
     var body: some View {
         ZStack {
-            HomeView()
+            MainTabView()
+                .environmentObject(coordinator)
             if showAd {
                 ProductAdView(onClose: hideAd)
                     .transition(.opacity)

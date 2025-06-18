@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HotSalesView: View {
+struct BrandsView: View {
     let items = [
         ("Macbook Air M1", "$ 29,999", "laptopcomputer"),
         ("Sony WH1000XM5", "$ 4,999", "headphones"),
@@ -17,7 +17,7 @@ struct HotSalesView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("Hot sales")
+                Text("Brands")
                     .font(.title3)
                     .bold()
                 Spacer()
@@ -66,5 +66,5 @@ struct ProductCard: View {
 }
 
 #Preview {
-    HotSalesView()
+    BrandsView()
 }

@@ -15,7 +15,9 @@ class BrandViewModel: ObservableObject {
 
     init(repository: BrandRepositoryProtocol) {
         self.repository = repository
-        fetchBrands()
+        if brands.isEmpty {
+            fetchBrands()
+        }
     }
 
     func fetchBrands() {

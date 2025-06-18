@@ -80,6 +80,14 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
                 case .success(let response):
                     if let customer = response.data.customerCreate?.customer {
                         completion(.success((response.data.customerCreate?.customer!)!))
+                        self.sendInvite(for: user.email) { inviteResult in
+                            switch inviteResult {
+                            case .success():
+                                print("Invite Sent to: \(customer.email)")
+                            case .failure(let error):
+                                print("Invite Error: \(error)")
+                            }
+                        }
                     }else{
                         completion(.failure(NetworkError.invalidResponse))
                     }
@@ -92,6 +100,30 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
             }
         )
     }
+    
+    func sendInvite(for customerID: String, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+
+        let graphqlQuery = """
+        mutation customerSendInvite($id: ID!) {
+            customerSendInvite(id: $id) {
+                customerInvite {
+                    to
+                    from
+                    subject
+                }
+                userErrors {
+                    message
+                }
+            }
+        }
+        """
+
+        ApiCalling().callQueryApi(query: graphqlQuery,useToken: true ,completion: {
+            (result : Result<ProductTest,NetworkError>) in
+            print(result)
+        })
+    }
+
     
     func login(email: String, password: String, completion: @escaping (Result<CustomerAccessToken, NetworkError>) -> Void) {
        

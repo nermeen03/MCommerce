@@ -22,6 +22,7 @@ class RegisterViewModel : ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isRegistered: Bool = false
     @Published var errorMessage: String = "Try again \n "
+
    // @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     private let useCase: RegisterUseCase
     

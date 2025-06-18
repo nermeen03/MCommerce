@@ -21,9 +21,11 @@ class ProductViewModel: ObservableObject {
     
     
     private let useCase : ProductInfoUseCase
-    init(useCase : ProductInfoUseCase){
+    private let productId : String
+    init(useCase : ProductInfoUseCase, id : String){
         self.useCase = useCase
-        useCase.getProductById(productId: "8596266680458") { [weak self] product in
+        self.productId = id
+        useCase.getProductById(productId: productId) { [weak self] product in
             switch product {
                 case .success(let product):
                 DispatchQueue.main.async {

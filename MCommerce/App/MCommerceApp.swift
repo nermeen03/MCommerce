@@ -10,23 +10,26 @@ import SwiftUI
 
 @main
 struct MCommerceApp: App {
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+
     @StateObject var coordinator = BrandsCoordinator()
 
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
+            if UserDefaultsManager.shared.isLoggedIn() {
                 NavigationStack(path: $coordinator.path) {
-                    ContentView()
-                    .environmentObject(coordinator)
-                    .navigationDestination(for: Brand.self) { brand in
-                        BrandDetailsView(
-                            brand: brand,
-                            viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
-                        )
-                    }
+                 ContentView()
+                        .navigationDestination(for: Brand.self) { brand in
+                            BrandDetailsView(
+                                brand: brand,
+                                viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
+                            )
+                        }
+                        .navigationDestination(for: String.self) { productId in
+                            ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: productId))
+                        }
                 }
-            } else{
+                .environmentObject(coordinator) // ✅ wrap the entire NavigationStack
+            }else{
                 WelcomeScreen()
             }
         }

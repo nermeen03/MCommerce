@@ -21,6 +21,7 @@ class RegisterViewModel : ObservableObject {
     @Published var showError: Bool = false
     @Published var isLoading: Bool = false
     @Published var isRegistered: Bool = false
+    @Published var errorMessage: String = "Try again \n "
    // @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     private let useCase: RegisterUseCase
     
@@ -134,12 +135,14 @@ class RegisterViewModel : ObservableObject {
                    //     self.isLoggedIn = true
                     }
                 case .failure(let error):
+                   
                     print("Error registering user: \(error)")
                     DispatchQueue.main.async {
                        
                         self.isLoading = false
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            self.errorMessage.appending(error.localizedDescription)
                                self.showError = true
                            }
                         self.isRegistered = false

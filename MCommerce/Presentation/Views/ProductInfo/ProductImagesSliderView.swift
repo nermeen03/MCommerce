@@ -56,6 +56,6 @@ struct ProductImagesSliderView: View {
         }
 }
 
-#Preview {
-    ProductImagesSliderView(viewModel: ProductViewModel())
-}
+//#Preview {
+//    ProductImagesSliderView(viewModel: ProductViewModel())
+//}

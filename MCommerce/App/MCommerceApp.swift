@@ -38,6 +38,8 @@ struct MCommerceApp: App {
                                 WelcomeScreen()
                             case .home:
                                 HomeView()
+                            case .main:
+                                MainTabView()
                             case .productInfo(let product):
                                 ProductInfo(viewModel: ProductViewModel(useCase: ProductInfoUseCase(repository: ProductInfoRepo()), id: product))
                             case .profile:

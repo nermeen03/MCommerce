@@ -39,19 +39,45 @@ struct ProfileView: View {
                 }
             }
             .padding(.horizontal)
+//            .onAppear {
+//                            for i in 0..<10 {
+//                                let product = FavProductInfo(
+//                                    userId: "userId",
+//                                    productId: UUID().uuidString, // ✅ Make each one unique
+//                                    productImage: nil,
+//                                    productName: "TestProduct \(i)"
+//                                )
+//                                modelContext.insert(product)
+//                            }
+//                
+//                            try? modelContext.save() // ✅ MUST SAVE
+//                        }
 
             Divider()
                 .padding(.bottom, 8)
             if loggedIn {
                 ScrollView{
                     VStack {
-//                        let userName = UserDefaultsManager.shared.getUserName() ?? "User"
+                        //                        let userName = UserDefaultsManager.shared.getUserName() ?? "User"
                         let userName = "User"
                         HStack(alignment: .center, content: {
                             Text("Welcome \(userName)").font(.title)
                         })
                         OrdersView(viewModel: OrderViewModel())
-                        WishListView().modelContainer(for: FavProductInfo.self)                    }
+                        WishListView().modelContainer(for: FavProductInfo.self)
+                    }
+                }.onAppear {
+                    for i in 0..<10 {
+                        let product = FavProductInfo(
+                            userId: "userId",
+                            productId: UUID().uuidString, // ✅ Make each one unique
+                            productImage: "",
+                            productName: "TestProduct \(i)"
+                        )
+                        modelContext.insert(product)
+                    }
+        
+                    try? modelContext.save() // ✅ MUST SAVE
                 }
 
 

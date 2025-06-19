@@ -34,10 +34,18 @@ struct Register: View {
                     }
 
                     // Sign Up Button
-                    CustomButton(text: "Sign Up", textColor: .white, backgroundColor: .deepPurple, verticalOffset: 0) {
-                        viewModel.register()
+                    CustomButton(
+                        text: "Sign Up",
+                        textColor: .white,
+                        backgroundColor: .deepPurple,
+                        verticalOffset: 0,
+                        action: { viewModel.register()
+                        }
+                    ).onChange(of: viewModel.isRegistered) { isRegistered in
+                        if isRegistered {
+                            coordinator.navigate(to: .home)
+                        }
                     }
-                    .padding(.top, 24)
 
                     // Alternative Sign-In Methods
                     Text("Or using another method ")

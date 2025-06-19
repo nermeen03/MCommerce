@@ -17,12 +17,11 @@
 		FF07BD632E03541800022C79 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD622E03541800022C79 /* FirebaseAuth */; };
 		FF07BD652E03541800022C79 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD642E03541800022C79 /* FirebaseCore */; };
 		FF07BD672E03541800022C79 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD662E03541800022C79 /* FirebaseFirestore */; };
-		FF07BD692E03541800022C79 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD682E03541800022C79 /* FirebaseFunctions */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A43B2C272E00203300585788 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C4BFBA262E0074E200EA1F6F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -48,6 +47,7 @@
 				FF07BD692E03541800022C79 /* FirebaseFunctions in Frameworks */,
 				FF07BD652E03541800022C79 /* FirebaseCore in Frameworks */,
 				FF07BD5A2E034FFC00022C79 /* FirebaseAnalyticsCore in Frameworks */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +113,7 @@
 			packageReferences = (
 				A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;

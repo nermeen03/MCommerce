@@ -22,7 +22,7 @@ enum NetworkError: Error {
     case invalidResponse
     case decodingError(Error)
     case custom(message: String)
-    
+
 }
 
 final class NetworkService {
@@ -54,6 +54,7 @@ final class NetworkService {
             }
         } else if let parameters = parameters {
             body = parameters
+
         }
 
         var updatedHeaders = headers
@@ -77,6 +78,7 @@ final class NetworkService {
                 print("RAW RESPONSE: \(jsonString)")
             }
         }
+
         .responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let decoded):
@@ -85,7 +87,6 @@ final class NetworkService {
                 if let data = response.data {
                     do {
                         let decoded = try JSONDecoder().decode(T.self, from: data)
-                        print(decoded)
                         completion(.success(decoded))
                     } catch {
                         completion(.failure(.decodingError(error)))

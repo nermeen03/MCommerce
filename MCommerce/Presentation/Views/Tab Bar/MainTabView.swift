@@ -19,9 +19,11 @@ struct MainTabView: View {
                 case .home:
                     HomeView()
                 case .search:
-                    SearchView()
+                    CategoriesView()
                 case .cart:
                     CartView()
+                case .favorites:
+                    Text("Favorites")
                 case .profile:
                     ProfileView()
                 }

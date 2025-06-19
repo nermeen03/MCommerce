@@ -13,15 +13,16 @@ enum Tab: String, CaseIterable {
     case home = "house.fill"
     case search = "magnifyingglass"
     case cart = "cart.fill"
+    case favorites = "heart.fill"
     case profile = "person.fill"
 }
 
 struct FloatingTabBar: View {
     @Binding var selectedTab: Tab
-    var cartBadgeCount: Int = 0 //
+    var cartBadgeCount: Int = 0
 
     var body: some View {
-        HStack(spacing: 50) {
+        HStack(spacing: 30) {
             ForEach(Tab.allCases, id: \.self) { tab in
                 Button(action: { selectedTab = tab }) {
                     ZStack(alignment: .topTrailing) {
@@ -31,7 +32,6 @@ struct FloatingTabBar: View {
                                     .fill(Color.orange.opacity(0.3))
                                     .frame(width: 44, height: 44)
                             }
-
                             Image(systemName: tab.rawValue)
                                 .font(.system(size: 22, weight: .semibold))
                                 .foregroundColor(selectedTab == tab ? .orange : .gray)
@@ -62,7 +62,6 @@ struct FloatingTabBar: View {
 //#Preview {
 //    FloatingTabBar()
 //}
-
 struct SearchView: View { var body: some View { Color.yellow.ignoresSafeArea().overlay(Text("Search")) } }
 struct CartView: View { var body: some View { Color.blue.ignoresSafeArea().overlay(Text("Cart")) } }
-//struct ProfileView: View { var body: some View { Color.green.ignoresSafeArea().overlay(Text("Profile")) } }
+

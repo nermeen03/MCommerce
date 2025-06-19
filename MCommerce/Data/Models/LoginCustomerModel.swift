@@ -23,7 +23,7 @@ struct CustomerAccessToken: Decodable {
     let expiresAt: String
 }
 
-struct UserError: Decodable {
+struct UserError: Codable {
     let field: [String]?
     let message: String
 }

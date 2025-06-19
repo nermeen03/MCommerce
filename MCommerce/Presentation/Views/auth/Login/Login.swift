@@ -2,9 +2,9 @@ import SwiftUI
 
 struct Login: View {
     @StateObject var viewModel: LoginViewModel = DIContainer.shared.resolveLoginViewModel()
-    
+    @EnvironmentObject var coordinator: AppCoordinator
+
     var body: some View {
-        NavigationStack {
             VStack(alignment: .leading) {
                 Text("Login Account").font(.title2).bold()
                 Text("Please log in with your registered account")
@@ -51,7 +51,6 @@ struct Login: View {
                     action: {}
                 )
                 
-                NavigationLink(destination: Register()) {
                     HStack {
                         Text("Don't have an account? ")
                             .font(.callout)
@@ -62,12 +61,13 @@ struct Login: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 16)
-                }
-
+                    .onTapGesture {
+                        coordinator.navigate(to: .signup)
+                    }
                 
-                NavigationLink(destination: HomeView().navigationBarBackButtonHidden(true), isActive: $viewModel.isLogged) {
-                    EmptyView()
-                }
+//                NavigationLink(destination: HomeView().navigationBarBackButtonHidden(true), isActive: $viewModel.isLogged) {
+//                    EmptyView()
+//                }
             }
             .padding()
             .navigationBarBackButtonHidden(true)
@@ -76,6 +76,6 @@ struct Login: View {
             .alert(viewModel.errorMessage, isPresented: $viewModel.showError) {
                 Button("OK", role: .cancel) {}
             }
-        }
+        
     }
 }

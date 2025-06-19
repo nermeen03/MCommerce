@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var coordinator: BrandsCoordinator
-    
+    //@EnvironmentObject var coordinator: BrandsCoordinator
+
     init() {
         if UserDefaultsManager.shared.isLoggedIn() {
             print("User ID: \(UserDefaultsManager.shared.getUserId() ?? "No ID")")
@@ -17,12 +17,10 @@ struct ContentView: View {
         //            UserDefaultsManager.shared.saveUserId("")
         //            UserDefaultsManager.shared.setLoggedIn(false)
     }
-    
-    
+
     var body: some View {
         if UserDefaultsManager.shared.isLoggedIn() {
             MainTabView()
-                    .environmentObject(coordinator)
          } else {
             WelcomeScreen()
          }

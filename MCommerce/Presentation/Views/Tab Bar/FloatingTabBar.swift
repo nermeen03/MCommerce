@@ -65,4 +65,4 @@ struct FloatingTabBar: View {
 
 struct SearchView: View { var body: some View { Color.yellow.ignoresSafeArea().overlay(Text("Search")) } }
 struct CartView: View { var body: some View { Color.blue.ignoresSafeArea().overlay(Text("Cart")) } }
-struct ProfileView: View { var body: some View { Color.green.ignoresSafeArea().overlay(Text("Profile")) } }
+//struct ProfileView: View { var body: some View { Color.green.ignoresSafeArea().overlay(Text("Profile")) } }

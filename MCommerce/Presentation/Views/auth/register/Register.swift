@@ -2,9 +2,9 @@ import SwiftUI
 
 struct Register: View {
     @StateObject private var viewModel = DIContainer.shared.resolveRegisterViewModel()
-    
+    @EnvironmentObject var coordinator: AppCoordinator
+
     var body: some View {
-        NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
                     Text("Create Account").font(.title2).bold()
@@ -50,7 +50,6 @@ struct Register: View {
                     CustomButton(text: "Continue with Google", textColor: .black, backgroundColor: .white, verticalOffset: 0, imageExist: true) {}
 
                     // Sign In Link
-                    NavigationLink(destination: Login()) {
                         HStack {
                             Text("Already have an account?")
                                 .font(.callout)
@@ -62,12 +61,14 @@ struct Register: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.vertical, 16)
-                    }
+                        .onTapGesture {
+                            coordinator.navigate(to: .login)
+                        }
 
-                    // ✅ This NavigationLink is triggered by ViewModel
-                    NavigationLink(destination: HomeView().navigationBarBackButtonHidden(true), isActive: $viewModel.isRegistered) {
-                        EmptyView()
-                    }
+//                    // ✅ This NavigationLink is triggered by ViewModel
+//                    NavigationLink(destination: HomeView().navigationBarBackButtonHidden(true), isActive: $viewModel.isRegistered) {
+//                        EmptyView()
+//                    }
                 }
                 .padding()
             }.alert("Loading... \n Verifying your email.." , isPresented: $viewModel.isLoading){}
@@ -75,6 +76,6 @@ struct Register: View {
             .alert(viewModel.errorMessage, isPresented: $viewModel.showError) {
                 Button("OK", role: .cancel) {}
             }
-        }
+        
     }
 }

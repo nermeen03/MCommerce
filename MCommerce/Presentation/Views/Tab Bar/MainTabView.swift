@@ -10,8 +10,7 @@ import SwiftUI
 struct MainTabView: View {
     @State private var selectedTab: Tab = .home
     @State private var cartBadgeCount: Int = 3
-
-    @EnvironmentObject var coordinator: BrandsCoordinator
+    @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -19,7 +18,6 @@ struct MainTabView: View {
                 switch selectedTab {
                 case .home:
                     HomeView()
-                        .environmentObject(coordinator)
                 case .search:
                     SearchView()
                 case .cart:
@@ -32,6 +30,7 @@ struct MainTabView: View {
         }
     }
 }
+
 
 
 #Preview {

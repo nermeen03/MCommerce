@@ -23,6 +23,8 @@ class RegisterViewModel : ObservableObject {
     @Published var isRegistered: Bool = false
     @Published var errorMessage: String = "Try again \n "
 
+    @EnvironmentObject var coordinator: AppCoordinator
+
    // @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
     private let useCase: RegisterUseCase
     
@@ -131,6 +133,7 @@ class RegisterViewModel : ObservableObject {
                     DispatchQueue.main.async {
                         self.isRegistered = true
                         self.isLoading = false
+                        self.coordinator.navigate(to: .home)
                  
                     }
                 case .failure(let error):

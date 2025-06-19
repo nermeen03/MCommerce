@@ -12,6 +12,7 @@ class UserDefaultsManager {
     
     private let userIdKey = "USER_ID"
     private let isLoggedInKey = "IS_LOGGED_IN"
+    private let currencyKey = "CURRENCY"
     
     private init() {}
     
@@ -29,7 +30,13 @@ class UserDefaultsManager {
         UserDefaults.standard.removeObject(forKey: userIdKey)
     }
     
-
+    func saveCurrency(_ currency: String) {
+        UserDefaults.standard.set(currency, forKey: currencyKey)
+    }
+    
+    func getCurrency() -> String? {
+        UserDefaults.standard.string(forKey: currencyKey)
+    }
     
     func setLoggedIn(_ loggedIn: Bool) {
         UserDefaults.standard.set(loggedIn, forKey: isLoggedInKey)
@@ -42,5 +49,10 @@ class UserDefaultsManager {
     func logout() {
         clearUserId()
         setLoggedIn(false)
+    }
+    func clearAll() {
+        UserDefaults.standard.removeObject(forKey: userIdKey)
+        UserDefaults.standard.removeObject(forKey: isLoggedInKey)
+        UserDefaults.standard.removeObject(forKey: currencyKey)
     }
 }

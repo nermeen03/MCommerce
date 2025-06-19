@@ -22,6 +22,8 @@ class RegisterViewModel : ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isRegistered: Bool = false
     @Published var errorMessage: String = "Try again \n "
+//    @Published var isLogged : Bool = false
+
 
     @EnvironmentObject var coordinator: AppCoordinator
 
@@ -134,7 +136,7 @@ class RegisterViewModel : ObservableObject {
                     DispatchQueue.main.async {
                         self.isRegistered = true
                         self.isLoading = false
-                        self.coordinator.navigate(to: .home)
+//                        self.coordinator.navigate(to: .home)
                  
                     }
                 case .failure(let error):

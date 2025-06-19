@@ -36,6 +36,9 @@ struct Register: View {
                     // Sign Up Button
                     CustomButton(text: "Sign Up", textColor: .white, backgroundColor: .deepPurple, verticalOffset: 0) {
                         viewModel.register()
+                        if viewModel.isRegistered{
+                            coordinator.navigate(to: .home)
+                        }
                     }
                     .padding(.top, 24)
 

@@ -30,9 +30,9 @@ struct WishListView: View {
                 }
             }
             .padding()
-            if favProductsList.isEmpty {
-                Text("No WishList Found").frame(alignment: .center)
-            } else {
+//            if favProductsList.isEmpty {
+//                Text("No WishList Found").frame(alignment: .center)
+//            } else {
                 LazyVGrid(columns: columns) {
                     ForEach(favProductsList.prefix(4)) { product in
                         VStack(alignment: .leading, spacing: 8) {
@@ -65,7 +65,7 @@ struct WishListView: View {
                         .padding()
                     }
                 }
-            }
+//            }
         }
     }
 }

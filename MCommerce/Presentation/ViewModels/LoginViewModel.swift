@@ -70,7 +70,7 @@ class LoginViewModel : ObservableObject {
                                 self.isLogged = true
                                 self.isLoading = false
                            //     self.isLoggedIn = true
-                                self.coordinator.navigate(to: .home)
+//                                self.coordinator.navigate(to: .home)
                             }
                         
                         case .failure(let error):

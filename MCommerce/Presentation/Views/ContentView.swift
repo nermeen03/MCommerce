@@ -8,17 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+    //@EnvironmentObject var coordinator: BrandsCoordinator
+
+    init() {
+        if UserDefaultsManager.shared.isLoggedIn() {
+            print("User ID: \(UserDefaultsManager.shared.getUserId() ?? "No ID")")
         }
-        .padding()
+        //            UserDefaultsManager.shared.saveUserId("")
+        //            UserDefaultsManager.shared.setLoggedIn(false)
     }
+
+    var body: some View {
+        if UserDefaultsManager.shared.isLoggedIn() {
+            MainTabView()
+         } else {
+            WelcomeScreen()
+         }
+    }    
 }
 
 #Preview {
     ContentView()
 }
+
+
+
+

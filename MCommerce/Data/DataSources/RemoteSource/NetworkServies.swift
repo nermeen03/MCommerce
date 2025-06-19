@@ -12,7 +12,7 @@ enum HTTPMethod: String {
     case GET, POST, PUT, DELETE
     
     var afMethod: Alamofire.HTTPMethod {
-        return Alamofire.HTTPMethod(rawValue: self.rawValue) ?? .get
+        return Alamofire.HTTPMethod(rawValue: self.rawValue)
     }
 }
 
@@ -21,6 +21,8 @@ enum NetworkError: Error {
     case requestFailed(Error)
     case invalidResponse
     case decodingError(Error)
+    case custom(message: String)
+
 }
 
 final class NetworkService {
@@ -32,7 +34,8 @@ final class NetworkService {
         url: String,
         method: HTTPMethod = .POST,
         headers: [String: String] = [:],
-        query: String,
+        parameters: [String: Any]? = nil,
+        graphQLQuery: String? = nil,
         variables: [String: Any]? = nil,
         responseType: T.Type,
         completion: @escaping (Result<T, NetworkError>) -> Void
@@ -42,9 +45,16 @@ final class NetworkService {
             return
         }
 
-        var body: [String: Any] = ["query": query]
-        if let variables = variables {
-            body["variables"] = variables
+        var body: [String: Any]?
+        
+        if let graphQLQuery = graphQLQuery {
+            body = ["query": graphQLQuery]
+            if let variables = variables {
+                body?["variables"] = variables
+            }
+        } else if let parameters = parameters {
+            body = parameters
+
         }
 
         var updatedHeaders = headers
@@ -62,6 +72,13 @@ final class NetworkService {
             headers: afHeaders
         )
         .validate()
+        .responseData { response in
+            if let data = response.data,
+               let jsonString = String(data: data, encoding: .utf8) {
+                print("RAW RESPONSE: \(jsonString)")
+            }
+        }
+
         .responseDecodable(of: T.self) { response in
             switch response.result {
             case .success(let decoded):

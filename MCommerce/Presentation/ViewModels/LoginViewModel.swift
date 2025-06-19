@@ -61,9 +61,10 @@ class LoginViewModel : ObservableObject {
                     print("Login Success \(data.accessToken)")
                     self.useCase.getUserId(accessToken: data.accessToken) { result in
                         switch result {
-                        case .success(let customer):
-                            print("User ID: \(customer.id)")
-                            UserDefaultsManager.shared.saveUserId(customer.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
+                        case .success(let user):
+                            print("User ID: \(user.id)")
+                            UserDefaultsManager.shared.saveUserId(user.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
+                            UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)
                             UserDefaultsManager.shared.setLoggedIn(true)
                             DispatchQueue.main.async {
                                 self.isLogged = true

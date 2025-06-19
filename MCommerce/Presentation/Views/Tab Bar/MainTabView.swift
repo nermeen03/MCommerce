@@ -22,6 +22,8 @@ struct MainTabView: View {
                     CategoriesView()
                 case .cart:
                     CartView()
+                case .favorites:
+                    Text("Favorites")
                 case .profile:
                     ProfileView()
                 }

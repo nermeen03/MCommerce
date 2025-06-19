@@ -6,9 +6,35 @@
 //
 
 import Foundation
-
 final class BrandDetailsViewModel: ObservableObject {
-    @Published var products: [BrandProduct] = []
+    
+    @Published var products: [BrandProduct] = [] {
+        didSet {
+            selectedMaxPrice = self.maxPrice
+            filterProducts()
+           
+        }
+    }
+    var minPrice: Double {
+        products.compactMap { Double($0.price) }.min() ?? 0.0
+    }
+    var maxPrice: Double {
+        products.compactMap { Double($0.price) }.max() ?? 300
+    }
+    @Published var selectedMaxPrice: Double = 0.0 {
+        didSet {
+            filterProducts()
+        }
+    }
+
+    @Published var filteredProducts: [BrandProduct] = []
+
+    @Published var searchText: String = "" {
+        didSet {
+            filterProducts()
+        }
+    }
+
     private let repository: BrandDetailsRepositoryProtocol
 
     init(repository: BrandDetailsRepositoryProtocol) {
@@ -27,4 +53,32 @@ final class BrandDetailsViewModel: ObservableObject {
             }
         }
     }
+
+    func filterProducts() {
+        guard !searchText.isEmpty else {
+            filteredProducts = products.filter{ $0.price < selectedMaxPrice
+            }
+            return
+        }
+
+        filteredProducts = products.filter { product in
+            let title = product.title
+            let cleanedTitle: String
+            if let range = title.range(of: "|") {
+                let trimmed = title[range.upperBound...]
+                cleanedTitle = trimmed.trimmingCharacters(in: .whitespaces)
+            } else {
+                cleanedTitle = title
+            }
+            return cleanedTitle
+                .lowercased()
+                .split(separator: " ") // break into words
+                .contains { word in
+                    word.starts(with: searchText.lowercased())
+                }
+        }.filter { $0.price < selectedMaxPrice
+        }
+
+    }
 }
+

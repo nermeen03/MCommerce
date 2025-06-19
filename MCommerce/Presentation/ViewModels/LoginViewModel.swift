@@ -23,7 +23,7 @@ class LoginViewModel : ObservableObject {
     @Published var showError: Bool = false
     @Published var isLoading: Bool = false
     @Published var isLogged: Bool = false
-    
+    @Published var errorMessage: String = "Try again \n "
     private let useCase : LoginUseCase
     init(useCase : LoginUseCase){
         self.useCase = useCase
@@ -86,15 +86,21 @@ class LoginViewModel : ObservableObject {
                   
                 case .failure(let error):
                     print("Login Error \(error)")
-                    DispatchQueue.main.async {
+                    switch error {
+                    case .custom(message: let message):
+                        DispatchQueue.main.async {
+                            self.isLogged = false
+                            self.isLoading = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                self.errorMessage = message + "\n Try again"
+                                self.showError = true
+                               }
+                            
+                        }
                        
-                        self.isLoading = false
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                               self.showError = true
-                           }
-                        self.isLogged = false
-                    }
+                    default:
+                        break
+                     }
                 }
             }
         }

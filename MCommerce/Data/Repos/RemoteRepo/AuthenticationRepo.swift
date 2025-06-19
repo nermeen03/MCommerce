@@ -1,11 +1,5 @@
-//
-//  AuthenticationRepo.swift
-//  MCommerce
-//
-//  Created by Jailan Medhat on 17/06/2025.
-//
-import Foundation
 
+import Foundation
 
 class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
     func getUserId(accessToken: String, completion: @escaping (Result<Customer, NetworkError>) -> Void) {
@@ -38,12 +32,34 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
         )
     }
     
-//    let remoteService : RemoteServicesProtocol
-//    
-//    init(remoteService: RemoteServicesProtocol) {
-//        self.remoteService = remoteService
-//    }
+    var emailCheckTimer: Timer?
+    var remainingChecks = 4
     func register(user: User, completion: @escaping (Result<Customer, NetworkError>) -> Void) {
+      FireBaseAuthHelper.shared.registerWithFirebase(email: user.email, password: user.password)
+        remainingChecks = 4
+        emailCheckTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
+            FireBaseAuthHelper.shared.checkEmailVerificationStatus { isVerified in
+                if isVerified {
+                    self.emailCheckTimer?.invalidate()
+                    self.emailCheckTimer = nil
+                    self.registerToShopify(user: user, completion: completion)
+                } else {
+                    self.remainingChecks -= 1
+                 
+                    
+                    if self.remainingChecks <= 0 {
+                        self.emailCheckTimer?.invalidate()
+                        self.emailCheckTimer = nil
+                      
+                        completion(.failure(.custom(message: "Email was not verified")))
+                    }
+                }
+            }
+        }
+        
+        
+    }
+    func registerToShopify(user: User, completion: @escaping (Result<Customer, NetworkError>) -> Void) {
         let createCustomerMutation = """
         mutation customerCreate($input: CustomerCreateInput!) {
           customerCreate(input: $input) {
@@ -89,18 +105,18 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
                             }
                         }
                     }else{
-                        completion(.failure(NetworkError.invalidResponse))
+                        completion(.failure(NetworkError.custom(message: response.data.customerCreate?.customerUserErrors.first?.message ?? "Error")))
                        
                     }
-                    
-                   // print("✅ Customer created: \(response.data.customerCreate.customer?.email ?? "No Email")")
+                
                 case .failure(let error):
-                    completion(.failure(error))
-                  //  print("❌ Customer creation failed: \(error)")
+                    completion(.failure(.custom(message: error.localizedDescription)))
+                
                 }
             }
         )
     }
+    
     
     func sendInvite(for customerID: String, completion: @escaping (Result<Void, NetworkError>) -> Void) {
 
@@ -161,12 +177,12 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
                             completion(.success(response.data.customerAccessTokenCreate.customerAccessToken!))
                         }
                         else{
-                            completion(.failure(NetworkError.invalidResponse))
+                            completion(.failure(NetworkError.custom(message: response.data.customerAccessTokenCreate.userErrors.first?.message ?? "Wrong Credentials")))
                         }
                       
 
                     case .failure(let error):
-                        completion(.failure(error))
+                        completion(.failure(NetworkError.custom(message: error.localizedDescription)))
                 
                     }
                 }

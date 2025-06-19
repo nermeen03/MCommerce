@@ -4,7 +4,7 @@
 //
 //  Created by abram on 18/06/2025.
 //
-struct BrandProduct: Identifiable {
+struct BrandProduct: Identifiable , Equatable {
     let id: String
     let title: String
     let description: String

@@ -13,7 +13,57 @@ import FirebaseFirestore
 
 class AddressViewModel : ObservableObject{
     @Published var addressesList: [AddressInfo] = []
+    
     let firestoreUserId = UserDefaultsManager.shared.getUserId()!.replacingOccurrences(of: "/", with: "_")
+    
+    func validateAllFields(name:String, phoneNumber:String, address1:String, address2:String, zip:String) -> String? {
+        if let error = validateName(name: name) { return error }
+        if let error = validatePhone(phoneNumber: phoneNumber) { return error }
+        if let error = validateAddress1(address1: address1) { return error }
+        if let error = validateAddress1(address1: address2) { return error }
+        if let error = validateZip(zipCode: zip) { return error }
+        
+        return nil
+    }
+
+    
+    func validateName(name:String) -> String? {
+        if name.trimmingCharacters(in: .whitespaces).isEmpty {
+            return "Name is required."
+        }
+        return nil
+    }
+
+    func validatePhone(phoneNumber:String) -> String? {
+        let trimmed = phoneNumber.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty {
+            return "Phone number is required."
+        }
+        if !isValidPhone(trimmed) {
+            return "Invalid phone number format."
+        }
+        return nil
+    }
+
+    func validateAddress1(address1:String) -> String? {
+        if address1.trimmingCharacters(in: .whitespaces).isEmpty {
+            return "address is required."
+        }
+        return nil
+    }
+
+    func validateZip(zipCode:String) -> String? {
+        if zipCode.trimmingCharacters(in: .whitespaces).isEmpty {
+            return "ZIP code is required."
+        }
+        return nil
+    }
+
+    private func isValidPhone(_ phone: String) -> Bool {
+        let regex = "^[0-9+()\\s-]{6,15}$"
+        return phone.range(of: regex, options: .regularExpression) != nil
+    }
+
 
     func saveToFireStore(address : AddressInfo){
         let db = Firestore.firestore()

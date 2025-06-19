@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddressDetailView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
     @State var address: AddressInfo
 
     var body: some View {
@@ -28,7 +29,7 @@ struct AddressDetailView: View {
                 Spacer()
                 
                 Button {
-                    print("Edit tapped for \(address.id)")
+                    coordinator.navigate(to: .addressForm(address: address))
                 } label: {
                     Text("Edit")
                         .font(.caption)

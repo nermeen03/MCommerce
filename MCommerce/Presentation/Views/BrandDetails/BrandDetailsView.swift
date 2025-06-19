@@ -10,7 +10,7 @@ import SwiftUI
 struct BrandDetailsView: View {
     let brand: Brand
     @StateObject var viewModel: BrandDetailsViewModel
-    @EnvironmentObject var coordinator: BrandsCoordinator
+    @EnvironmentObject var coordinator: AppCoordinator
     @State private var isFilterExpanded = false
    
     var body: some View {
@@ -35,7 +35,7 @@ struct BrandDetailsView: View {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(viewModel.filteredProducts) { product in
                         BrandProductCard(product: product) .onTapGesture {
-                            coordinator.navigateToProductInfo(withId: product.id)
+                            coordinator.navigate(to: .productInfo(product: product.id))
                         }
                     }
                 }

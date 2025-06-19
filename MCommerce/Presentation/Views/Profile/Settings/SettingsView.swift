@@ -13,6 +13,8 @@ struct SettingsView: View {
     @StateObject var defaultViewModel = DefaultAddressViewModel()
     @EnvironmentObject var currencyViewModel: CurrencyViewModel
     @State private var showCurrencyPicker = false
+    @State private var showAboutUs = false
+    @State private var showContactUs = false
     
     var body: some View {
         VStack(alignment: .center, content: {
@@ -64,12 +66,26 @@ struct SettingsView: View {
                 .background(Color(.systemBackground))
                 .cornerRadius(12)
                 .shadow(radius: 4)
+                .onTapGesture {
+                    showContactUs = true
+                }
+                .sheet(isPresented: $showContactUs) {
+                    ContactUsView()
+                        .presentationDetents([.fraction(0.5)])
+                }
             Text("About Us").padding()
                 .font(.title2)
                 .frame(width: UIScreen.main.bounds.width - 40)
                 .background(Color(.systemBackground))
                 .cornerRadius(12)
                 .shadow(radius: 4)
+                .onTapGesture {
+                    showAboutUs = true
+                }
+                .sheet(isPresented: $showAboutUs) {
+                    AboutUsView()
+                        .presentationDetents([.fraction(0.6)])
+                }
             Spacer()
             Button(action: {
                 UserDefaultsManager.shared.clearAll()

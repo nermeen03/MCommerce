@@ -10,12 +10,12 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     let loggedIn = UserDefaultsManager.shared.isLoggedIn()
+    @Environment(\.modelContext) var modelContext
 
     var body: some View {
         VStack{
             HStack {
                 Spacer()
-
                 Text("Profile")
                     .font(.largeTitle)
                     .bold()
@@ -51,9 +51,10 @@ struct ProfileView: View {
                             Text("Welcome \(userName)").font(.title)
                         })
                         OrdersView(viewModel: OrderViewModel())
-                        WishListView().modelContainer(for: FavProductInfo.self)
-                    }
+                        WishListView().modelContainer(for: FavProductInfo.self)                    }
                 }
+
+
             }else{
                 VStack(alignment: .center, content: {
                     Button(action: {

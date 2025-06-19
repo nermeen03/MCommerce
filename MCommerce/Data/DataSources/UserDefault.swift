@@ -11,6 +11,7 @@ class UserDefaultsManager {
     static let shared = UserDefaultsManager()
     
     private let userIdKey = "USER_ID"
+    private let userNameKey = "USER_Name"
     private let isLoggedInKey = "IS_LOGGED_IN"
     private let currencyKey = "CURRENCY"
     
@@ -24,6 +25,14 @@ class UserDefaultsManager {
     
     func getUserId() -> String? {
         UserDefaults.standard.string(forKey: userIdKey)
+    }
+    
+    func saveUserName(_ name: String) {
+        UserDefaults.standard.set(name, forKey: userNameKey)
+    }
+    
+    func getUserName() -> String? {
+        UserDefaults.standard.string(forKey: userNameKey)
     }
     
     func clearUserId() {

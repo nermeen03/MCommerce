@@ -130,6 +130,7 @@ class RegisterViewModel : ObservableObject {
                     print("User registered successfully: \(user.id)")
                     UserDefaultsManager.shared.saveUserId(user.id)
                     UserDefaultsManager.shared.setLoggedIn(true)
+                    UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)
                     DispatchQueue.main.async {
                         self.isRegistered = true
                         self.isLoading = false

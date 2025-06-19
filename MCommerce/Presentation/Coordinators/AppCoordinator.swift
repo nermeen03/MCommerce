@@ -17,7 +17,7 @@ class AppCoordinator: ObservableObject {
         case logout
         case home
         case productInfo(product : String)
-        case brand
+        case brand(brand:Brand)
         case profile
         case favorites
         case cart
@@ -25,8 +25,6 @@ class AppCoordinator: ObservableObject {
         case addressList
         case addressForm(address: AddressInfo?)
         case addressDetails(address: AddressInfo)
-        case aboutUs
-        case contactUs
         
     }
     

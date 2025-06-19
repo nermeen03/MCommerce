@@ -8,7 +8,7 @@ import SwiftUI
 
 struct BrandsView: View {
     @StateObject var viewModel: BrandViewModel
-    @EnvironmentObject var coordinator: BrandsCoordinator
+    @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -25,7 +25,7 @@ struct BrandsView: View {
                     ForEach(viewModel.brands) { brand in
                         ProductCard(title: brand.title, imageUrl: brand.imageUrl)
                             .onTapGesture {
-                                coordinator.navigateToProducts(for: brand)
+                                coordinator.navigate(to: .brand(brand: brand))
                             }
                     }
                 }

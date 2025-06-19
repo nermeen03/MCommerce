@@ -14,3 +14,8 @@ struct OrderDataResponse : Identifiable{
     var createdAt : String
     var productImage : String?
 }
+struct ValidationError: Identifiable {
+    var id = UUID()
+    var message: String
+}
+

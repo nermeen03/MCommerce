@@ -47,9 +47,11 @@ struct MCommerceApp: App {
                             case .addressList:
                                 AddressListView(viewModel:AddressViewModel())
                             case .addressForm(let address):
-                                AddressFormView(viewModel: AddressViewModel(), address: address)
+                                AddressFormView(defaultAddress: DefaultAddressViewModel(), viewModel: AddressViewModel(), address: address)
                             case .addressDetails(let address):
                                 AddressDetailView(address: address)
+                            case .brand(let brand):
+                                BrandDetailsView(brand: brand, viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository()))
                             default:
                                 CartView()
                             }

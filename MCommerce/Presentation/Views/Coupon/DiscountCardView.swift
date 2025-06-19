@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DiscountCardView: View {
     let discount: DiscountData
-
+    @State private var showToast = false
     var body: some View {
         let random = Int.random(in: 1...5)
         
@@ -36,14 +36,20 @@ struct DiscountCardView: View {
                                     .textSelection(.enabled)
                                 Button(action: {
                                     UIPasteboard.general.string = code
+                                    showToast = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                            showToast = false
+                                        }
+                                    
                                 }) {
                                     Image(systemName: "square.on.square").foregroundColor(.white)
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
+                                
                             }
                         }
                     }
-                }.padding()
+                }.padding().toast(isShowing: $showToast, message: "Copied!")
                 VStack(alignment: .leading, spacing: 6) {
                     Text(discount.title)
                         .font(.title)

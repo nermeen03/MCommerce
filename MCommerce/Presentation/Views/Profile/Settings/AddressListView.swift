@@ -11,6 +11,9 @@ struct AddressListView: View {
     
     @StateObject var viewModel : AddressViewModel
     @EnvironmentObject var coordinator: AppCoordinator
+    @State private var showAlert = false
+    @State private var indexSetToDelete: IndexSet?
+
     var body: some View {
         List {
             ForEach(viewModel.addressesList) { address in
@@ -47,11 +50,25 @@ struct AddressListView: View {
                     }
                 }
                 .padding(.vertical, 7)
-            }.onDelete(perform: viewModel.deleteAddress)
+            }.onDelete { indexSet in
+                indexSetToDelete = indexSet
+                showAlert = true
+            }
 
         }
         .onAppear {
             viewModel.getFromFireStore()
+        }
+        .alert("Are you sure you want to delete this address?", isPresented: $showAlert) {
+            Button("Delete", role: .destructive) {
+                if let indexSet = indexSetToDelete {
+                    viewModel.deleteAddress(at: indexSet)
+                    indexSetToDelete = nil
+                }
+            }
+            Button("Cancel", role: .cancel) {
+                indexSetToDelete = nil
+            }
         }
 
         Spacer()

@@ -14,6 +14,7 @@ struct AddressFormView: View {
     @State private var phoneNumber: String = ""
     @State private var name: String = ""
     @State private var isDefault: Bool = false
+    @State private var showToast: Bool = false
     
     @State private var showMap = false
     @State private var selectedCoordinate: CLLocationCoordinate2D?
@@ -22,8 +23,12 @@ struct AddressFormView: View {
     @State var cities = ["Cairo", "Alexandria", "Giza", "Aswan"]
     var types = ["Home","Work","School","Other"]
     
+    @StateObject var defaultAddress: DefaultAddressViewModel
+    
     var viewModel: AddressViewModel
     var address : AddressInfo?
+    
+    @State var errorMessage : ValidationError?
 
     
     var body: some View {
@@ -121,37 +126,56 @@ struct AddressFormView: View {
                 
                 Toggle("Set as Default Address", isOn: $isDefault)
                     .padding(.vertical)
-                
-                Button("Save Address") {
-                    let id = self.address != nil ? self.address!.id : UUID().uuidString
+                    .disabled(defaultAddress.defaultAddress != nil && address?.defaultAddress != true)
+                    .opacity(defaultAddress.defaultAddress != nil && address?.defaultAddress != true ? 0.5 : 1)
+                    .onTapGesture {
+                        if (defaultAddress.defaultAddress != nil && address?.defaultAddress != true ){
+                            showToast = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                showToast = false
+                            }
+                        }
+                    }.toast(isShowing: $showToast, message: "There is already a default address set.")
 
-                    let address = AddressInfo(
-                        defaultAddress: isDefault,
-                        id: id,
-                        address1: address1,
-                        address2: address2,
-                        city: selectedCity,
-                        zip: zipCode,
-                        country: selectedCountry,
-                        phone: phoneNumber,
-                        name: name,
-                        type: selectedType
-                    )
-                    
-                    print(address)
-                    if self.address == nil{
-                        viewModel.saveToFireStore(address: address)
+                Button("Save Address") {
+                    let result = viewModel.validateAllFields(name: name, phoneNumber: phoneNumber, address1: address1,address2: address2, zip: zipCode)
+                    if result == nil{
+                        let id = self.address != nil ? self.address!.id : UUID().uuidString
+                        
+                        let address = AddressInfo(
+                            defaultAddress: isDefault,
+                            id: id,
+                            address1: address1,
+                            address2: address2,
+                            city: selectedCity,
+                            zip: zipCode,
+                            country: selectedCountry,
+                            phone: phoneNumber,
+                            name: name,
+                            type: selectedType
+                        )
+                        
+                        print(address)
+                        if self.address == nil{
+                            viewModel.saveToFireStore(address: address)
+                        }else{
+                            viewModel.updateFireStore(address: address)
+                        }
+                        coordinator.goBack()
                     }else{
-                        viewModel.updateFireStore(address: address)
+                        errorMessage = ValidationError(message: result ?? "")
                     }
-                    coordinator.goBack()
                     
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(.top)
+                .alert(item: $errorMessage) { msg in
+                    Alert(title: Text("Validation Error"), message: Text(msg.message), dismissButton: .default(Text("OK")))
+                }
             }
             .padding()
             .onAppear {
+                defaultAddress.getDefaultAddress()
                 if let address = address {
                     name = address.name ?? ""
                     phoneNumber = address.phone ?? ""
@@ -171,5 +195,5 @@ struct AddressFormView: View {
 
 
 #Preview {
-    AddressFormView(viewModel:AddressViewModel())
+    AddressFormView(defaultAddress: DefaultAddressViewModel(), viewModel:AddressViewModel())
 }

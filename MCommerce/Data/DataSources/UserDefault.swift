@@ -13,6 +13,10 @@ class UserDefaultsManager {
     private let userIdKey = "USER_ID"
     private let isLoggedInKey = "IS_LOGGED_IN"
     private let currencyKey = "CURRENCY"
+    private let emailKey = "EMAIL"
+    private let firstNameKey = "FIRST_NAME"
+    private let lastNameKey = "LAST_NAME"
+    private let phoneNumberKey = "PHONE_NUMBER"
     
     private init() {}
     
@@ -49,6 +53,22 @@ class UserDefaultsManager {
     func logout() {
         clearUserId()
         setLoggedIn(false)
+    }
+    func saveData(email : String , firstName : String , lastName : String){
+        UserDefaults.standard.set(email, forKey: emailKey)
+        UserDefaults.standard.set(firstName, forKey: firstNameKey)
+        UserDefaults.standard.set(lastName, forKey: lastNameKey)
+       
+        
+    }
+  func getEmail() -> String? {
+        UserDefaults.standard.string(forKey: emailKey)
+    }
+    func getFirstName() -> String? {
+        UserDefaults.standard.string(forKey: firstNameKey)
+    }
+    func getLastName() -> String? {
+        UserDefaults.standard.string(forKey: lastNameKey)
     }
     func clearAll() {
         UserDefaults.standard.removeObject(forKey: userIdKey)

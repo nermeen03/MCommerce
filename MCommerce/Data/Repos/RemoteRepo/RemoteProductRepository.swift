@@ -28,20 +28,20 @@ final class RemoteProductRepository: ProductRepositoryProtocol {
         api.callQueryApi(query: query, completion: { (result: Result<CollectionResponse, NetworkError>) in
             switch result {
             case .success(let response):
-                let allowedHandles = ["women", "men", "kid", "sale"] // ensure these match actual Shopify handles
+                let allowedHandles = ["women", "men", "kid", "sale"]
 
                 let collections = response.data.collections.edges
                     .map { $0.node }
                     .filter { allowedHandles.contains($0.handle.lowercased()) }
                     .map { node in
-                        print("✅ Found collection — Title: \(node.title), Handle: \(node.handle)")
+                        print(" Found collection — Title: \(node.title), Handle: \(node.handle)")
                         return CollectionDTO(title: node.title, handle: node.handle)
                     }
 
                 completion(.success(collections))
 
             case .failure(let error):
-                print("❌ Failed to fetch collections:", error)
+                print(" Failed to fetch collections:", error)
                 completion(.failure(error))
             }
         })
@@ -52,7 +52,7 @@ final class RemoteProductRepository: ProductRepositoryProtocol {
         {
           collectionByHandle(handle: "\(handle)") {
             title
-            products(first: 10) {
+            products(first: 20) {
               edges {
                 node {
                   id
@@ -89,7 +89,7 @@ final class RemoteProductRepository: ProductRepositoryProtocol {
             switch result {
             case .success(let response):
                 guard let collection = response.data.collectionByHandle else {
-                    print("⚠️ collectionByHandle is null for handle: \(handle)")
+                    print(" collectionByHandle is null for handle: \(handle)")
                     completion(.success([]))
                     return
                 }
@@ -108,7 +108,7 @@ final class RemoteProductRepository: ProductRepositoryProtocol {
                 }
                 completion(.success(products))
             case .failure(let error):
-                print("❌ Failed to fetch products:", error)
+                print(" Failed to fetch products:", error)
                 completion(.failure(error))
             }
         })

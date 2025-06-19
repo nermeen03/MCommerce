@@ -10,4 +10,3 @@ struct CollectionDTO: Identifiable {
     let title: String
     let handle: String
 }
-

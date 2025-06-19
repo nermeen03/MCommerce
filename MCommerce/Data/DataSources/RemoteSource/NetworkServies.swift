@@ -21,6 +21,8 @@ enum NetworkError: Error {
     case requestFailed(Error)
     case invalidResponse
     case decodingError(Error)
+    case custom(message: String)
+    
 }
 
 final class NetworkService {

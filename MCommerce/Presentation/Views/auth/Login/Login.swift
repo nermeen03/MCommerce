@@ -36,7 +36,7 @@ struct Login: View {
                     }
                 ).onChange(of: viewModel.isLogged) { isLogged in
                     if isLogged {
-                        coordinator.navigate(to: .home)
+                        coordinator.navigate(to: .main)
                     }
                 }
                 

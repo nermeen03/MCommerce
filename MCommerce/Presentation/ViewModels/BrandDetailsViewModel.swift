@@ -72,9 +72,9 @@ final class BrandDetailsViewModel: ObservableObject {
             }
             return cleanedTitle
                 .lowercased()
-                .split(separator: " ") // break into words
+                .split(separator: " ")
                 .contains { word in
-                    word.starts(with: searchText.lowercased())
+                    word.starts(with: searchText.lowercased().trimmingCharacters(in: .whitespaces))
                 }
         }.filter { $0.price < selectedMaxPrice
         }

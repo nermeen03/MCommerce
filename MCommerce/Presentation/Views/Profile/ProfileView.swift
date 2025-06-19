@@ -7,48 +7,80 @@
 
 import SwiftUI
 
-struct ProfileLoggedView: View {
-    
+struct ProfileView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
     let loggedIn = UserDefaultsManager.shared.isLoggedIn()
 
     var body: some View {
-        if loggedIn {
-            ScrollView{
-                VStack {
-                    let userName = UserDefaultsManager.shared.getUserName() ?? "User"
-                    HStack(alignment: .center, content: {
-                        Text("Welcome \(userName)").font(.title)
-                    })
-                    OrdersView(viewModel: OrderViewModel())
-                    WishListView().modelContainer(for: FavProductInfo.self)
-                }
-            }
-        }else{
-            VStack(alignment: .center, content: {
+        VStack{
+            HStack {
+                Spacer()
+
+                Text("Profile")
+                    .font(.largeTitle)
+                    .bold()
+                Spacer()
                 Button(action: {
+                    print("Favorite")
                 }) {
-                    Text("Login")
-                        .font(.system(size: 40, weight: .heavy))
-                        .frame(width: UIScreen.main.bounds.width - 200, height: 90)
-                        .foregroundColor(.yellow)
-                        .background(Color.blue)
-                        .cornerRadius(12)
+                    Image(systemName: "cart")
+                        .padding(8)
+                        .background(Color.gray.opacity(0.2))
+                        .clipShape(Circle())
                 }
 
                 Button(action: {
+                    coordinator.navigate(to: .setting)
                 }) {
-                    Text("Register")
-                        .font(.system(size: 40, weight: .heavy))
-                        .frame(width: UIScreen.main.bounds.width - 200, height: 90)
-                        .foregroundColor(.blue)
-                        .background(Color.yellow)
-                        .cornerRadius(12)
+                    Image(systemName: "gear")
+                        .padding(8)
+                        .background(Color.gray.opacity(0.2))
+                        .clipShape(Circle())
                 }
-            })
+            }
+            .padding(.horizontal)
+
+            Divider()
+                .padding(.bottom, 8)
+            if loggedIn {
+                ScrollView{
+                    VStack {
+//                        let userName = UserDefaultsManager.shared.getUserName() ?? "User"
+                        let userName = "User"
+                        HStack(alignment: .center, content: {
+                            Text("Welcome \(userName)").font(.title)
+                        })
+                        OrdersView(viewModel: OrderViewModel())
+                        WishListView().modelContainer(for: FavProductInfo.self)
+                    }
+                }
+            }else{
+                VStack(alignment: .center, content: {
+                    Button(action: {
+                    }) {
+                        Text("Login")
+                            .font(.system(size: 40, weight: .heavy))
+                            .frame(width: UIScreen.main.bounds.width - 200, height: 90)
+                            .foregroundColor(.yellow)
+                            .background(Color.blue)
+                            .cornerRadius(12)
+                    }
+                    
+                    Button(action: {
+                    }) {
+                        Text("Register")
+                            .font(.system(size: 40, weight: .heavy))
+                            .frame(width: UIScreen.main.bounds.width - 200, height: 90)
+                            .foregroundColor(.blue)
+                            .background(Color.yellow)
+                            .cornerRadius(12)
+                    }
+                })
+            }
         }
     }
 }
 
 #Preview {
-    ProfileLoggedView()
+    ProfileView()
 }

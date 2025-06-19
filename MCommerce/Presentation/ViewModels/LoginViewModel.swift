@@ -5,13 +5,6 @@
 //  Created by Jailan Medhat on 17/06/2025.
 //
 
-
-//
-//  RegisterViewModel.swift
-//  MCommerce
-//
-//  Created by Jailan Medhat on 17/06/2025.
-//
 import Foundation
 import SwiftUI
 
@@ -24,6 +17,8 @@ class LoginViewModel : ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isLogged: Bool = false
     @Published var errorMessage: String = "Try again \n "
+    @EnvironmentObject var coordinator: AppCoordinator
+
     private let useCase : LoginUseCase
     init(useCase : LoginUseCase){
         self.useCase = useCase
@@ -74,6 +69,7 @@ class LoginViewModel : ObservableObject {
                                 self.isLogged = true
                                 self.isLoading = false
                            //     self.isLoggedIn = true
+                                self.coordinator.navigate(to: .home)
                             }
                         
                         case .failure(let error):
@@ -108,10 +104,5 @@ class LoginViewModel : ObservableObject {
     
     
 }
-//
-//  LoginViewModel.swift
-//  MCommerce
-//
-//  Created by Jailan Medhat on 17/06/2025.
-//
+
 

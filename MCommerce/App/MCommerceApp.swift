@@ -19,41 +19,46 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct MCommerceApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var coordinator = BrandsCoordinator()
+    @StateObject var coordinator = AppCoordinator()
+    @StateObject var currencyViewModel = CurrencyViewModel()
     
     var body: some Scene {
         WindowGroup {
-            if UserDefaultsManager.shared.isLoggedIn() {
-                NavigationStack(path: $coordinator.path) {
+            NavigationStack(path: $coordinator.path) {
                  ContentView()
-                        .navigationDestination(for: Brand.self) { brand in
-                            BrandDetailsView(
-                                brand: brand,
-                                viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
-                            )
-                        }
-                        .navigationDestination(for: String.self) { productId in
-                            ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: productId))
+                        .navigationDestination(for: AppCoordinator.Destination.self) { destination in
+                            switch destination {
+                            case .welcome:
+                                WelcomeScreen()
+                            case .login:
+                                Login()
+                            case .signup:
+                                Register()
+                            case .logout:
+                                WelcomeScreen()
+                            case .home:
+                                HomeView()
+                            case .productInfo(let product):
+                                ProductInfo(viewModel: ProductViewModel(useCase: ProductInfoUseCase(repository: ProductInfoRepo()), id: product))
+                            case .profile:
+                                ProfileView()
+                            case .setting:
+                                SettingsView()
+                            case .addressList:
+                                AddressListView(viewModel:AddressViewModel())
+                            case .addressForm(let address):
+                                AddressFormView(viewModel: AddressViewModel(), address: address)
+                            case .addressDetails(let address):
+                                AddressDetailView(address: address)
+                            default:
+                                CartView()
+                            }
                         }
                 }
                 .environmentObject(coordinator)
-            }else{
-                NavigationStack(path: $coordinator.path) {
-                    WelcomeScreen()
-                        .navigationDestination(for: Brand.self) { brand in
-                            BrandDetailsView(
-                                brand: brand,
-                                viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
-                            )
-                        }
-                        .navigationDestination(for: String.self) { productId in
-                            ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: productId))
-                        }
-                }
-                .environmentObject(coordinator)
-            }
+                .environmentObject(currencyViewModel)
         }
-        }
+        
     }
     
 }

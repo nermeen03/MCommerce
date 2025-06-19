@@ -12,6 +12,7 @@ class UserDefaultsManager {
     
     private let userIdKey = "USER_ID"
     private let isLoggedInKey = "IS_LOGGED_IN"
+    private let userNameKey = "USER_NAME"
     
     private init() {}
     
@@ -29,7 +30,13 @@ class UserDefaultsManager {
         UserDefaults.standard.removeObject(forKey: userIdKey)
     }
     
-
+    func saveUserName(_ name: String) {
+        UserDefaults.standard.set(name, forKey: userNameKey)
+    }
+    
+    func getUserName() -> String? {
+        UserDefaults.standard.string(forKey: userNameKey)
+    }
     
     func setLoggedIn(_ loggedIn: Bool) {
         UserDefaults.standard.set(loggedIn, forKey: isLoggedInKey)

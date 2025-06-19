@@ -25,7 +25,7 @@ struct MainTabView: View {
                 case .cart:
                     CartView()
                 case .profile:
-                    ProfileView()
+                    CartView()
                 }
             }
             FloatingTabBar(selectedTab: $selectedTab, cartBadgeCount: cartBadgeCount)

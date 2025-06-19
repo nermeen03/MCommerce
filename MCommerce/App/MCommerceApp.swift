@@ -10,29 +10,31 @@ import SwiftUI
 
 @main
 struct MCommerceApp: App {
-
+    
     @StateObject var coordinator = BrandsCoordinator()
-
+    
     var body: some Scene {
         WindowGroup {
-            if UserDefaultsManager.shared.isLoggedIn() {
-                NavigationStack(path: $coordinator.path) {
-                 ContentView()
-                        .navigationDestination(for: Brand.self) { brand in
-                            BrandDetailsView(
-                                brand: brand,
-                                viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
-                            )
-                        }
-                        .navigationDestination(for: String.self) { productId in
-                            ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: productId))
-                        }
-                }
-                .environmentObject(coordinator) // ✅ wrap the entire NavigationStack
-            }else{
-                WelcomeScreen()
-            }
-        }
+            AddressFormView(viewModel: SettingsViewModel())
+                            //            if UserDefaultsManager.shared.isLoggedIn() {
+                            //                NavigationStack(path: $coordinator.path) {
+                            //                 ContentView()
+                            //                        .navigationDestination(for: Brand.self) { brand in
+                            //                            BrandDetailsView(
+                            //                                brand: brand,
+                            //                                viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository())
+                            //                            )
+                            //                        }
+                            //                        .navigationDestination(for: String.self) { productId in
+                            //                            ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: productId))
+                            //                        }
+                            //                }
+                            //                .environmentObject(coordinator) // ✅ wrap the entire NavigationStack
+                            //            }else{
+                            //                WelcomeScreen()
+                            //            }
+                            //        }
         }
     }
-
+    
+}

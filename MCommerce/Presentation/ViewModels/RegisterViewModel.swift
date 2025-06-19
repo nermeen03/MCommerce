@@ -41,7 +41,7 @@ class RegisterViewModel : ObservableObject {
         }
 
 
-       else if !predicate.evaluate(with: value) {
+        else if !predicate.evaluate(with: value.trimmingCharacters(in: .whitespaces)) {
             emailError = "Invalid email format"
         }
         else{
@@ -58,7 +58,7 @@ class RegisterViewModel : ObservableObject {
      
      
         
-      else  if digitsOnly.count < 11 {
+      else  if digitsOnly.count != 11 {
          
             phoneNumberError = "Phone number must be  11 digits"
         }
@@ -104,7 +104,6 @@ class RegisterViewModel : ObservableObject {
         else {
             confirmPasswordError = ""
         }
-        
       
     }
     
@@ -149,7 +148,6 @@ class RegisterViewModel : ObservableObject {
                                self.errorMessage = message + "\n Try again"
                                self.showError = true
                               }
-                           
                        }
                       
                    default:

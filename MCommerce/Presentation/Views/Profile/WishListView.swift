@@ -62,19 +62,6 @@ struct WishListView: View {
                 }
             }
         }
-//        .onAppear {
-//            for i in 0..<10 {
-//                let product = FavProductInfo(
-//                    userId: "userId",
-//                    productId: UUID().uuidString, // ✅ Make each one unique
-//                    productImage: "",
-//                    productName: "TestProduct \(i)"
-//                )
-//                modelContext.insert(product)
-//            }
-//            
-//            try? modelContext.save() // ✅ MUST SAVE
-//        }
     }
 }
 

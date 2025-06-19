@@ -39,36 +39,36 @@ struct OrdersView: View {
                     ForEach(viewModel.ordersArray.prefix(showAllOrders ? viewModel.ordersArray.count : 2)) { order in
                         VStack(alignment: .leading, spacing: 8) {
                             
-                            if let urlString = order.productImage, let url = URL(string: urlString) {
-                                AsyncImage(url: url) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        ProgressView()
-                                            .frame(width: 120, height: 120)
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 120, height: 120)
-                                            .clipped()
-                                            .cornerRadius(8)
-                                    case .failure:
-                                        Color.gray.frame(width: 120, height: 120)
-                                    @unknown default:
-                                        EmptyView()
-                                    }
+                        if let urlString = order.productImage, let url = URL(string: urlString) {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                        .frame(width: 120, height: 120)
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 120, height: 120)
+                                        .clipped()
+                                        .cornerRadius(8)
+                                case .failure:
+                                    Color.gray.frame(width: 120, height: 120)
+                                @unknown default:
+                                    EmptyView()
                                 }
-                            } else {
-                                Color.gray.frame(width: 120, height: 120)
-                                    .cornerRadius(8)
                             }
-                            
-                            Text("\(order.price) \(order.currencyCode)")
-                                .font(.headline)
-                            
-                            Text(order.createdAt)
-                                .font(.caption)
-                                .foregroundColor(.gray)
+                        } else {
+                            Color.gray.frame(width: 120, height: 120)
+                                .cornerRadius(8)
+                        }
+                        
+                        Text("\(order.price) \(order.currencyCode)")
+                            .font(.headline)
+                        
+                        Text(order.createdAt)
+                            .font(.caption)
+                            .foregroundColor(.gray)
                         }
                         .frame(width: 150)
                         .padding()

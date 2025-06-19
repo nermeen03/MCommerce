@@ -10,9 +10,9 @@ import SwiftUI
 struct WelcomeScreen: View {
     @State private var goToLogin = false
     @State private var goToRegister = false
+    @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
-        NavigationView {
             ZStack {
                 Image("welcomeBg")
                     .resizable()
@@ -22,8 +22,8 @@ struct WelcomeScreen: View {
                 VStack {
                     Spacer()
 
-                    NavigationLink(destination: Login(), isActive: $goToLogin) { EmptyView() }
-                    NavigationLink(destination: Register(), isActive: $goToRegister) { EmptyView() }
+//                    NavigationLink(destination: Login(), isActive: $goToLogin) { EmptyView() }
+//                    NavigationLink(destination: Register(), isActive: $goToRegister) { EmptyView() }
 
                     CustomButton(
                         text: "Login",
@@ -31,7 +31,7 @@ struct WelcomeScreen: View {
                         backgroundColor: .white,
                         verticalOffset: -20,
                         action: {
-                            goToLogin = true
+                            coordinator.navigate(to: .login)
                         }
                     )
 
@@ -41,7 +41,7 @@ struct WelcomeScreen: View {
                         backgroundColor: .white,
                         verticalOffset: -20,
                         action: {
-                            goToRegister = true
+                            coordinator.navigate(to: .signup)
                         }
                     )
 
@@ -58,7 +58,7 @@ struct WelcomeScreen: View {
             }
             .navigationBarHidden(true)
         }
-    }
+    
 }
 
 

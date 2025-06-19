@@ -15,6 +15,7 @@ class AppCoordinator: ObservableObject {
         case login
         case signup
         case logout
+        case main
         case home
         case productInfo(product : String)
         case brand(brand:Brand)

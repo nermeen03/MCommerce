@@ -11,6 +11,7 @@
       }
     },
     {
+
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire.git",

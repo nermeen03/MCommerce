@@ -32,8 +32,13 @@ struct Login: View {
                     textColor: .white,
                     backgroundColor: .deepPurple,
                     verticalOffset: 0,
-                    action: { viewModel.login() }
-                )
+                    action: { viewModel.login()
+                    }
+                ).onChange(of: viewModel.isLogged) { isLogged in
+                    if isLogged {
+                        coordinator.navigate(to: .home)
+                    }
+                }
                 
                 Text("Or using another method")
                     .font(.callout)

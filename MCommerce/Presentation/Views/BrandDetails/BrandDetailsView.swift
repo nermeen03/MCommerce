@@ -15,9 +15,24 @@ struct BrandDetailsView: View {
    
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 0) {
               
-                SearchBarView(searchText: $viewModel.searchText)
+                HStack{  SearchBarView(searchText: $viewModel.searchText)
+                    Button(action: {
+                        withAnimation {
+                            isFilterExpanded.toggle()
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "line.horizontal.3.decrease.circle")
+                                .foregroundColor(.deepPurple)
+//                            Text("Filter")
+//                                .foregroundColor(.orangeCustom)
+                          
+                            Image(systemName: isFilterExpanded ? "chevron.up" : "chevron.down")
+                                .foregroundColor(.deepPurple)
+                        }
+                    }}
                 FilterBarView(
                               isExpanded: $isFilterExpanded,
                               selectedMaxPrice: $viewModel.selectedMaxPrice,
@@ -48,3 +63,7 @@ struct BrandDetailsView: View {
     }
 }
 
+
+#Preview {
+    BrandDetailsView(brand: Brand(id: "", title: "", imageUrl: ""), viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository()))
+}

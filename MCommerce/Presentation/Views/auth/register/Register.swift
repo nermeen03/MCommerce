@@ -38,12 +38,12 @@ struct Register: View {
                         text: "Sign Up",
                         textColor: .white,
                         backgroundColor: .deepPurple,
-                        verticalOffset: 0,
+                        verticalOffset: 16,
                         action: { viewModel.register()
                         }
                     ).onChange(of: viewModel.isRegistered) { isRegistered in
                         if isRegistered {
-                            coordinator.navigate(to: .home)
+                            coordinator.navigate(to: .main)
                         }
                     }
 

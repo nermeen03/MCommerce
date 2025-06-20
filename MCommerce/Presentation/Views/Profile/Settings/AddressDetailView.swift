@@ -9,16 +9,12 @@ import SwiftUI
 
 struct AddressDetailView: View {
     @EnvironmentObject var coordinator: AppCoordinator
-    @State var address: AddressInfo
+    @ObservedObject var addressViewModel: AddressDetailViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .center) {
-                Text(address.name ?? "No Name")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                if address.defaultAddress {
+                if addressViewModel.address!.defaultAddress {
                     Text("Default")
                         .font(.caption)
                         .padding(4)
@@ -29,7 +25,7 @@ struct AddressDetailView: View {
                 Spacer()
                 
                 Button {
-                    coordinator.navigate(to: .addressForm(address: address))
+                    coordinator.navigate(to: .addressForm(address: addressViewModel))
                 } label: {
                     Text("Edit")
                         .font(.caption)
@@ -39,58 +35,39 @@ struct AddressDetailView: View {
                 }
             }
             Divider()
+            Text(addressViewModel.address!.address1)
+            Text(addressViewModel.address!.address2)
             
-            VStack(alignment: .leading, spacing: 4) {
-                if let address1 = address.address1, !address1.isEmpty {
-                    Text(address1)
-                }
-                if let address2 = address.address2, !address2.isEmpty {
-                    Text(address2)
-                }
-                
-                if let city = address.city {
-                    Text(city)
-                }
-                
-                if let zip = address.zip, !zip.isEmpty {
-                    Text("ZIP: \(zip)")
-                }
-                
-                if let country = address.country {
-                    Text(country)
-                }
-                
-                if let phone = address.phone, !phone.isEmpty {
-                    Text("📞 \(phone)")
-                }
-                
-                Text("Type: \(address.type)")
-                    .foregroundColor(.secondary)
-                    .font(.footnote)
-            }
+            Text(addressViewModel.address!.city)
+            
+            Text(addressViewModel.address!.country)
+            
+            Text("📞 \(addressViewModel.address!.phone)")
+            
+            Text("Type: \(addressViewModel.address!.type)")
+                .foregroundColor(.secondary)
+                .font(.footnote)
         }
         .padding()
         .background(.ultraThinMaterial)
         .cornerRadius(16)
         .shadow(radius: 4)
         .padding(.horizontal)
-        
+    
     }
 }
 
 
-#Preview {
-    AddressDetailView(address: AddressInfo(
-        defaultAddress: true,
-        id: UUID().uuidString,
-        address1: "123 Main St",
-        address2: "Apartment 4B",
-        city: "Cairo",
-        zip: "12345",
-        country: "Egypt",
-        phone: "0123456789",
-        name: "Home",
-        type: "Home"
-    ))
-}
+//#Preview {
+//    AddressDetailView(address: AddressInfo(
+//        defaultAddress: true,
+//        id: UUID().uuidString,
+//        address1: "123 Main St",
+//        address2: "Apartment 4B",
+//        city: "Cairo",
+//        country: "Egypt",
+//        phone: "0123456789",
+//        type: "Home"
+//    ))
+//}
 

@@ -32,11 +32,11 @@ struct ProductInfo: View {
                         
                         HStack {
                             if let price = viewModel.price {
-                                Text("$")
+                                Text("$".symbol)
                                     .font(.title2)
                                     .foregroundColor(.orangeCustom)
                                     .bold()
-                                Text(price)
+                                Text(price.currency)
                                     .font(.title2)
                                     .foregroundColor(.orangeCustom)
                                     .bold()

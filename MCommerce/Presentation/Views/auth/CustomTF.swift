@@ -20,7 +20,7 @@ struct CustomTF: View {
     
   
     var body: some View {
-        Text(title).font(.title3).fontWeight(.medium).padding(.top, 16)
+        Text(title).font(.title3).fontWeight(.medium).padding(.top, 8)
         
         HStack{
             Image(imagePrefix).resizable().frame(width: 24, height: 24).padding(.top , 8).padding(.trailing, 8)
@@ -44,7 +44,7 @@ struct CustomTF: View {
                         .foregroundColor(.gray) 
                 }.padding(.trailing,16).padding(.top,8)
             }
-        }.padding([.bottom , .leading],16).padding(.top,8)
+        }.padding([.bottom , .leading],16).padding(.top,6)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.gray, lineWidth: 0.3))
         if !errorMessage.isEmpty{
             Text(errorMessage).font(.footnote).foregroundColor(.red).padding(.leading)

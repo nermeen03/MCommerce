@@ -11,28 +11,14 @@ struct FilterBarView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-          
-            Button(action: {
-                withAnimation {
-                    isExpanded.toggle()
-                }
-            }) {
-                HStack {
-                    Image(systemName: "line.horizontal.3.decrease.circle")
-                        .foregroundColor(.orangeCustom)
-                    Text("Filter")
-                        .foregroundColor(.orangeCustom)
-                    Spacer()
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .foregroundColor(.orangeCustom)
-                }
-            }
 
          
             if isExpanded {
                 HStack(alignment: .top, spacing: 10) {
                   let safeMin = minPrice == maxPrice ? minPrice-1 : minPrice
-
+                    Text(" \(Int(safeMin)) ")
+                        .font(.caption)
+                        .padding(.top,7)
                     Slider(value: $selectedMaxPrice, in: safeMin...maxPrice, step: 1)
                         .accentColor(.deepPurple)
 
@@ -40,14 +26,12 @@ struct FilterBarView: View {
                         .font(.caption)
                         .padding(.top,7)
 
-                    Button("Apply Filter") {
-                        onFilterChanged()
-                    }
+                   Text("By Price")
                     .font(.callout)
-                    .foregroundColor(.orangeCustom)
+                    .foregroundColor(.deepPurple)
                     .padding(.top, 4)
                 }
-                .padding()
+                .padding(.horizontal).padding(.vertical,8)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
             }

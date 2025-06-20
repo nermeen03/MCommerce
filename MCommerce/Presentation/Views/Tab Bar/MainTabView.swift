@@ -29,7 +29,7 @@ struct MainTabView: View {
                 }
             }
             FloatingTabBar(selectedTab: $selectedTab, cartBadgeCount: cartBadgeCount)
-        }
+        }.navigationBarHidden( true)
     }
 }
 

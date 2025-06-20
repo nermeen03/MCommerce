@@ -54,6 +54,7 @@ final class BrandDetailsRepository: BrandDetailsRepositoryProtocol {
                         imageUrl: imageUrl,
                         price: price,
                         brandName: node.vendor
+                        , productType: ""
                     )
                 }
                 completion(.success(products))

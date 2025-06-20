@@ -16,13 +16,13 @@ struct FilterBarView: View {
             if isExpanded {
                 HStack(alignment: .top, spacing: 10) {
                   let safeMin = minPrice == maxPrice ? minPrice-1 : minPrice
-                    Text(" \(Int(safeMin)) ")
+                    Text(" \(Int(safeMin)) " + "$".symbol)
                         .font(.caption)
                         .padding(.top,7)
                     Slider(value: $selectedMaxPrice, in: safeMin...maxPrice, step: 1)
                         .accentColor(.deepPurple)
 
-                    Text(" \(Int(selectedMaxPrice)) ")
+                    Text(" \(Int(selectedMaxPrice)) " + "$".symbol)
                         .font(.caption)
                         .padding(.top,7)
 

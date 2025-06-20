@@ -43,15 +43,15 @@ struct MCommerceApp: App {
                             case .productInfo(let product):
                                 ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: product))
                             case .profile:
-                                ProfileView()
+                                DIContainer.shared.resolveProfile()
                             case .setting:
-                                SettingsView()
+                                DIContainer.shared.resolveSettings()
                             case .addressList:
-                                AddressListView(viewModel:AddressViewModel())
+                                DIContainer.shared.resolveAddressListView()
                             case .addressForm(let address):
-                                AddressFormView(defaultAddress: DefaultAddressViewModel(), viewModel: AddressViewModel(), address: address)
+                                DIContainer.shared.resolveAddressFormView(addressDetailViewModel: address)
                             case .addressDetails(let address):
-                                AddressDetailView(address: address)
+                                AddressDetailView(addressViewModel: address)
                             case .brand(let brand):
                                 BrandDetailsView(brand: brand, viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository()))
                             default:

@@ -42,7 +42,7 @@ struct CategoriesView: View {
                         }
                         .padding(.top, 40)
                     }
-                    .frame(width: 80)
+                    .frame(width: 100)
                     .background(Color(UIColor.systemGray6))
 
                     // Main Content
@@ -84,7 +84,7 @@ struct CategoriesView: View {
                         ScrollView {
                             LazyVGrid(columns: [GridItem(), GridItem()], spacing: 20) {
                                 ForEach(viewModel.filteredProducts) { product in
-                                    BrandProductCard(product: product)
+                                    BrandProductCard(product: product,compact: true)
                                 }
                             }
                             .padding()

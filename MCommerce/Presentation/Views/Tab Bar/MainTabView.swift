@@ -23,7 +23,7 @@ struct MainTabView: View {
                 case .cart:
                     CartView()
                 case .favorites:
-                    FavView()
+                    FavView()  .id(DIContainer.shared.resolveFavoritesViewModel().refreshToken)
                 case .profile:
                     ProfileView()
                 }

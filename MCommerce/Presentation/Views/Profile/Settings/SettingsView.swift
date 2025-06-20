@@ -10,11 +10,12 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var coordinator: AppCoordinator
 
-    @StateObject var defaultViewModel = DefaultAddressViewModel()
-    @EnvironmentObject var currencyViewModel: CurrencyViewModel
     @State private var showCurrencyPicker = false
     @State private var showAboutUs = false
     @State private var showContactUs = false
+    
+    @ObservedObject var settingsViewModel : SettingsViewModel
+    @EnvironmentObject var currencyViewModel: CurrencyViewModel
     
     var body: some View {
         VStack(alignment: .center, content: {
@@ -22,12 +23,12 @@ struct SettingsView: View {
             HStack{
                 Text("Address").font(.title2)
                 Spacer()
-                if let address = defaultViewModel.defaultAddress {
+                if let address = settingsViewModel.defaultAddress {
                     VStack(alignment: .trailing, spacing: 2) {
-                        Text(address.name ?? "No Name")
+                        Text("\(address.address1), \(address.city)")
                             .font(.subheadline)
                             .foregroundColor(.primary)
-                        Text("\(address.address1 ?? ""), \(address.city ?? "")")
+                        Text(address.type)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -92,19 +93,18 @@ struct SettingsView: View {
                 coordinator.navigate(to: .welcome)
             }) {
                 Text("Logout")
-                    .font(.system(size: 30, weight: .heavy))
-                    .frame(width: UIScreen.main.bounds.width - 200, height: 70)
-                    .foregroundColor(.yellow)
-                    .background(Color.blue)
+                    .font(.system(size: 22, weight: .bold))
+                    .frame(maxWidth: .infinity, minHeight: 60)
+                    .background(Color.red)
+                    .foregroundColor(.white)
                     .cornerRadius(12)
             }.padding()
         }).onAppear{
-            defaultViewModel.getDefaultAddress()
-            currencyViewModel.reloadCurrency()
+            settingsViewModel.reloadAllSettings()
         }
     }
 }
 
-#Preview {
-    SettingsView()
-}
+//#Preview {
+//    SettingsView()
+//}

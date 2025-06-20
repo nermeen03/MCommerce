@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OrdersView: View {
-    @ObservedObject var viewModel: OrderViewModel
+    @ObservedObject var viewModel: ProfileOrderViewModel
     @State private var showAllOrders = false
     
     var body: some View {
@@ -16,27 +16,23 @@ struct OrdersView: View {
         HStack{
             Text("My Orders").font(.headline)
             Spacer()
-            if viewModel.ordersArray.count > 2 {
+            if viewModel.orders.count > 2 {
                 Button(showAllOrders ? "Show Less" : "Read More") {
                     showAllOrders.toggle()
                 }
                 .font(.headline)
             }
-        }.padding().onAppear{
-            if viewModel.ordersArray.isEmpty{
-                viewModel.getOrders()
-            }
-        }
+        }.padding()
         
         if viewModel.isLoading {
             ProgressView()
-        } else if viewModel.ordersArray.isEmpty {
+        } else if viewModel.orders.isEmpty {
             Text("No Orders Found")
         } else {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 18) {
-                    ForEach(viewModel.ordersArray.prefix(showAllOrders ? viewModel.ordersArray.count : 2)) { order in
+                    ForEach(viewModel.orders.prefix(showAllOrders ? viewModel.orders.count : 2)) { order in
                         VStack(alignment: .leading, spacing: 8) {
                             
                         if let urlString = order.productImage, let url = URL(string: urlString) {
@@ -66,7 +62,7 @@ struct OrdersView: View {
                         Text("\(order.price) \(order.currencyCode)")
                             .font(.headline)
                         
-                        Text(order.createdAt)
+                        Text(order.date)
                             .font(.caption)
                             .foregroundColor(.gray)
                         }
@@ -82,6 +78,3 @@ struct OrdersView: View {
     }
 }
 
-#Preview {
-    OrdersView(viewModel: OrderViewModel())
-}

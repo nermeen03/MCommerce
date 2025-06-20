@@ -538,3 +538,75 @@
 //
 //            try? modelContext.save() // ✅ MUST SAVE
 //        }
+
+//    func getOrderTest(completion : @escaping (Result<OrdersResponse, NetworkError>) -> Void){
+//        let query = """
+//            {
+//              orders(first: 5) {
+//                edges {
+//                  node {
+//                    id
+//                    name
+//                    createdAt
+//                    totalPriceSet {
+//                      shopMoney {
+//                        amount
+//                        currencyCode
+//                      }
+//                    }
+//                    lineItems(first: 5) {
+//                      edges {
+//                        node {
+//                          title
+//                          quantity
+//                          variant {
+//                            id
+//                            image {
+//                              originalSrc
+//                            }
+//                            product {
+//                              images(first: 1) {
+//                                edges {
+//                                  node {
+//                                    originalSrc
+//                                    altText
+//                                  }
+//                                }
+//                              }
+//                            }
+//                          }
+//                        }
+//                      }
+//                    }
+//                  }
+//                }
+//              }
+//            }
+//
+//            """
+//        ApiCalling().callQueryApi(query: query,useToken: true ,completion: {(result : Result<OrdersResponse, NetworkError>) in
+//            completion(result)
+//        })
+//    }
+
+//class OrderViewModel : ObservableObject{
+//
+//
+//    func getOrders(){
+//        ordersArray.removeAll()
+//
+//        OrderRepo().getOrderTest { result in
+//            DispatchQueue.main.async {
+//                self.isLoading = false
+//                switch result {
+//                case .success(let response):
+//
+//                    self.ordersArray =
+//                case .failure(let error):
+//                    print("Error fetching orders: \(error)")
+//                }
+//            }
+//        }
+//    }
+//}
+

@@ -16,3 +16,10 @@ protocol AuthenticationRepositoryProtocol {
 protocol ProductInfoRepositoryProtocol {
     func getProductById(productId: String, completion: @escaping (Result<ProductDto, NetworkError>) -> Void)
 }
+protocol ProductFavouriteRepositoryProtocol {
+    func addProductToFavorites(product: FavoriteProduct, completion: @escaping (Result<Void, Error>) -> Void)
+
+    func deleteProductFromFavorites( productId: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func getFavorites(completion: @escaping (Result<[FavoriteProduct], Error>) -> Void)
+    func checkIfProductInFav(id: String, completion: @escaping (Bool) -> Void)
+}

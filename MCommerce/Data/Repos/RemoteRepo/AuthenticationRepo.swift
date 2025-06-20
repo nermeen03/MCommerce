@@ -33,11 +33,11 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
     }
     
     var emailCheckTimer: Timer?
-    var remainingChecks = 24
+    var remainingChecks = 40
     func register(user: User, completion: @escaping (Result<Customer, NetworkError>) -> Void) {
       FireBaseAuthHelper.shared.registerWithFirebase(email: user.email, password: user.password)
-        remainingChecks = 24
-        emailCheckTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { _ in
+        remainingChecks = 40
+        emailCheckTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { _ in
             FireBaseAuthHelper.shared.checkEmailVerificationStatus { isVerified in
                 if isVerified {
                     self.emailCheckTimer?.invalidate()

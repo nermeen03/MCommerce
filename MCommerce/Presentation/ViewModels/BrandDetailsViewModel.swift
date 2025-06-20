@@ -10,7 +10,11 @@ final class BrandDetailsViewModel: ObservableObject {
     
     @Published var products: [BrandProduct] = [] {
         didSet {
+            for product in products {
+                  print("product price: \(product.price)")
+              }
             selectedMaxPrice = self.maxPrice
+            print("max price: \(selectedMaxPrice)")
             filterProducts()
            
         }
@@ -19,7 +23,9 @@ final class BrandDetailsViewModel: ObservableObject {
         products.compactMap { Double($0.price) }.min() ?? 0.0
     }
     var maxPrice: Double {
-        products.compactMap { Double($0.price) }.max() ?? 300
+       
+       return products.compactMap { Double($0.price) }.max() ?? 300
+       
     }
     @Published var selectedMaxPrice: Double = 0.0 {
         didSet {
@@ -55,8 +61,9 @@ final class BrandDetailsViewModel: ObservableObject {
     }
 
     func filterProducts() {
+      
         guard !searchText.isEmpty else {
-            filteredProducts = products.filter{ $0.price < selectedMaxPrice
+            filteredProducts = products.filter{ $0.price <= selectedMaxPrice
             }
             return
         }
@@ -76,7 +83,7 @@ final class BrandDetailsViewModel: ObservableObject {
                 .contains { word in
                     word.starts(with: searchText.lowercased().trimmingCharacters(in: .whitespaces))
                 }
-        }.filter { $0.price < selectedMaxPrice
+        }.filter { $0.price <= selectedMaxPrice 
         }
 
     }

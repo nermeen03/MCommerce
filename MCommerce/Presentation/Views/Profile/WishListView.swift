@@ -9,63 +9,79 @@ import SwiftUI
 import SwiftData
 
 struct WishListView: View {
-    
-    @Query var allFavProducts: [FavProductInfo]
-
-    var favProductsList: [FavProductInfo] {
-        allFavProducts.filter { $0.userId == (UserDefaultsManager.shared.getUserId() ?? "") }
-    }
-    @Environment(\.modelContext) var modelContext
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @ObservedObject var favViewModel: ProfileFavouriteViewModel
 
     var body: some View {
         VStack {
-            HStack {
-                Text("My WishLists")
-                    .font(.headline)
-                Spacer()
-                if favProductsList.count > 4 {
-                    Button("Read More", action: {})
-                        .font(.headline)
-                }
-            }
-            .padding()
-//            if favProductsList.isEmpty {
-//                Text("No WishList Found").frame(alignment: .center)
-//            } else {
-                LazyVGrid(columns: columns) {
-                    ForEach(favProductsList.prefix(4)) { product in
-                        VStack(alignment: .leading, spacing: 8) {
-                            if let urlString = product.productImage, let url = URL(string: urlString) {
-                                AsyncImage(url: url) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        ProgressView()
-                                            .frame(width: 120, height: 120)
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 120, height: 120)
-                                            .clipped()
-                                            .cornerRadius(8)
-                                    case .failure:
-                                        Color.gray.frame(width: 120, height: 120)
-                                    @unknown default:
-                                        EmptyView()
-                                    }
-                                }
-                            } else {
-                                Color.gray.frame(width: 120, height: 120)
-                                    .cornerRadius(8)
-                            }
-                            Text(product.productName)
-                                .font(.headline)
-                        }
-                        .padding()
+            WishListTitle(favViewModel: favViewModel)
+
+            if favViewModel.isLoading {
+                ProgressView()
+                    .padding(.top, 20)
+            } else {
+                if favViewModel.favouriteProducts.isEmpty {
+                    Text("No WishLists")
+                        .padding(.top, 20)
+                } else {
+                    ScrollView {
+                        WishListItemsView(favViewModel: favViewModel)
+                        .padding(.horizontal, 8)
+                        .padding(.bottom, 16)
                     }
                 }
-//            }
+            }
+        }
+    }
+}
+
+struct WishListTitle : View{
+    @ObservedObject var favViewModel: ProfileFavouriteViewModel
+    var body: some View {
+        HStack {
+            Text("My WishLists")
+                .font(.headline)
+            Spacer()
+            if favViewModel.favouriteProducts.count > 4 {
+                Button("Read More", action: {})
+                    .font(.headline)
+            }
+        }
+        .padding()
+    }
+}
+
+struct WishListItemsView: View {
+    @EnvironmentObject var coordinator: AppCoordinator
+    @ObservedObject var favViewModel: ProfileFavouriteViewModel
+    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+
+    var body: some View {
+        LazyVGrid(columns: columns, spacing: 16) {
+            ForEach(favViewModel.favouriteProducts) { product in
+                VStack(alignment: .leading, spacing: 6) {
+                    if let url = URL(string: product.imageUrl) {
+                        ImageView(url: url)
+                        .frame(maxWidth: .infinity)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+
+                    Text(product.title)
+                        .font(.subheadline)
+                        .lineLimit(2)
+                        .truncationMode(.tail)
+                        .foregroundColor(.primary)
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 4)
+                }
+                .frame(width: UIScreen.main.bounds.width / 2 - 24)
+                .background(Color(.systemBackground))
+                .cornerRadius(12)
+                .shadow(radius: 3)
+                .padding(.bottom, 4)
+                .onTapGesture {
+                    coordinator.navigate(to: .productInfo(product: product.productId))
+                }
+            }
         }
     }
 }

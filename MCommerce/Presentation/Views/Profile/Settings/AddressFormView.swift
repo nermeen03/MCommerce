@@ -23,22 +23,16 @@ struct AddressFormView: View {
     @State var cities = ["Cairo", "Alexandria", "Giza", "Aswan"]
     var types = ["Home","Work","School","Other"]
     
-    @StateObject var defaultAddress: DefaultAddressViewModel
+    @ObservedObject var viewModel : AddressFormViewModel
     
-    var viewModel: AddressViewModel
-    var address : AddressInfo?
     
-    @State var errorMessage : ValidationError?
+//    @State var errorMessage : ValidationError?
 
     
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 20) {
                 Spacer()
-                
-                TextField("Name", text: $name)
-                    .textFieldStyle(.roundedBorder)
-                    .font(.title2)
                 
                 TextField("Phone Number", text: $phoneNumber)
                     .keyboardType(.phonePad)
@@ -90,7 +84,20 @@ struct AddressFormView: View {
                 .sheet(isPresented: $showMap) {
                     LocationPickerMap { coordinate in
                         self.selectedCoordinate = coordinate
-                        viewModel.getAddress(for: coordinate) { city, country in
+                        viewModel.getAddressFromMap(for: coordinate){ street, apartment, city, country in
+                            
+                            if let street = street {
+                                address1 = street
+                            }else{
+                                address1 = "Unknown"
+                            }
+                            
+                            if let apartment = apartment {
+                                address2 = apartment
+                            }else{
+                                address2 = "Unknown"
+                            }
+                            
                             if let city = city {
                                 if !cities.contains(city) { cities.append(city) }
                                 selectedCity = city
@@ -111,12 +118,7 @@ struct AddressFormView: View {
                 }
                 
                 Divider().padding(.vertical, 5)
-                
-                TextField("ZIP Code", text: $zipCode)
-                    .keyboardType(.numbersAndPunctuation)
-                    .textFieldStyle(.roundedBorder)
-                    .font(.title2)
-                
+
                 Picker("Type", selection: $selectedType) {
                     ForEach(types, id: \.self) { type in
                         Text(type)
@@ -126,10 +128,10 @@ struct AddressFormView: View {
                 
                 Toggle("Set as Default Address", isOn: $isDefault)
                     .padding(.vertical)
-                    .disabled(defaultAddress.defaultAddress != nil && address?.defaultAddress != true)
-                    .opacity(defaultAddress.defaultAddress != nil && address?.defaultAddress != true ? 0.5 : 1)
+                    .disabled(viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true)
+                    .opacity(viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true ? 0.5 : 1)
                     .onTapGesture {
-                        if (defaultAddress.defaultAddress != nil && address?.defaultAddress != true ){
+                        if (viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true ){
                             showToast = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                 showToast = false
@@ -138,52 +140,47 @@ struct AddressFormView: View {
                     }.toast(isShowing: $showToast, message: "There is already a default address set.")
 
                 Button("Save Address") {
-                    let result = viewModel.validateAllFields(name: name, phoneNumber: phoneNumber, address1: address1,address2: address2, zip: zipCode)
-                    if result == nil{
-                        let id = self.address != nil ? self.address!.id : UUID().uuidString
+                    let validate = viewModel.validateAllFields(phoneNumber: phoneNumber, address1: address1, address2: address2)
+                    if validate == nil{
+                        let id = self.viewModel.addressDetailViewModel != nil ? self.viewModel.addressDetailViewModel?.address!.id : UUID().uuidString
                         
-                        let address = AddressInfo(
+                        let newAddress = AddressInfo(
                             defaultAddress: isDefault,
-                            id: id,
+                            id: id!,
                             address1: address1,
                             address2: address2,
                             city: selectedCity,
-                            zip: zipCode,
                             country: selectedCountry,
                             phone: phoneNumber,
-                            name: name,
                             type: selectedType
                         )
                         
-                        print(address)
-                        if self.address == nil{
-                            viewModel.saveToFireStore(address: address)
-                        }else{
-                            viewModel.updateFireStore(address: address)
+                        if self.viewModel.addressDetailViewModel == nil{
+                            viewModel.saveAddress(address: newAddress)
+                        }
+                        else{
+                            viewModel.addressDetailViewModel?.address = newAddress
+                            viewModel.saveAddress(address: newAddress,update: true)
                         }
                         coordinator.goBack()
-                    }else{
-                        errorMessage = ValidationError(message: result ?? "")
                     }
                     
                 }
                 .buttonStyle(.borderedProminent)
                 .padding(.top)
-                .alert(item: $errorMessage) { msg in
+                .alert(item: $viewModel.errorMessage) { msg in
                     Alert(title: Text("Validation Error"), message: Text(msg.message), dismissButton: .default(Text("OK")))
                 }
             }
             .padding()
             .onAppear {
-                defaultAddress.getDefaultAddress()
-                if let address = address {
-                    name = address.name ?? ""
-                    phoneNumber = address.phone ?? ""
-                    address1 = address.address1 ?? ""
-                    address2 = address.address2 ?? ""
-                    selectedCountry = address.country ?? "Egypt"
-                    selectedCity = address.city ?? "Cairo"
-                    zipCode = address.zip ?? ""
+                viewModel.getDefaultAddress()
+                if let address = viewModel.addressDetailViewModel?.address! {
+                    phoneNumber = address.phone
+                    address1 = address.address1
+                    address2 = address.address2
+                    selectedCountry = address.country
+                    selectedCity = address.city
                     isDefault = address.defaultAddress
                     selectedType = address.type
                 }
@@ -194,6 +191,6 @@ struct AddressFormView: View {
 }
 
 
-#Preview {
-    AddressFormView(defaultAddress: DefaultAddressViewModel(), viewModel:AddressViewModel())
-}
+//#Preview {
+//    AddressFormView(defaultAddress: DefaultAddressViewModel(), viewModel:AddressViewModel())
+//}

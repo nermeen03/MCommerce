@@ -24,8 +24,8 @@ class AppCoordinator: ObservableObject {
         case cart
         case setting
         case addressList
-        case addressForm(address: AddressInfo?)
-        case addressDetails(address: AddressInfo)
+        case addressForm(address: AddressDetailViewModel?)
+        case addressDetails(address: AddressDetailViewModel)
         
     }
     

@@ -39,8 +39,8 @@ struct BrandProductCard: View {
                 .lineLimit(2)
 
             HStack {
-                Text("$\(String(format: "%.2f", product.price))")
-                    .font(.headline)
+                Text("$".symbol + "\(String(format: "%.2f", product.price.currency))")
+                    .font(.subheadline)
                 Spacer()
                 Button {
                     // Handle cart

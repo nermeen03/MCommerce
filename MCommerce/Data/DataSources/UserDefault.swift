@@ -47,8 +47,8 @@ class UserDefaultsManager {
         UserDefaults.standard.set(currency, forKey: currencyKey)
     }
     
-    func getCurrency() -> String? {
-        UserDefaults.standard.string(forKey: currencyKey)
+    func getCurrency() -> String {
+        UserDefaults.standard.string(forKey: currencyKey) ?? "USD"
     }
     
     func setLoggedIn(_ loggedIn: Bool) {

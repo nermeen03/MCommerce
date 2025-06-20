@@ -23,7 +23,7 @@ struct MainTabView: View {
                 case .cart:
                     CartView()
                 case .favorites:
-                    Text("Favorites")
+                    FavView()
                 case .profile:
                     ProfileView()
                 }

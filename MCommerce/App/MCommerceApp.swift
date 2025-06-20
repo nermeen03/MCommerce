@@ -41,7 +41,7 @@ struct MCommerceApp: App {
                             case .main:
                                 MainTabView()
                             case .productInfo(let product):
-                                ProductInfo(viewModel: ProductViewModel(useCase: ProductInfoUseCase(repository: ProductInfoRepo()), id: product))
+                                ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: product))
                             case .profile:
                                 ProfileView()
                             case .setting:

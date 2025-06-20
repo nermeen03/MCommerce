@@ -33,7 +33,17 @@ final class DIContainer {
     func resolveProductInfoViewModel(id: String) -> ProductViewModel {
         let repository = ProductInfoRepo()
         let useCase = ProductInfoUseCase(repository: repository)
-        return ProductViewModel(useCase: useCase, id: id)
+        let addUseseCase = AddFavProdUseCase(repo: ProductFavouriteRepository())
+        let deleteUseseCase = DeleteFavProdUseCase(repo: ProductFavouriteRepository())
+        let checkProductsUseCase = CheckFavouriteProdUseCase(repo: ProductFavouriteRepository())
+        return ProductViewModel(useCase: useCase, id: id,deleteFavUseCase: deleteUseseCase, checkProductsUseCase: checkProductsUseCase ,AddFavUseCase: addUseseCase)
+    }
+    func resolveFavoritesViewModel() -> FavoriteViewModel {
+        var repo = ProductFavouriteRepository()
+        var getprodUseCase = GetFavProdUseCase(repo: repo)
+        var deleteUseCase = DeleteFavProdUseCase(repo: repo)
+        return FavoriteViewModel(getProductsUseCase: getprodUseCase, deleteProductUseCase: deleteUseCase)
+        
     }
 
     func resolveRegisterViewModel() -> RegisterViewModel {

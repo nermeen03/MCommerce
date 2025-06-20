@@ -9,9 +9,10 @@ import SwiftUI
 
 struct BrandProductCard: View {
     let product: BrandProduct
+    var compact: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: compact ? 6 : 10) {
             AsyncImage(url: URL(string: product.imageUrl)) { phase in
                 switch phase {
                 case .success(let image):
@@ -27,15 +28,15 @@ struct BrandProductCard: View {
                     Color.gray.opacity(0.2)
                 }
             }
-            .frame(height: 120)
-            .cornerRadius(12)
+            .frame(height: compact ? 80 : 120)
+            .cornerRadius(compact ? 8 : 12)
 
             Text(product.brandName)
-                .font(.caption)
+                .font(compact ? .caption2 : .caption)
                 .foregroundColor(.gray)
 
             Text(filteredTitle)
-                .font(.headline)
+                .font(compact ? .caption : .headline)
                 .lineLimit(2)
 
             HStack {
@@ -46,15 +47,17 @@ struct BrandProductCard: View {
                     // Handle cart
                 } label: {
                     Image(systemName: "cart")
+                        .font(compact ? .caption : .body)
                 }
             }
         }
-        .padding()
-        .frame(width: 160, height: 300)
+        .padding(compact ? 6 : 12)
+        .frame(width: compact ? 120 : 160, height: compact ? 180 : 300)
         .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
+        .cornerRadius(compact ? 10 : 16)
+        .shadow(color: .gray.opacity(0.1), radius: compact ? 3 : 5, x: 0, y: 2)
     }
+
     private var filteredTitle: String {
         if let range = product.title.range(of: "|") {
             let trimmed = product.title[range.upperBound...]
@@ -63,6 +66,7 @@ struct BrandProductCard: View {
         return product.title
     }
 }
+
 
 //#Preview {
 //    BrandProductCard(product: <#BrandProduct#>)

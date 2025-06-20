@@ -10,6 +10,9 @@ struct SizePicker: View {
         GridItem(.flexible()),
         GridItem(.flexible()),
         GridItem(.flexible())
+        ,GridItem(.flexible()),
+        GridItem(.flexible())
+        ,GridItem(.flexible())
     ]
 
     var body: some View {
@@ -19,12 +22,12 @@ struct SizePicker: View {
                 .padding(.horizontal)
             HStack{
                 Spacer()
-                LazyVGrid(columns: columns, spacing: 12) {
+                LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(viewModel.availableSizes, id: \.self) { size in
                         Text(size)
                             .fontWeight(.medium)
                             .frame(height: 40)
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: 40)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(selectedSize == size ? Color.black : Color.gray.opacity(0.3), lineWidth: 2)

@@ -18,6 +18,7 @@ class UserDefaultsManager {
     private let firstNameKey = "FIRST_NAME"
     private let lastNameKey = "LAST_NAME"
     private let phoneNumberKey = "PHONE_NUMBER"
+    private let cartIdKey = "CART_ID"
     
     private init() {}
     
@@ -70,7 +71,7 @@ class UserDefaultsManager {
        
         
     }
-  func getEmail() -> String? {
+    func getEmail() -> String? {
         UserDefaults.standard.string(forKey: emailKey)
     }
     func getFirstName() -> String? {
@@ -83,5 +84,16 @@ class UserDefaultsManager {
         UserDefaults.standard.removeObject(forKey: userIdKey)
         UserDefaults.standard.removeObject(forKey: isLoggedInKey)
         UserDefaults.standard.removeObject(forKey: currencyKey)
+        UserDefaults.standard.removeObject(forKey: cartIdKey)
+    }
+    
+    func setCartId(_ cartId: String) {
+        UserDefaults.standard.set(cartId, forKey: cartIdKey)
+    }
+    func getCartId() -> String? {
+        UserDefaults.standard.string(forKey: cartIdKey)
+    }
+    func clearCartId() {
+        UserDefaults.standard.removeObject(forKey: cartIdKey)
     }
 }

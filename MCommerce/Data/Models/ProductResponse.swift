@@ -51,5 +51,6 @@ struct VariantEdge: Decodable {
 }
 
 struct VariantNodee: Decodable {
+    let ID : String?
     let price: String
 }

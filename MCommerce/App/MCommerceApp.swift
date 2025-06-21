@@ -41,7 +41,7 @@ struct MCommerceApp: App {
                             case .main:
                                 MainTabView()
                             case .productInfo(let product):
-                                ProductInfo(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: product))
+                                ProductInfoView(viewModel: DIContainer.shared.resolveProductInfoViewModel(id: product))
                             case .profile:
                                 DIContainer.shared.resolveProfile()
                             case .setting:
@@ -54,6 +54,8 @@ struct MCommerceApp: App {
                                 AddressDetailView(addressViewModel: address)
                             case .brand(let brand):
                                 BrandDetailsView(brand: brand, viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository()))
+                            case .cart:
+                                DIContainer.shared.resolveCartView()
                             default:
                                 CartView()
                             }

@@ -610,3 +610,49 @@
 //    }
 //}
 
+//    func createCart(product : ProductDto){
+//        if UserDefaultsManager.shared.getCartId() == nil{
+//            CartRepo().createCart { result in
+//                switch result {
+//                case .success(let cartId):
+//                    UserDefaultsManager.shared.setCartId(cartId)
+//                    print("Created Cart: \(cartId)")
+//
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//        }
+//    }
+
+//    func updateProduct(product : ProductDto, quantity : Int){
+//        guard let cartId = UserDefaultsManager.shared.getCartId() else {return}
+//        let cleanedCartId = cleanCartId(cartId)
+//        guard let productId = product.variants.first?.id else {return}
+//        CartRepo().updateProductQuantity(cartId: cartId, lineId: productId, newQuantity: quantity){ result in
+//            switch result {
+//            case .success(let response):
+//                if let cart = response.data?.cartLinesAdd?.cart {
+//                    print("Cart ID:", cart.id)
+//                    print("Checkout URL:", cart.checkoutUrl)
+//                }
+//            case .failure(let error):
+//                print("Error:", error)
+//            }
+//        }
+//    }
+//    func addProduct(product : ProductDto){
+//        guard let cartId = UserDefaultsManager.shared.getCartId() else {return}
+//        let cleanedCartId = cleanCartId(cartId)
+//        CartRepo().addProductToCart(cartId: cartId, product: product, quantity: 2) { result in
+//            switch result {
+//            case .success(let response):
+//                if let cart = response.data?.cartLinesAdd?.cart {
+//                    print("Cart ID:", cart.id)
+//                    print("Checkout URL:", cart.checkoutUrl)
+//                }
+//            case .failure(let error):
+//                print("Error:", error)
+//            }
+//        }
+//    }

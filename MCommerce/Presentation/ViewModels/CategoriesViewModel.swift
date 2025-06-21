@@ -6,23 +6,49 @@
 //
 
 import SwiftUI
-
 @MainActor
 class CategoriesViewModel: ObservableObject {
     @Published var mainCategories: [CollectionDTO] = []
-    @Published var subCategories: [SubCategory] = []
-    @Published var products: [BrandProduct] = []
-
+    @Published var allProducts: [BrandProduct] = []
+    @Published var productTypes: [String] = []
     @Published var selectedMainCategory: String = ""
-    @Published var selectedSubCategory: String = ""
+    @Published var selectedProductType: String = ""
+    @Published var searchText: String = ""
 
     private let productRepository: ProductRepositoryProtocol
-    private let subCategoryRepository: SubCategoryRepositoryProtocol
 
-    init(productRepository: ProductRepositoryProtocol = DIContainer.shared.productRepository,
-         subCategoryRepository: SubCategoryRepositoryProtocol = RemoteSubCategoryRepository()) {
+    init(productRepository: ProductRepositoryProtocol = DIContainer.shared.productRepository) {
         self.productRepository = productRepository
-        self.subCategoryRepository = subCategoryRepository
+    }
+
+    var displayedProducts: [BrandProduct] {
+        var products = allProducts
+
+        if !selectedProductType.isEmpty {
+            products = products.filter { $0.productType == selectedProductType }
+        }
+
+        if !searchText.trimmingCharacters(in: .whitespaces).isEmpty {
+            let lowerSearch = searchText.lowercased().trimmingCharacters(in: .whitespaces)
+            products = products.filter { product in
+                let title = product.title
+                let cleanedTitle: String
+                if let range = title.range(of: "|") {
+                    cleanedTitle = String(title[range.upperBound...]).trimmingCharacters(in: .whitespaces)
+                } else {
+                    cleanedTitle = title
+                }
+
+                return cleanedTitle
+                    .lowercased()
+                    .split(separator: " ")
+                    .contains { word in
+                        word.starts(with: lowerSearch)
+                    }
+            }
+        }
+
+        return products
     }
 
     func loadMainCategories() {
@@ -31,75 +57,50 @@ class CategoriesViewModel: ObservableObject {
 
             switch result {
             case .success(let collections):
-                let main = collections.filter { !$0.title.contains("|") }
                 DispatchQueue.main.async {
-                    self.mainCategories = main
-                    self.loadSubCategories()
-                    if let menCategory = main.first(where: { $0.title == "Men" }) {
-                        self.didSelectMainCategory(menCategory)
-                    } else if let firstCategory = main.first {
-                        self.didSelectMainCategory(firstCategory)
+                    self.mainCategories = collections
+                    if let men = collections.first(where: { $0.title.lowercased() == "men" }) {
+                        self.didSelectMainCategory(men)
+                    } else if let first = collections.first {
+                        self.didSelectMainCategory(first)
                     }
                 }
-            case .failure(let error):
-                print("Failed to fetch collections: \(error)")
-            }
-        }
-    }
 
-    func loadSubCategories() {
-        subCategoryRepository.fetchSubCategories { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let subs):
-                DispatchQueue.main.async {
-                    self.subCategories = subs
-                }
             case .failure(let error):
-                print("Failed to load subcategories: \(error)")
+                print("Failed to fetch collections:", error)
             }
         }
     }
 
     func didSelectMainCategory(_ category: CollectionDTO) {
         selectedMainCategory = category.title
-        let sub = subCategories.filter { $0.parentCategory == category.title }
+        selectedProductType = ""
+        allProducts = []
+        productTypes = []
 
-        DispatchQueue.main.async {
-            self.selectedSubCategory = ""
-            if sub.isEmpty {
-                self.productRepository.fetchProducts(inCollectionHandle: category.handle) { [weak self] result in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success(let products):
-                        DispatchQueue.main.async {
-                            self.products = products
-                        }
-                    case .failure(let error):
-                        print("Failed to fetch products: \(error)")
-                    }
-                }
-            } else {
-                self.subCategories = sub
-                if let first = sub.first {
-                    self.didSelectSubCategory(first)
+        productRepository.fetchProducts(inCollectionHandle: category.handle) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+
+                switch result {
+                case .success(let products):
+                    self.allProducts = products
+                    self.productTypes = Array(Set(products.map { $0.productType })).sorted()
+                case .failure(let error):
+                    print("Failed to fetch products for \(category.title):", error)
+                    self.allProducts = []
+                    self.productTypes = []
                 }
             }
         }
     }
 
-    func didSelectSubCategory(_ sub: SubCategory) {
-        selectedSubCategory = sub.title
-        productRepository.fetchProducts(inCollectionHandle: sub.handle) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let products):
-                DispatchQueue.main.async {
-                    self.products = products
-                }
-            case .failure(let error):
-                print("Failed to fetch products: \(error)")
-            }
-        }
+    func selectProductType(_ type: String) {
+        selectedProductType = type
+    }
+
+    func resetFilter() {
+        selectedProductType = ""
+        searchText = ""
     }
 }

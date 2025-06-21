@@ -28,7 +28,8 @@ struct FavView: View {
                         }
                     }.onDelete(perform: delete)
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            }.listStyle(.plain)}
+            }.listStyle(.plain)
+        }
         }
     func delete(at offsets : IndexSet){
         for index in offsets {

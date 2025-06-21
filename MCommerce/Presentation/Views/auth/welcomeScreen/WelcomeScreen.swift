@@ -51,7 +51,7 @@ struct WelcomeScreen: View {
                         backgroundColor: .clear,
                         verticalOffset: -20,
                         action: {
-                            // Add skip logic
+                            coordinator.navigate(to: .home)
                         }
                     )
                 }

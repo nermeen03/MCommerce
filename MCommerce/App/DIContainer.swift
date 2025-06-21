@@ -20,7 +20,8 @@ final class DIContainer {
     let defaultAddressUserCase : DefaultAddressUseCase
     let mapAddressUseCase : MapAddressUserCase
     let cartRepo : CartRepo
-//    let addressDetailsViewModel : AddressDetailViewModel
+    
+    //    let addressDetailsViewModel : AddressDetailViewModel
     
     private init() {
         self.discountViewModel = Self.resolveDiscountViewModel()
@@ -30,11 +31,13 @@ final class DIContainer {
         self.defaultAddressUserCase = Self.resolveDefaultAddressUseCase()
         self.mapAddressUseCase = Self.resolveMapAddressUseCase()
         self.cartRepo = Self.resolveCartRepo()
-//        self.addressDetailsViewModel = Self.resolveAddressDetailViewModel()
+        //        self.addressDetailsViewModel = Self.resolveAddressDetailViewModel()
     }
     private static func resolveCartRepo() -> CartRepo {
         return CartRepo()
     }
+    
+    
     private static func resolveDiscountViewModel() -> DiscountViewModel {
         let remoteService = ApiCalling()
         let repository = DiscountRepository(remoteService: remoteService)

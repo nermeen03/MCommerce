@@ -13,7 +13,7 @@ final class BrandDetailsViewModel: ObservableObject {
             for product in products {
                   print("product price: \(product.price)")
               }
-            selectedMaxPrice = self.maxPrice.currency
+            selectedMaxPrice = self.maxPrice
             
             filterProducts()
            

@@ -9,73 +9,107 @@
 import SwiftUI
 
 struct CheckoutView: View {
+    @EnvironmentObject var cartManager: CartManager
     @State private var selectedShippingMethod = "Home delivery"
     @State private var selectedPaymentCard = 0
-    
+    @State private var couponCode: String = ""
+    @State private var isCouponApplied = false
+    @State private var discountPercentage: Double = 0.0
+    @ObservedObject var addressViewModel: AddressViewModel
+    @State private var selectedAddressId: String? = nil
+
+
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
-                    // Product Section
-                    HStack(spacing: 16) {
-                        Image(systemName: "headphones")
-                            .font(.system(size: 40))
-                            .foregroundColor(.black)
-                            .frame(width: 60, height: 60)
-                            .background(Color.gray.opacity(0.1))
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Sony WH-1000XM5")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            
-                            HStack {
-                                Text("$ 4.999")
+
+                    // 🛒 Product List Section
+                    ForEach(cartManager.items) { item in
+                        HStack(spacing: 16) {
+                            Image(systemName: "cart") // Placeholder
+                                .font(.system(size: 40))
+                                .foregroundColor(.black)
+                                .frame(width: 60, height: 60)
+                                .background(Color.gray.opacity(0.1))
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(item.name)
                                     .font(.title2)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.orange)
-                                
-                                Text("Including taxes and duties")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
+                                    .fontWeight(.semibold)
+
+                                HStack {
+                                    Text("$ \(item.price, specifier: "%.2f") x \(item.quantity)")
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.orange)
+
+                                    Text("Including taxes")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
                             }
-                        }
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    
-                    // Shipping Method Section
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Shipping method")
-                            .font(.headline)
-                            .padding(.horizontal)
-                        
-                        HStack(spacing: 12) {
-                            ShippingMethodButton(
-                                title: "Home delivery",
-                                isSelected: selectedShippingMethod == "Home delivery"
-                            ) {
-                                selectedShippingMethod = "Home delivery"
-                            }
-                            
-                            ShippingMethodButton(
-                                title: "Pick up in store",
-                                isSelected: selectedShippingMethod == "Pick up in store"
-                            ) {
-                                selectedShippingMethod = "Pick up in store"
-                            }
+                            Spacer()
                         }
                         .padding(.horizontal)
                     }
-                    
-                    // Payment Method Section
+
+                    // 🚚 Shipping Method Section
+                    VStack(alignment: .leading, spacing: 16) {
+                                        Text("Select a shipping address")
+                                            .font(.headline)
+                                            .padding(.horizontal)
+
+                                        if addressViewModel.isLoading {
+                                            ProgressView()
+                                                .padding()
+                                        } else if addressViewModel.addresses.isEmpty {
+                                            Text("No addresses available.")
+                                                .foregroundColor(.gray)
+                                                .padding(.horizontal)
+                                        } else {
+                                            ForEach(addressViewModel.addresses, id: \.id) { address in
+                                                Button(action: {
+                                                    selectedAddressId = address.id
+                                                }) {
+                                                    VStack(alignment: .leading, spacing: 4) {
+                                                        HStack {
+                                                            Text(address.address1)
+                                                                .font(.subheadline)
+                                                                .fontWeight(.medium)
+                                                            Spacer()
+                                                            if selectedAddressId == address.id {
+                                                                Image(systemName: "checkmark.circle.fill")
+                                                                    .foregroundColor(.green)
+                                                            }
+                                                        }
+
+                                                        Text(address.address2)
+                                                            .font(.caption)
+                                                            .foregroundColor(.gray)
+
+                                                        Text("Phone: \(address.phone)")
+                                                            .font(.caption2)
+                                                            .foregroundColor(.secondary)
+                                                    }
+                                                    .padding()
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 10)
+                                                            .stroke(selectedAddressId == address.id ? Color.blue : Color.gray.opacity(0.3), lineWidth: 1)
+                                                    )
+                                                }
+                                                .padding(.horizontal)
+                                            }
+                                        }
+                                    }
+
+                    // 💳 Payment Method Section
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Select your payment method")
                             .font(.headline)
                             .padding(.horizontal)
-                        
+
                         HStack(spacing: 12) {
                             PaymentCardView(
                                 cardNumber: "**** **** **** 1921",
@@ -89,7 +123,7 @@ struct CheckoutView: View {
                             ) {
                                 selectedPaymentCard = 0
                             }
-                            
+
                             PaymentCardView(
                                 cardNumber: "**** **** **** 5632",
                                 expiryDate: "07/25",
@@ -104,8 +138,8 @@ struct CheckoutView: View {
                             }
                         }
                         .padding(.horizontal)
-                        
-                        // Add New Payment Methods
+
+                        // ➕ Add Payment Option
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Image(systemName: "plus")
@@ -115,7 +149,7 @@ struct CheckoutView: View {
                                 Spacer()
                             }
                             .padding(.horizontal)
-                            
+
                             HStack(spacing: 12) {
                                 PaymentOptionButton(title: "Apple Pay", icon: "apple.logo")
                                 PaymentOptionButton(title: "PayPal", icon: "p.circle.fill")
@@ -123,38 +157,97 @@ struct CheckoutView: View {
                             .padding(.horizontal)
                         }
                     }
-                    
-                    // Order Summary
+                    // 💸 Coupon Section
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Have a coupon?")
+                            .font(.headline)
+                            .padding(.horizontal)
+
+                        HStack {
+                            TextField("Enter coupon code", text: $couponCode)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding(.horizontal)
+
+                            Button(action: {
+                                if couponCode.lowercased() == "discount20" {
+                                    discountPercentage = 0.20
+                                    isCouponApplied = true
+                                } else {
+                                    discountPercentage = 0.0
+                                    isCouponApplied = false
+                                }
+                            }) {
+                                Text("Apply")
+                                    .font(.subheadline)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .background(Color.blue)
+                                    .cornerRadius(8)
+                            }
+                            .padding(.trailing)
+                        }
+
+                        if isCouponApplied {
+                            Text(" 20% discount applied!")
+                                .font(.caption)
+                                .foregroundColor(.green)
+                                .padding(.horizontal)
+                        } else if !couponCode.isEmpty {
+                            Text(" Invalid coupon")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                                .padding(.horizontal)
+                        }
+                    }
+
+                    // 🧾 Order Summary
+                    // 🧾 Order Summary
+                    let subtotal = cartManager.totalPrice()
+                    let discountAmount = subtotal * discountPercentage
+                    let total = subtotal - discountAmount
+
                     VStack(spacing: 12) {
                         HStack {
-                            Text("Subtotal (2 items)")
+                            Text("Subtotal (\(cartManager.items.count) items)")
                                 .foregroundColor(.gray)
                             Spacer()
-                            Text("$ 4.999")
+                            Text("$ \(subtotal, specifier: "%.2f")")
                         }
-                        
+
                         HStack {
                             Text("Shipping cost")
                                 .foregroundColor(.gray)
                             Spacer()
                             Text("Free")
                         }
-                        
+
+                        if isCouponApplied {
+                            HStack {
+                                Text("Coupon Discount")
+                                    .foregroundColor(.green)
+                                Spacer()
+                                Text("- $ \(discountAmount, specifier: "%.2f")")
+                                    .foregroundColor(.green)
+                            }
+                        }
+
                         Divider()
-                        
+
                         HStack {
                             Text("Total")
                                 .font(.headline)
                                 .fontWeight(.bold)
                             Spacer()
-                            Text("$ 4.999")
+                            Text("$ \(total, specifier: "%.2f")")
                                 .font(.headline)
                                 .fontWeight(.bold)
                         }
                     }
                     .padding(.horizontal)
-                    
-                    // Finalize Purchase Button
+
+                    // ✅ Finalize Purchase Button
                     Button(action: {
                         // Handle purchase
                     }) {
@@ -165,11 +258,7 @@ struct CheckoutView: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 56)
                             .background(
-                                LinearGradient(
-                                    colors: [.orange, .red],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
+                                LinearGradient(colors: [.orange, .red], startPoint: .leading, endPoint: .trailing)
                             )
                             .clipShape(RoundedRectangle(cornerRadius: 28))
                     }
@@ -183,16 +272,22 @@ struct CheckoutView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
-                        // Handle back action
+                        // Handle back
                     }) {
                         Image(systemName: "chevron.left")
                             .foregroundColor(.black)
                     }
                 }
             }
+            .onAppear {
+                if addressViewModel.addresses.isEmpty {
+                    addressViewModel.fetchAddresses()
+                }
+            }
         }
     }
 }
+
 
 struct ShippingMethodButton: View {
     let title: String
@@ -283,8 +378,47 @@ struct PaymentOptionButton: View {
     }
 }
 
+//struct CheckoutView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let cartManager = CartManager()
+//        cartManager.addItem(CartItem(name: "Sony WH-1000XM5", price: 4999.0, quantity: 1))
+//
+//        return CheckoutView()
+//            .environmentObject(cartManager)
+//    }
+//}
+
 struct CheckoutView_Previews: PreviewProvider {
     static var previews: some View {
-        CheckoutView()
+        let cartManager = CartManager()
+        cartManager.addItem(CartItem(name: "Sony WH-1000XM5", price: 4999.0, quantity: 1))
+
+        let dummyUseCases = AddressUseCases() 
+        let addressVM = AddressViewModel(addressUseCases: dummyUseCases)
+        addressVM.addresses = [
+                   AddressInfo(
+                       defaultAddress: true,
+                       id: "1",
+                       address1: "123 Main St",
+                       address2: "Apt 4",
+                       city: "Cairo",
+                       country: "Egypt",
+                       phone: "01012345678",
+                       type: "Home"
+                   ),
+                   AddressInfo(
+                       defaultAddress: false,
+                       id: "2",
+                       address1: "456 Nile Ave",
+                       address2: "Floor 2",
+                       city: "Giza",
+                       country: "Egypt",
+                       phone: "01087654321",
+                       type: "Work"
+                   )
+               ]
+
+        return CheckoutView(addressViewModel: addressVM)
+            .environmentObject(cartManager)
     }
 }

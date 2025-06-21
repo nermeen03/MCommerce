@@ -9,15 +9,14 @@ import SwiftUI
 
 struct CategoriesView: View {
     @StateObject private var viewModel = CategoriesViewModel()
+    @EnvironmentObject  var coordinator: AppCoordinator
+
     var body: some View {
         NavigationView {
             VStack {
                 // Search and cart bar
                 HStack {
-                    TextField("What do you search for?", text: .constant(""))
-                        .padding(10)
-                        .background(Color(UIColor.systemGray5))
-                        .cornerRadius(8)
+                    SearchBarView(searchText: $viewModel.searchText)
 
                     Image(systemName: "cart")
                         .font(.title2)
@@ -41,28 +40,40 @@ struct CategoriesView: View {
                         }
                         .padding(.top, 40)
                     }
-                    .frame(width: 70)
+                    .frame(width: 100)
                     .background(Color(UIColor.systemGray6))
+
                     // Main Content
                     VStack(alignment: .leading) {
-                        // Subcategory
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {
-                                ForEach(viewModel.subCategories.filter { $0.parentCategory == viewModel.selectedMainCategory }) { sub in
-                                    Text(sub.title.components(separatedBy: " | ").last ?? sub.title)
-                                        .padding(.horizontal)
-                                        .padding(.vertical, 8)
-                                        .background(viewModel.selectedSubCategory == sub.title ? Color.blue.opacity(0.2) : Color.clear)
-                                        .cornerRadius(8)
-                                        .onTapGesture {
-                                            viewModel.didSelectSubCategory(sub)
-                                        }
+                        // Product Type Filter
+                        if !viewModel.productTypes.isEmpty {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack {
+                                    Button("All") {
+                                        viewModel.resetFilter()
+                                    }
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 8)
+                                    .background(viewModel.selectedProductType.isEmpty ? Color.blue.opacity(0.2) : Color.clear)
+                                    .cornerRadius(8)
+
+                                    ForEach(viewModel.productTypes, id: \.self) { type in
+                                        Text(type)
+                                            .padding(.horizontal)
+                                            .padding(.vertical, 8)
+                                            .background(viewModel.selectedProductType == type ? Color.blue.opacity(0.2) : Color.clear)
+                                            .cornerRadius(8)
+                                            .onTapGesture {
+                                                viewModel.selectProductType(type)
+                                            }
+                                    }
                                 }
+                                .padding(.horizontal)
                             }
-                            .padding(.horizontal)
                         }
 
-                        Text("\(viewModel.selectedMainCategory) > \(viewModel.selectedSubCategory.components(separatedBy: " | ").last ?? viewModel.selectedSubCategory)")
+                        // Current Category and Filter
+                        Text(viewModel.selectedMainCategory + (viewModel.selectedProductType.isEmpty ? "" : " > \(viewModel.selectedProductType)"))
                             .font(.headline)
                             .padding(.horizontal)
                             .padding(.top, 5)
@@ -70,12 +81,15 @@ struct CategoriesView: View {
                         // Product Grid
                         ScrollView {
                             LazyVGrid(columns: [GridItem(), GridItem()], spacing: 20) {
-                                ForEach(viewModel.products) { product in
-                                    BrandProductCard(product: product)
+                                ForEach(viewModel.displayedProducts) { product in
+                                    BrandProductCard(product: product,compact: true).onTapGesture {
+                                        coordinator.navigate(to: .productInfo(product: product.id))
+                                    }
                                 }
                             }
                             .padding()
                         }
+
                         Spacer()
                     }
                 }

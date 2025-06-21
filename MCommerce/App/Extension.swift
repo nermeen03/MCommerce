@@ -7,14 +7,14 @@
 
 extension String {
     var currency: String {
-        let currentCurrency = UserDefaultsManager.shared.getCurrency() ?? "USD"
+        let currentCurrency = UserDefaultsManager.shared.getCurrency()
         guard let value = Double(self) else { return self }
         
         let adjustedValue = currentCurrency == "USD" ? value : value * 50
         return String(format: "%.2f", adjustedValue)
     }
     var symbol: String {
-        let currentCurrency = UserDefaultsManager.shared.getCurrency() ?? "USD"
+        let currentCurrency = UserDefaultsManager.shared.getCurrency()
         let adjustedValue = currentCurrency == "USD" ? "$" : "EGP"
         return adjustedValue
     }
@@ -22,7 +22,7 @@ extension String {
 
 extension Double {
     var currency: Double {
-        let currentCurrency = UserDefaultsManager.shared.getCurrency() ?? "USD"
+        let currentCurrency = UserDefaultsManager.shared.getCurrency()
         
         let adjustedValue = currentCurrency == "USD" ? self : self * 50
         return adjustedValue

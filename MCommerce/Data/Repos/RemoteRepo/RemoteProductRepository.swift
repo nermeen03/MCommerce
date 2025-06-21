@@ -58,6 +58,7 @@ final class RemoteProductRepository: ProductRepositoryProtocol {
                   id
                   title
                   description
+                  productType
                   images(first: 1) {
                     edges {
                       node {
@@ -82,7 +83,6 @@ final class RemoteProductRepository: ProductRepositoryProtocol {
         }
         """
 
-
         print("🔍 Fetching products with handle: \(handle)")
 
         api.callQueryApi(query: query, completion: { (result: Result<ProductResponse, NetworkError>) in
@@ -103,7 +103,8 @@ final class RemoteProductRepository: ProductRepositoryProtocol {
                         description: node.description,
                         imageUrl: node.images.edges.first?.node.originalSrc ?? "",
                         price: Double(node.variants.edges.first?.node.price.amount ?? "0") ?? 0.0,
-                        brandName: brandName
+                        brandName: brandName,
+                        productType: node.productType
                     )
                 }
                 completion(.success(products))

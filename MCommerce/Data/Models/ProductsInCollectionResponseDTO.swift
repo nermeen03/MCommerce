@@ -61,7 +61,8 @@ struct ProductsInCollectionResponseDTO: Decodable {
                 description: edge.node.description,
                 imageUrl: edge.node.images.edges.first?.node.originalSrc ?? "",
                 price: Double(edge.node.priceRange.minVariantPrice.amount) ?? 0.0,
-                brandName: edge.node.vendor
+                brandName: edge.node.vendor,
+                productType: edge.node.vendor
             )
         }
     }
@@ -70,57 +71,58 @@ struct ProductResponse: Decodable {
     let data: DataContainer
 
     struct DataContainer: Decodable {
-        let collectionByHandle: ProductEdgeContainer?
+        let collectionByHandle: CollectionByHandle?
+        let products: ProductConnection?
     }
 
-    struct ProductEdgeContainer: Decodable {
+    struct CollectionByHandle: Decodable {
         let title: String
-        let products: ProductList
+        let products: ProductConnection
+    }
 
-        struct ProductList: Decodable {
-            let edges: [Edge]
+    struct ProductConnection: Decodable {
+        let edges: [ProductEdge]
+    }
 
-            struct Edge: Decodable {
-                let node: ProductNode
+    struct ProductEdge: Decodable {
+        let node: ProductNode
+    }
 
-                struct ProductNode: Decodable {
-                    let id: String
-                    let title: String
-                    let description: String
-                    let images: ImageList
-                    let variants: VariantList
+    struct ProductNode: Decodable {
+        let id: String
+        let title: String
+        let description: String
+        let productType: String
+        let images: ImageConnection
+        let variants: VariantConnection
+    }
 
-                    struct ImageList: Decodable {
-                        let edges: [ImageEdge]
+    struct ImageConnection: Decodable {
+        let edges: [ImageEdge]
+    }
 
-                        struct ImageEdge: Decodable {
-                            let node: ImageNode
+    struct ImageEdge: Decodable {
+        let node: ImageNode
+    }
 
-                            struct ImageNode: Decodable {
-                                let originalSrc: String
-                            }
-                        }
-                    }
+    struct ImageNode: Decodable {
+        let originalSrc: String
+    }
 
-                    struct VariantList: Decodable {
-                        let edges: [VariantEdge]
+    struct VariantConnection: Decodable {
+        let edges: [VariantEdge]
+    }
 
-                        struct VariantEdge: Decodable {
-                            let node: VariantNode
+    struct VariantEdge: Decodable {
+        let node: VariantNode
+    }
 
-                            struct VariantNode: Decodable {
-                                let price: Price
+    struct VariantNode: Decodable {
+        let price: Price
+    }
 
-                                struct Price: Decodable {
-                                    let amount: String
-                                    let currencyCode: String
-                                }
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
+    struct Price: Decodable {
+        let amount: String
+        let currencyCode: String
     }
 }

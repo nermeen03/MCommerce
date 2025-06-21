@@ -75,6 +75,11 @@ class FavoriteViewModel : ObservableObject {
                 }
         }
         }
+    @Published var refreshToken = UUID()
+
+    func refresh() {
+        refreshToken = UUID() // This will trigger re-initiation of the view
+    }
 
     
 }

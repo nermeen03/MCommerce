@@ -6,5 +6,16 @@
 //
 
 protocol SubCategoryRepositoryProtocol {
-    func fetchSubCategories(completion: @escaping (Result<[SubCategory], NetworkError>) -> Void)
+    func fetchSubCategories(
+        forCollectionHandle handle: String,
+        parentTitle: String,
+        completion: @escaping (Result<[SubCategory], NetworkError>) -> Void
+    )
+    
+    func fetchProductsBySubCategory(
+        forCollectionHandle handle: String,
+        productType: String,
+        completion: @escaping (Result<[BrandProduct], NetworkError>) -> Void
+    )
 }
+

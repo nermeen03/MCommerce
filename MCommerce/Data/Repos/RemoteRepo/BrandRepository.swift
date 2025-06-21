@@ -14,7 +14,7 @@ class BrandRepository: BrandRepositoryProtocol {
     func fetchBrands(completion: @escaping (Result<[Brand], NetworkError>) -> Void) {
         let query = """
         {
-          collections(first: 16) {
+          collections(first: 13) {
             edges {
               node {
                 id

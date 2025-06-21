@@ -14,6 +14,7 @@ extension String {
         return String(format: "%.2f", adjustedValue)
     }
     var symbol: String {
+    
         let currentCurrency = UserDefaultsManager.shared.getCurrency() ?? "USD"
         let adjustedValue = currentCurrency == "USD" ? "$" : "EGP"
         return adjustedValue

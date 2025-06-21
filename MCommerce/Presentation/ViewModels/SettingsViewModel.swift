@@ -35,7 +35,7 @@ class SettingsViewModel : ObservableObject{
 
 class CurrencyViewModel: ObservableObject {
     @Published var currentCurrency: String = UserDefaultsManager.shared.getCurrency()
-    
+ 
     let availableCurrencies = ["EGP", "USD"]
 
     func selectCurrency(_ currency: String) {

@@ -20,7 +20,7 @@ struct MainTabView: View {
                 case .search:
                     CategoriesView()
                 case .cart:
-                    CartView()
+                    DIContainer.shared.resolveCartView()
                 case .favorites:
                     FavView()
                 case .profile:

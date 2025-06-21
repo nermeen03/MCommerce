@@ -60,6 +60,4 @@ struct VariantNode: Codable {
     let selectedOptions: [SelectedOptionDto]
 }
 
-struct Price: Codable {
-    let amount: String
-}
+

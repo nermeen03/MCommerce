@@ -28,6 +28,7 @@ final class BrandDetailsRepository: BrandDetailsRepositoryProtocol {
                         variants(first: 1) {
                             edges {
                                 node {
+                                    id
                                     price
                                 }
                             }

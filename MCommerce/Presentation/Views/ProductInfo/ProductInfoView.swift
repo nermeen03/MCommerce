@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProductInfo: View {
+struct ProductInfoView: View {
     @StateObject var viewModel : ProductViewModel
 //    @State private var selectedColor: String? = nil
 //  @State  var selectedSize: String? = nil
@@ -117,10 +117,13 @@ struct ProductInfo: View {
                         textColor: .white,
                         backgroundColor: .deepPurple,
                         verticalOffset: 0,
-                        action: {}
+                        action: {
+                            viewModel.addToCart()
+                        }
                     )
                 }
                 .padding(.horizontal)
+                
                 
             }}
         .onChange(of: viewModel.selectedColor) { _ in
@@ -129,6 +132,7 @@ struct ProductInfo: View {
         .onChange(of: viewModel.selectedSize) { _ in
             viewModel.updatePriceForSelection()
         }
+        
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top).alert("Are You sure you want to remove this item From favorites ?", isPresented: $viewModel.isAlertActive){
             Button("Yes" ,role : .destructive) {
                 viewModel.deleteFromFav()

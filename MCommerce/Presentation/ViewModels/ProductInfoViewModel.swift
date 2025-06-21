@@ -24,15 +24,16 @@ class ProductViewModel: ObservableObject {
     private let addFavUseCase : AddFavProdUseCase
     private let deleteFavUseCase : DeleteFavProdUseCase
     private let checkProductsUseCase : CheckFavouriteProdUseCase
-    
+    private let cartUseCase : AddInCartUseCase
     
     private let productId : String
-    init(useCase : ProductInfoUseCase, id : String , deleteFavUseCase : DeleteFavProdUseCase , checkProductsUseCase : CheckFavouriteProdUseCase , AddFavUseCase : AddFavProdUseCase){
+    init(useCase : ProductInfoUseCase, id : String , deleteFavUseCase : DeleteFavProdUseCase , checkProductsUseCase : CheckFavouriteProdUseCase , AddFavUseCase : AddFavProdUseCase, cartUseCase : AddInCartUseCase){
         self.FetchInfoUseCase = useCase
         self.productId = id
         self.deleteFavUseCase = deleteFavUseCase
         self.checkProductsUseCase = checkProductsUseCase
         self.addFavUseCase = AddFavUseCase
+        self.cartUseCase = cartUseCase
         FetchInfoUseCase.getProductById(productId: productId) { [weak self] product in
             switch product {
             case .success(let product):
@@ -166,5 +167,26 @@ class ProductViewModel: ObservableObject {
             default: return .clear // fallback for unknown names
             }
         }
+    func addToCart() {
+        guard let product = product else { return }
+        
+        guard let selectedColor = selectedColor, let selectedSize = selectedSize else {
+            print("⚠️ Please select color and size first")
+            return
+        }
+        print("❌ check1")
+
+        guard let selectedVariant = product.variants.first(where: {
+            $0.title.contains(selectedColor) && $0.title.contains(selectedSize)
+        }) else {
+            print("❗ No matching variant found for selection")
+            return
+        }
+        print("❌ check2")
+        self.cartUseCase.addOrUpdateProduct(product: product, productVariant: selectedVariant) { _ in
+            print("✅ Product added to cart")
+        }
+    }
+
         
     }

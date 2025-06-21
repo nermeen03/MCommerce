@@ -19,6 +19,7 @@ final class DIContainer {
     let addressUseCase : AddressUseCases
     let defaultAddressUserCase : DefaultAddressUseCase
     let mapAddressUseCase : MapAddressUserCase
+    let cartRepo : CartRepo
 //    let addressDetailsViewModel : AddressDetailViewModel
     
     private init() {
@@ -28,9 +29,12 @@ final class DIContainer {
         self.addressUseCase = Self.resolveAddressUseCase()
         self.defaultAddressUserCase = Self.resolveDefaultAddressUseCase()
         self.mapAddressUseCase = Self.resolveMapAddressUseCase()
+        self.cartRepo = Self.resolveCartRepo()
 //        self.addressDetailsViewModel = Self.resolveAddressDetailViewModel()
     }
-    
+    private static func resolveCartRepo() -> CartRepo {
+        return CartRepo()
+    }
     private static func resolveDiscountViewModel() -> DiscountViewModel {
         let remoteService = ApiCalling()
         let repository = DiscountRepository(remoteService: remoteService)
@@ -50,7 +54,7 @@ final class DIContainer {
         let addUseseCase = AddFavProdUseCase(repo: ProductFavouriteRepository())
         let deleteUseseCase = DeleteFavProdUseCase(repo: ProductFavouriteRepository())
         let checkProductsUseCase = CheckFavouriteProdUseCase(repo: ProductFavouriteRepository())
-        return ProductViewModel(useCase: useCase, id: id,deleteFavUseCase: deleteUseseCase, checkProductsUseCase: checkProductsUseCase ,AddFavUseCase: addUseseCase)
+        return ProductViewModel(useCase: useCase, id: id,deleteFavUseCase: deleteUseseCase, checkProductsUseCase: checkProductsUseCase ,AddFavUseCase: addUseseCase, cartUseCase: AddInCartUseCase(cartRepo: cartRepo))
     }
     func resolveFavoritesViewModel() -> FavoriteViewModel {
         let repo = ProductFavouriteRepository()
@@ -127,6 +131,10 @@ final class DIContainer {
     
     func resolveAddressListView() -> some View{
         return AddressListView(viewModel: AddressViewModel(addressUseCases: self.addressUseCase))
+    }
+    
+    func resolveCartView() -> some View{
+        return CartListView(cartViewModel: GetCartViewModel(getCartUseCase: GetCartUseCase(cartRepo: cartRepo)))
     }
     
 }

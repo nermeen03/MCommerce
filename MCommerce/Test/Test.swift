@@ -610,7 +610,7 @@
 //    }
 //}
 
-<<<<<<< HEAD
+
 //    func createCart(product : ProductDto){
 //        if UserDefaultsManager.shared.getCartId() == nil{
 //            CartRepo().createCart { result in

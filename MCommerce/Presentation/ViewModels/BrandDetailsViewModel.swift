@@ -29,7 +29,7 @@ final class BrandDetailsViewModel: ObservableObject {
     }
     @Published var selectedMaxPrice: Double = 0.0 {
         didSet {
-            selectedMaxPrice = maxPrice
+          
             filterProducts()
         }
     }

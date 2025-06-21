@@ -22,7 +22,7 @@ class RegisterViewModel : ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isRegistered: Bool = false
     @Published var errorMessage: String = "Try again \n "
-//    @Published var isLogged : Bool = false
+
 
 
     @EnvironmentObject var coordinator: AppCoordinator
@@ -123,6 +123,7 @@ class RegisterViewModel : ObservableObject {
         return "+2" + phone
     }
     func register () {
+        
         if self.validateAllFields() {
             isLoading = true
             useCase.register(user: User(email: email, firstName: getFirstPart(beforeSpace: name) ?? name, lastName: getSecondPart(afterSpace: name) ??  name, password:  password, phoneNumber: generatePhoneNumber(from: phoneNumber))){
@@ -158,7 +159,9 @@ class RegisterViewModel : ObservableObject {
                 }
             }
         }
+       
         
     }
+
     
 }

@@ -10,16 +10,45 @@ import SwiftUI
 class CategoriesViewModel: ObservableObject {
     @Published var mainCategories: [CollectionDTO] = []
     @Published var allProducts: [BrandProduct] = []
-    @Published var filteredProducts: [BrandProduct] = []
-
     @Published var productTypes: [String] = []
     @Published var selectedMainCategory: String = ""
     @Published var selectedProductType: String = ""
+    @Published var searchText: String = ""
 
     private let productRepository: ProductRepositoryProtocol
 
     init(productRepository: ProductRepositoryProtocol = DIContainer.shared.productRepository) {
         self.productRepository = productRepository
+    }
+
+    var displayedProducts: [BrandProduct] {
+        var products = allProducts
+
+        if !selectedProductType.isEmpty {
+            products = products.filter { $0.productType == selectedProductType }
+        }
+
+        if !searchText.trimmingCharacters(in: .whitespaces).isEmpty {
+            let lowerSearch = searchText.lowercased().trimmingCharacters(in: .whitespaces)
+            products = products.filter { product in
+                let title = product.title
+                let cleanedTitle: String
+                if let range = title.range(of: "|") {
+                    cleanedTitle = String(title[range.upperBound...]).trimmingCharacters(in: .whitespaces)
+                } else {
+                    cleanedTitle = title
+                }
+
+                return cleanedTitle
+                    .lowercased()
+                    .split(separator: " ")
+                    .contains { word in
+                        word.starts(with: lowerSearch)
+                    }
+            }
+        }
+
+        return products
     }
 
     func loadMainCategories() {
@@ -47,7 +76,6 @@ class CategoriesViewModel: ObservableObject {
         selectedMainCategory = category.title
         selectedProductType = ""
         allProducts = []
-        filteredProducts = []
         productTypes = []
 
         productRepository.fetchProducts(inCollectionHandle: category.handle) { [weak self] result in
@@ -57,12 +85,10 @@ class CategoriesViewModel: ObservableObject {
                 switch result {
                 case .success(let products):
                     self.allProducts = products
-                    self.filteredProducts = products
                     self.productTypes = Array(Set(products.map { $0.productType })).sorted()
                 case .failure(let error):
                     print("Failed to fetch products for \(category.title):", error)
                     self.allProducts = []
-                    self.filteredProducts = []
                     self.productTypes = []
                 }
             }
@@ -71,11 +97,10 @@ class CategoriesViewModel: ObservableObject {
 
     func selectProductType(_ type: String) {
         selectedProductType = type
-        filteredProducts = allProducts.filter { $0.productType == type }
     }
 
     func resetFilter() {
         selectedProductType = ""
-        filteredProducts = allProducts
+        searchText = ""
     }
 }

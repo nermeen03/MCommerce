@@ -9,16 +9,14 @@ import SwiftUI
 
 struct CategoriesView: View {
     @StateObject private var viewModel = CategoriesViewModel()
+    @EnvironmentObject  var coordinator: AppCoordinator
 
     var body: some View {
         NavigationView {
             VStack {
                 // Search and cart bar
                 HStack {
-                    TextField("What do you search for?", text: .constant(""))
-                        .padding(10)
-                        .background(Color(UIColor.systemGray5))
-                        .cornerRadius(8)
+                    SearchBarView(searchText: $viewModel.searchText)
 
                     Image(systemName: "cart")
                         .font(.title2)
@@ -83,8 +81,10 @@ struct CategoriesView: View {
                         // Product Grid
                         ScrollView {
                             LazyVGrid(columns: [GridItem(), GridItem()], spacing: 20) {
-                                ForEach(viewModel.filteredProducts) { product in
-                                    BrandProductCard(product: product,compact: true)
+                                ForEach(viewModel.displayedProducts) { product in
+                                    BrandProductCard(product: product,compact: true).onTapGesture {
+                                        coordinator.navigate(to: .productInfo(product: product.id))
+                                    }
                                 }
                             }
                             .padding()

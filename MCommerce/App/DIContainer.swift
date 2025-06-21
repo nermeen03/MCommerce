@@ -22,7 +22,7 @@ final class DIContainer {
     let cartRepo : CartRepo
     
     //    let addressDetailsViewModel : AddressDetailViewModel
-    
+  
     private init() {
         self.discountViewModel = Self.resolveDiscountViewModel()
         self.profileViewModel = Self.resolveProfileViewModel()
@@ -36,7 +36,6 @@ final class DIContainer {
     private static func resolveCartRepo() -> CartRepo {
         return CartRepo()
     }
-    
     
     private static func resolveDiscountViewModel() -> DiscountViewModel {
         let remoteService = ApiCalling()
@@ -139,5 +138,4 @@ final class DIContainer {
     func resolveCartView() -> some View{
         return CartListView(cartViewModel: GetCartViewModel(getCartUseCase: GetCartUseCase(cartRepo: cartRepo)))
     }
-    
 }

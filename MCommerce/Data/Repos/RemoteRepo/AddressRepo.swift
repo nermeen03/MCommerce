@@ -12,7 +12,6 @@ import FirebaseFirestore
 
 
 struct AddressFirebaseRepo{
-
     let firestoreUserId = UserDefaultsManager.shared.getUserId()?.replacingOccurrences(of: "/", with: "_") ?? "User"
     
     func getFromFireStore(completion : @escaping ([AddressInfo]) -> Void){

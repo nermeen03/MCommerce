@@ -9,7 +9,7 @@ import Foundation
 class HomeSearchViewModel : ObservableObject{
     private let useCase : FetchAllProductsUseCase
     @Published var products : [Product] = []
-    @Published var maxPrice: Double = 100000
+    @Published var maxPrice: Double = 100
     @Published var minPrice: Double = 0
     @Published var searchText: String = "" {
         didSet {
@@ -17,7 +17,6 @@ class HomeSearchViewModel : ObservableObject{
            
             maxPrice = filteredProducts.map{$0.price.currency}.max() ?? maxPrice
                        selectedMaxPrice = maxPrice
-            print("gggggggg")
                        minPrice = filteredProducts.map(\.price.currency).min() ?? 0
                   
         }

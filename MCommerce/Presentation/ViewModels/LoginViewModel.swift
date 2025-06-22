@@ -66,6 +66,8 @@ class LoginViewModel : ObservableObject {
                             UserDefaultsManager.shared.saveUserId(user.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
                             UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)
                             UserDefaultsManager.shared.setLoggedIn(true)
+                            print("the first name \(UserDefaultsManager.shared.getFirstName())")
+                            print("the second name \(UserDefaultsManager.shared.getLastName())")
                             DispatchQueue.main.async {
                                 self.isLogged = true
                                 self.isLoading = false

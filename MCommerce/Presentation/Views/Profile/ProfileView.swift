@@ -48,7 +48,7 @@ struct ProfileView: View {
             if loggedIn {
                 ScrollView{
                     VStack {
-                        let userName = UserDefaultsManager.shared.getUserName() ?? "User"
+                        let userName = UserDefaultsManager.shared.getFirstName() ?? "User"
                         HStack(alignment: .center, content: {
                             Text("Welcome \(userName)").font(.title)
                         })

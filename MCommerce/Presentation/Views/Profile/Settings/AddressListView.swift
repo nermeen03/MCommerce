@@ -21,9 +21,14 @@ struct AddressListView: View {
                     .padding()
                 Spacer()
             } else if viewModel.addresses.isEmpty {
-                Text("No Addresses Found")
-                    .font(.headline)
-                    .padding()
+                Spacer()
+                Image("noImage")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 250, height: 250)
+
+                Text("No Address Found").font(.largeTitle)
+                Spacer()
             } else {
                 List {
                     ForEach(viewModel.addresses) { address in

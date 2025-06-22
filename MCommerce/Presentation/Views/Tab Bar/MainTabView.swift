@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab: Tab = .home
-    @State private var cartBadgeCount: Int = 3
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -27,13 +26,13 @@ struct MainTabView: View {
                     DIContainer.shared.resolveProfile()
                 }
             }
-            FloatingTabBar(selectedTab: $selectedTab, cartBadgeCount: cartBadgeCount)
+            FloatingTabBar(selectedTab: $selectedTab, cartBadgeVM: DIContainer.shared.resolveCartBadgeCount())
         }.navigationBarHidden( true)
     }
 }
 
 
-
-#Preview {
-    MainTabView()
-}
+//
+//#Preview {
+//    MainTabView()
+//}

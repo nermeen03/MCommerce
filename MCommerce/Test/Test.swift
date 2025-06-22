@@ -657,3 +657,72 @@
 //            }
 //        }
 //    }
+
+
+
+//    func isProductInCart(cartId: String, productVariantId: String, completion: @escaping (Bool, String?) -> Void) {
+//
+//        let query = """
+//        query {
+//          cart(id: "\(cartId)") {
+//            lines(first: 100) {
+//              edges {
+//                node {
+//                  id
+//                  merchandise {
+//                    ... on ProductVariant {
+//                      id
+//                    }
+//                  }
+//                }
+//              }
+//            }
+//          }
+//        }
+//        """
+//
+//        ApiCalling().callQueryApi(query: query) { (result: Result<CartResponse, NetworkError>) in
+//            switch result {
+//            case .success(let response):
+//                if let lines = response.data?.cartLinesAdd?.cart?.lines?.edges {
+//                    for edge in lines {
+//                        if edge.node.merchandise.id == productVariantId {
+//                            completion(true, edge.node.id)
+//                            return
+//                        }
+//                    }
+//                }
+//                completion(false, nil)
+//            case .failure:
+//                completion(false, nil)
+//            }
+//        }
+//    }
+
+//    func updateProductQuantity(cartId: String, lineId: String, newQuantity: Int, completion: @escaping (Result<CartResponse, NetworkError>) -> Void) {
+//        let mutation = """
+//        mutation {
+//          cartLinesUpdate(cartId: "\(cartId)", lines: [{ id: "\(lineId)", quantity: \(newQuantity) }]) {
+//            cart {
+//              id
+//              totalQuantity
+//              lines(first: 10) {
+//                edges {
+//                  node {
+//                    id
+//                    quantity
+//                    merchandise {
+//                      ... on ProductVariant {
+//                        id
+//                      }
+//                    }
+//                  }
+//                }
+//              }
+//            }
+//          }
+//        }
+//        """
+//
+//        ApiCalling().callQueryApi(query: mutation, completion: completion)
+//    }

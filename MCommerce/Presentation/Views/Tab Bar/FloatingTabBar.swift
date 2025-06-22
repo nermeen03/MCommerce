@@ -19,8 +19,10 @@ enum Tab: String, CaseIterable {
 
 struct FloatingTabBar: View {
     @Binding var selectedTab: Tab
-    var cartBadgeCount: Int = 0
-
+    var cartBadgeVM: CartBadgeViewModel
+//    @State var count = 0
+    
+    
     var body: some View {
         HStack(spacing: 30) {
             ForEach(Tab.allCases, id: \.self) { tab in
@@ -37,13 +39,14 @@ struct FloatingTabBar: View {
                                 .foregroundColor(selectedTab == tab ? .orange : .gray)
                         }
 
-                        if tab == .cart && cartBadgeCount > 0 {
-                            Text("\(cartBadgeCount)")
+                        if tab == .cart && cartBadgeVM.badgeCount > 0 {
+                            Text("\((cartBadgeVM.badgeCount))")
                                 .font(.caption2)
                                 .foregroundColor(.white)
                                 .padding(5)
                                 .background(Circle().fill(Color.red))
-                                .offset(x: 10, y: -10)
+                                .offset(x: 10, y: -10).onAppear{
+                                }
                         }
                     }
                 }

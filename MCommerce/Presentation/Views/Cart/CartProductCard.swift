@@ -47,25 +47,29 @@ struct CartProductCard: View {
                         .foregroundColor(.secondary)
                 }
 
-                Text("\(product.price.currency) \(product.currency.currency)")
+                Text("\(product.price) \(product.currency)")
                     .font(.subheadline)
                     .fontWeight(.bold)
             }
             Spacer()
-            VStack {
+            VStack(spacing: 8) {
                 Button(action: onIncrease) {
                     Image(systemName: "plus.circle.fill")
                         .font(.title2)
                         .foregroundColor(.blue)
                 }
-                Text("\(product.quantity)")
+                .buttonStyle(.plain)
+
+                Text("\(product.quantity ?? 1)")
                     .font(.headline)
                     .padding(.vertical, 4)
+
                 Button(action: onDecrease) {
                     Image(systemName: "minus.circle.fill")
                         .font(.title2)
-                        .foregroundColor(product.quantity > 1 ? .blue : .gray)
+                        .foregroundColor(product.quantity ?? 1 > 1 ? .blue : .gray)
                 }
+                .buttonStyle(.plain)
             }
         }
         .padding()

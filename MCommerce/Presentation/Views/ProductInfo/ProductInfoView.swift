@@ -11,6 +11,7 @@ struct ProductInfoView: View {
     @StateObject var viewModel : ProductViewModel
 //    @State private var selectedColor: String? = nil
 //  @State  var selectedSize: String? = nil
+    @State var showToast : Bool = false
 
 
     var body: some View {
@@ -119,13 +120,17 @@ struct ProductInfoView: View {
                         verticalOffset: 0,
                         action: {
                             viewModel.addToCart()
+                            showToast = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    showToast = false
+                            }
                         }
                     )
                 }
                 .padding(.horizontal)
                 
                 
-            }}
+            }}.toast(isShowing: $showToast, message: "Saved to cart!")
         .onChange(of: viewModel.selectedColor) { _ in
             viewModel.updatePriceForSelection()
         }

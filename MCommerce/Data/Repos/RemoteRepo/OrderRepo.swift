@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import SafariServices
+import SwiftUI
 
-struct OrderRepo {    
+struct OrderRepo {
     func getOrderTest(completion: @escaping (Result<[OrderDataResponse], NetworkError>) -> Void) {
         let customerId = UserDefaultsManager.shared.getUserId() ?? "customerId"
         let query = """
@@ -69,5 +71,6 @@ struct OrderRepo {
             }
         }
     }
-
+    
 }
+

@@ -26,6 +26,7 @@ class AppCoordinator: ObservableObject {
         case addressList
         case addressForm(address: AddressDetailViewModel?)
         case addressDetails(address: AddressDetailViewModel)
+        case search
         
     }
     

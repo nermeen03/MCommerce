@@ -35,36 +35,35 @@ struct CartRepo {
         }
     }
     
-    func addProductToCart(cartId: String, product: ProductDto, quantity: Int = 1, completion: @escaping (Result<String, NetworkError>) -> Void) {
-        guard let variant = product.variants.first else {
-            print("❗ No variant found for product.")
-            return
-        }
-
+    func addProductToCart(cartId: String, cartItem: CartItem, variantId: String, quantity: Int = 1, completion: @escaping (Result<String, NetworkError>) -> Void) {
+        print("Adding to Cart: \(cartItem)")
+        
         let query = """
-        mutation {
-          cartLinesAdd(cartId: "\(cartId)", lines: [{merchandiseId: "\(variant.id)", quantity: \(quantity)}]) {
-            cart {
-              id
-              totalQuantity
-              checkoutUrl
-              lines(first: 100) {
-                edges {
-                  node {
-                    id
-                    quantity
-                    merchandise {
-                      ... on ProductVariant {
+            mutation {
+              cartLinesAdd(cartId: "\(cartId)", lines: [{merchandiseId: "\(variantId)", quantity: \(quantity)}]) {
+                cart {
+                  id
+                  totalQuantity
+                  checkoutUrl
+                  lines(first: 100) {
+                    edges {
+                      node {
                         id
-                        title
-                        price {
-                          amount
-                          currencyCode
-                        }
-                        product {
-                          title
-                          featuredImage {
-                            url
+                        quantity
+                        merchandise {
+                          ... on ProductVariant {
+                            id
+                            title
+                            price {
+                              amount
+                              currencyCode
+                            }
+                            product {
+                              title
+                              featuredImage {
+                                url
+                              }
+                            }
                           }
                         }
                       }
@@ -73,10 +72,8 @@ struct CartRepo {
                 }
               }
             }
-          }
-        }
-        """
-
+            """
+        
         ApiCalling().callQueryApi(query: query) { (result: Result<CartResponse, NetworkError>) in
             switch result {
             case .success(_):
@@ -130,6 +127,7 @@ struct CartRepo {
                     let variantParts = edge.node.merchandise.title.components(separatedBy: " / ")
                     return CartItem(
                         id: edge.node.id,
+                        variantId: edge.node.merchandise.id,
                         quantity: edge.node.quantity,
                         title: edge.node.merchandise.product.title,
                         price: edge.node.merchandise.price.amount,
@@ -147,7 +145,6 @@ struct CartRepo {
     }
     
     func getCartLineId(for cartId: String, variantId: String, completion: @escaping (String?) -> Void) {
-        print("🔎 START getCartLineId → cartId: \(cartId), variantId: \(variantId)")
         let query = """
         query {
           cart(id: "\(cartId)") {
@@ -171,9 +168,6 @@ struct CartRepo {
         ApiCalling().callQueryApi(query: query) { (result: Result<GetCartResponseID, NetworkError>) in
             switch result {
             case .success(let response):
-                print("✅✅✅ Expected Variant ID: \(variantId)")
-                print("Cart Items Variant IDs: \(response.data?.cart?.lines?.edges.map { $0.node.merchandise.id } ?? [])")
-
                 let lineId = response.data?.cart?.lines?.edges.first(where: { $0.node.merchandise.id == variantId })?.node.id
                 completion(lineId)
             case .failure:
@@ -182,53 +176,6 @@ struct CartRepo {
         }
     }
 
-    
-    func updateCartLineQuantity(cartId: String, lineId: String, quantity: Int, completion: @escaping (Result<String, NetworkError>) -> Void) {
-        let mutation = """
-        mutation {
-          cartLinesUpdate(cartId: "\(cartId)", lines: [{ id: "\(lineId)", quantity: \(quantity) }]) {
-            cart {
-              id
-              totalQuantity
-              checkoutUrl
-              lines(first: 10) {
-                edges {
-                  node {
-                    id
-                    quantity
-                    merchandise {
-                      ... on ProductVariant {
-                        id
-                        title
-                        price {
-                          amount
-                          currencyCode
-                        }
-                        product {
-                          title
-                          featuredImage {
-                            url
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        """
-
-        ApiCalling().callQueryApi(query: mutation) { (result: Result<CartResponse, NetworkError>) in
-            switch result {
-            case .success(_):
-                completion(.success("Updated Product Quantity in Cart"))
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
     
     func deleteCartLine(cartId: String, lineId: String, completion: @escaping (Result<String, NetworkError>) -> Void) {
         let mutation = """
@@ -267,73 +214,52 @@ struct CartRepo {
         }
     }
 
+    func updateCartLineQuantity(cartId: String, lineId: String, quantity: Int, completion: @escaping (Result<String, NetworkError>) -> Void) {
+        let mutation = """
+        mutation {
+          cartLinesUpdate(cartId: "\(cartId)", lines: [{ id: "\(lineId)", quantity: \(quantity) }]) {
+            cart {
+              id
+              totalQuantity
+              checkoutUrl
+              lines(first: 100) {
+                edges {
+                  node {
+                    id
+                    quantity
+                    merchandise {
+                      ... on ProductVariant {
+                        id
+                        title
+                        price {
+                          amount
+                          currencyCode
+                        }
+                        product {
+                          title
+                          featuredImage {
+                            url
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        """
+
+        ApiCalling().callQueryApi(query: mutation) { (result: Result<CartResponse, NetworkError>) in
+            switch result {
+            case .success(_):
+                completion(.success("✅ Cart updated successfully"))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
     
 }
-
-
-//    func isProductInCart(cartId: String, productVariantId: String, completion: @escaping (Bool, String?) -> Void) {
-//
-//        let query = """
-//        query {
-//          cart(id: "\(cartId)") {
-//            lines(first: 100) {
-//              edges {
-//                node {
-//                  id
-//                  merchandise {
-//                    ... on ProductVariant {
-//                      id
-//                    }
-//                  }
-//                }
-//              }
-//            }
-//          }
-//        }
-//        """
-//
-//        ApiCalling().callQueryApi(query: query) { (result: Result<CartResponse, NetworkError>) in
-//            switch result {
-//            case .success(let response):
-//                if let lines = response.data?.cartLinesAdd?.cart?.lines?.edges {
-//                    for edge in lines {
-//                        if edge.node.merchandise.id == productVariantId {
-//                            completion(true, edge.node.id)
-//                            return
-//                        }
-//                    }
-//                }
-//                completion(false, nil)
-//            case .failure:
-//                completion(false, nil)
-//            }
-//        }
-//    }
-
-//    func updateProductQuantity(cartId: String, lineId: String, newQuantity: Int, completion: @escaping (Result<CartResponse, NetworkError>) -> Void) {
-//        let mutation = """
-//        mutation {
-//          cartLinesUpdate(cartId: "\(cartId)", lines: [{ id: "\(lineId)", quantity: \(newQuantity) }]) {
-//            cart {
-//              id
-//              totalQuantity
-//              lines(first: 10) {
-//                edges {
-//                  node {
-//                    id
-//                    quantity
-//                    merchandise {
-//                      ... on ProductVariant {
-//                        id
-//                      }
-//                    }
-//                  }
-//                }
-//              }
-//            }
-//          }
-//        }
-//        """
-//
-//        ApiCalling().callQueryApi(query: mutation, completion: completion)
-//    }

@@ -10,29 +10,70 @@ import SwiftUI
 struct CartListView: View {
     
     @ObservedObject var cartViewModel: GetCartViewModel
-    
     var body: some View {
-        List {
-            ForEach(cartViewModel.cartItems) { item in
-                CartProductCard(
-                    product: item,
-                    onIncrease: {
-                        if let index = cartViewModel.cartItems.firstIndex(where: { $0.id == item.id }) {
-                            cartViewModel.cartItems[index].quantity += 1
+        VStack {
+            if cartViewModel.isLoading {
+                Spacer()
+                ProgressView().font(.largeTitle)
+                Spacer()
+            } else {
+                if cartViewModel.cartItems.isEmpty {
+                    Spacer()
+                    Image("noImage")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 250, height: 250)
+                    Text("Your Cart is Empty").font(.largeTitle)
+                    Spacer()
+                } else {
+                    List {
+                        ForEach(cartViewModel.cartItems) { item in
+                            CartProductCard(
+                                product: item,
+                                onIncrease: {
+                                    if let index = cartViewModel.cartItems.firstIndex(where: { $0.id == item.id }) {
+                                        if cartViewModel.cartItems[index].quantity! < 5 {
+                                            cartViewModel.cartItems[index].quantity! += 1
+                                            cartViewModel.addCartVM.addOrUpdateProduct(product: item, productVariant : item.variantId!)
+                                        }
+                                    }
+                                },
+                                onDecrease: {
+                                    if let index = cartViewModel.cartItems.firstIndex(where: { $0.id == item.id }), cartViewModel.cartItems[index].quantity! > 1 {
+                                        cartViewModel.cartItems[index].quantity! -= 1
+                                        cartViewModel.removeProductFromCart(cartItem: item)
+                                        
+                                    }
+                                }
+                            )
+                            .listRowSeparator(.hidden)
+                            .listRowInsets(EdgeInsets())
                         }
-                    },
-                    onDecrease: {
-                        if let index = cartViewModel.cartItems.firstIndex(where: { $0.id == item.id }), cartViewModel.cartItems[index].quantity > 1 {
-                            cartViewModel.cartItems[index].quantity -= 1
+                        .onDelete(perform: deleteItems)
+                        
+                        Section {
+                            Button(action: {
+                                // Proceed to checkout action
+                            }) {
+                                Text("Proceed to Checkout")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            .listRowBackground(Color.clear)
+                            .padding(.bottom, 80)
                         }
                     }
-                )
+                    .listStyle(.plain)
+                }
             }
-            .onDelete(perform: deleteItems)
         }
-        .listStyle(.plain)
         .onAppear {
-            cartViewModel.getProducts()
+            if cartViewModel.cartItems.isEmpty {
+                cartViewModel.getProducts()
+            }
         }
     }
     

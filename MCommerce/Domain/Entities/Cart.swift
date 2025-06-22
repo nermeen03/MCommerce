@@ -5,9 +5,10 @@
 //  Created by Nermeen Mohamed on 21/06/2025.
 //
 
-struct CartItem : Identifiable {
+struct CartItem : Identifiable, Equatable {
     let id: String
-    var quantity: Int
+    let variantId: String?
+    var quantity: Int?
     let title: String
     let price: String
     let currency: String

@@ -58,6 +58,8 @@ struct MCommerceApp: App {
                                 DIContainer.shared.resolveCartView()
                             case .favorites:
                                 DIContainer.shared.resolveFavView()
+                            case .search:
+                                DIContainer.shared.resolveHomeSearchView()
                             }
                         }
                 }

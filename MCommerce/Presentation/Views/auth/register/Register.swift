@@ -79,10 +79,18 @@ struct Register: View {
 //                    }
                 }
                 .padding()
-            }.alert("Loading... \n Verifying your email.." , isPresented: $viewModel.isLoading){}
+            }.alert("Loading... \n Verifying your email.." , isPresented: $viewModel.isLoading){
+                Button("Dismiss"){
+               
+                   
+                }
+            }
             .navigationBarBackButtonHidden(true)
             .alert(viewModel.errorMessage, isPresented: $viewModel.showError) {
-                Button("OK", role: .cancel) {}
+                Button("Dismiss", role: .cancel) {
+                    viewModel.errorMessage = ""
+                    viewModel.showError = false
+                }
             }
         
     }

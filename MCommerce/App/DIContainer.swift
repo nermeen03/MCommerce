@@ -46,10 +46,11 @@ final class DIContainer {
         return DiscountViewModel(discountsUseCase: useCase)
     }
     
-    func makeBrandViewModel() -> BrandViewModel {
+    func makeBrandViewModel() -> HomeViewModel {
         let remoteService = ApiCalling()
-        let repository = BrandRepository(service: remoteService)
-        return BrandViewModel(repository: repository)
+        let repository = HomeRepository(service: remoteService)
+        let useCase = FetchAllProductsUseCase(repo: repository)
+        return HomeViewModel(repository: repository, suggestedProductUseCase: useCase)
     }
     
     func resolveProductInfoViewModel(id: String) -> ProductViewModel {
@@ -146,5 +147,8 @@ final class DIContainer {
     }
     func resolveCartBadgeCount() -> CartBadgeViewModel {
         return cartBadgeCount
+    }
+    func resolveHomeSearchView() -> some View{
+        return HomeSearchView(viewModel: HomeSearchViewModel(useCase: FetchAllProductsUseCase(repo: HomeRepository(service: ApiCalling()))))
     }
 }

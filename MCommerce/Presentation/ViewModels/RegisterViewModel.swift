@@ -22,7 +22,7 @@ class RegisterViewModel : ObservableObject {
     @Published var isLoading: Bool = false
     @Published var isRegistered: Bool = false
     @Published var errorMessage: String = "Try again \n "
-//    @Published var isLogged : Bool = false
+
 
 
     @EnvironmentObject var coordinator: AppCoordinator
@@ -108,7 +108,7 @@ class RegisterViewModel : ObservableObject {
     }
     
     func validateAllFields() -> Bool {
-        return self.nameError.isEmpty && self.phoneNumberError.isEmpty && self.passwordError.isEmpty && self.confirmPasswordError.isEmpty && self.email.isEmpty
+        return self.nameError.isEmpty && self.phoneNumberError.isEmpty && self.passwordError.isEmpty && self.confirmPasswordError.isEmpty && self.emailError.isEmpty
     }
     func getFirstPart(beforeSpace text: String) -> String? {
         guard let range = text.range(of: " ") else { return nil }
@@ -123,13 +123,14 @@ class RegisterViewModel : ObservableObject {
         return "+2" + phone
     }
     func register () {
-        if !self.validateAllFields() {
+        
+        if self.validateAllFields() {
             isLoading = true
             useCase.register(user: User(email: email, firstName: getFirstPart(beforeSpace: name) ?? name, lastName: getSecondPart(afterSpace: name) ??  name, password:  password, phoneNumber: generatePhoneNumber(from: phoneNumber))){
                 result in switch result {
                 case .success(let user):
                     print("User registered successfully: \(user.id)")
-                    UserDefaultsManager.shared.saveUserId(user.id)
+                    UserDefaultsManager.shared.saveUserId(user.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
                     UserDefaultsManager.shared.setLoggedIn(true)
                     UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)
                     DispatchQueue.main.async {
@@ -158,7 +159,9 @@ class RegisterViewModel : ObservableObject {
                 }
             }
         }
+       
         
     }
+
     
 }

@@ -45,7 +45,7 @@ final class BrandDetailsRepository: BrandDetailsRepositoryProtocol {
                 let products = response.data.products.edges.map { edge in
                     let node = edge.node
                     let imageUrl = node.images.edges.first?.node.url ?? ""
-                    let priceString = node.variants.edges.first?.node.price ?? "0.0"
+                    let priceString = node.variants.edges.first?.node.price.amount ?? "0.0"
                     let price = Double(priceString) ?? 0.0
 
                     return BrandProduct(

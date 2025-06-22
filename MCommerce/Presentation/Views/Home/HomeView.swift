@@ -9,16 +9,29 @@ import SwiftUI
 import Alamofire
 
 struct HomeView: View {
-    @EnvironmentObject var coordinator: BrandsCoordinator
+    @EnvironmentObject var coordinator: AppCoordinator
     @StateObject private var brandViewModel = DIContainer.shared.makeBrandViewModel()
     var body: some View {
         
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                        Text("Search products")
+                            .foregroundColor(.gray)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .onTapGesture {
+                        coordinator.navigate(to: .search)
+                    }
                     BannerView()
                     BrandsView(viewModel: brandViewModel)
-                    RecentlyViewedView()
+                    RecentlyViewedView(products: $brandViewModel.suggestedProducts)
                 }
                 .padding()
             }

@@ -10,24 +10,17 @@ final class BrandDetailsViewModel: ObservableObject {
     
     @Published var products: [BrandProduct] = [] {
         didSet {
-            for product in products {
-                  print("product price: \(product.price)")
-              }
-//            selectedMaxPrice = self.maxPrice.currency
-            print("max price: \(selectedMaxPrice)")
+         
+         
+            maxPrice = self.products.compactMap { Double($0.price.currency) }.max() ?? 0.0
+            minPrice = self.products.compactMap { Double($0.price.currency) }.min() ?? 0.0
             selectedMaxPrice = self.maxPrice
             filterProducts()
            
         }
     }
-    var minPrice: Double {
-        products.compactMap { Double($0.price.currency) }.min() ?? 0.0
-    }
-    var maxPrice: Double {
-       
-        return products.compactMap { Double($0.price.currency) }.max() ?? 300
-       
-    }
+  @Published  var minPrice: Double = 0
+   @Published var maxPrice: Double = 300
     @Published var selectedMaxPrice: Double = 0.0 {
         didSet {
           
@@ -66,7 +59,7 @@ final class BrandDetailsViewModel: ObservableObject {
         guard !searchText.isEmpty else {
             filteredProducts = products.filter {
                 Double($0.price.currency) <= selectedMaxPrice
-            }
+            } .sorted { $0.price.currency > $1.price.currency }
             return
         }
 
@@ -87,7 +80,7 @@ final class BrandDetailsViewModel: ObservableObject {
                 }
         }.filter {
             Double($0.price.currency) <= selectedMaxPrice
-        }
+        }  .sorted { $0.price.currency > $1.price.currency }
     }
 
 }

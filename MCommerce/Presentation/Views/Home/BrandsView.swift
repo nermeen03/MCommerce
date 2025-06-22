@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct BrandsView: View {
-    @StateObject var viewModel: BrandViewModel
+    @StateObject var viewModel: HomeViewModel
     @EnvironmentObject var coordinator: AppCoordinator
 
     var body: some View {
@@ -31,7 +31,7 @@ struct BrandsView: View {
                 }
             }
         }
-        .padding()
+        .padding(.horizontal)
     }
 }
 
@@ -70,9 +70,10 @@ struct ProductCard: View {
             Text(title)
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
+                .lineLimit(1)
         }
         .frame(width: 140)
-        .padding()
+        .padding(.horizontal)
         .background(Color.white)
         .cornerRadius(12)
         .shadow(radius: 2)

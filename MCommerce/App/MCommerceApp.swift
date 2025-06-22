@@ -56,6 +56,8 @@ struct MCommerceApp: App {
                                 BrandDetailsView(brand: brand, viewModel: BrandDetailsViewModel(repository: BrandDetailsRepository()))
                             case .cart:
                                 DIContainer.shared.resolveCartView()
+                            case .search:
+                                DIContainer.shared.resolveHomeSearchView()
                             default:
                                 CartView()
                             }

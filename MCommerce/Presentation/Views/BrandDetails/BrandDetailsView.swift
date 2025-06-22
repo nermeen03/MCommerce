@@ -18,31 +18,14 @@ struct BrandDetailsView: View {
             VStack(alignment: .leading, spacing: 0) {
               
                 HStack{  SearchBarView(searchText: $viewModel.searchText)
-                    Button(action: {
-                        withAnimation {
-                            isFilterExpanded.toggle()
-                        }
-                    }) {
-                        HStack {
-                            Image(systemName: "line.horizontal.3.decrease.circle")
-                                .foregroundColor(.deepPurple)
-//                            Text("Filter")
-//                                .foregroundColor(.orangeCustom)
-                          
-                            Image(systemName: isFilterExpanded ? "chevron.up" : "chevron.down")
-                                .foregroundColor(.deepPurple)
-                        }
-                    }}
+                        ExpandedFilter(isFilterExpanded: $isFilterExpanded)
+                }
                 FilterBarView(
                               isExpanded: $isFilterExpanded,
                               selectedMaxPrice: $viewModel.selectedMaxPrice,
-                              minPrice: viewModel.minPrice,
-                              maxPrice: viewModel.maxPrice
-                          ) {
-//                              viewModel.filteredProducts = viewModel.products.filter { product in
-//                                  guard let price = Double(product.price) else { return false }
-//                                  return price <= maxPrice
-                              }
+                              minPrice: $viewModel.minPrice,
+                              maxPrice: $viewModel.maxPrice
+                          )
                 
                 Text(brand.title)
                     .font(.system(size: 40, weight: .bold))

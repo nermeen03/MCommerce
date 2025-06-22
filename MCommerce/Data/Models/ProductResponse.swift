@@ -51,6 +51,29 @@ struct VariantEdge: Decodable {
 }
 
 struct VariantNodee: Decodable {
-    let ID : String?
-    let price: String
+    let id: String?
+    let price: Price
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case price
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try? container.decode(String.self, forKey: .id)
+
+        // Try decoding `price` as nested object first
+        if let priceObject = try? container.decode(Price.self, forKey: .price) {
+            price = priceObject
+        } else {
+            // If it's a plain string
+            let priceString = try container.decode(String.self, forKey: .price)
+            price = Price(amount: priceString, currencyCode: nil)
+        }
+    }
 }
+
+
+
+

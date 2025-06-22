@@ -5,9 +5,9 @@ import SwiftUI
 struct FilterBarView: View {
     @Binding var isExpanded: Bool
     @Binding var selectedMaxPrice: Double
-    let minPrice: Double
-    let maxPrice: Double
-    let onFilterChanged: () -> Void
+  @Binding  var minPrice: Double
+  @Binding  var maxPrice: Double
+  
 
     var body: some View {
         VStack(alignment: .leading) {

@@ -20,7 +20,7 @@ struct HomeSearchView: View {
                 }
                 FilterBarView(isExpanded: $isExpanded, selectedMaxPrice: $viewModel.selectedMaxPrice, minPrice: $viewModel.minPrice, maxPrice : $viewModel.maxPrice)
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                    ForEach(viewModel.filteredProducts) { product in
+                    ForEach(viewModel.filteredProductPrice) { product in
                         SearchProductCard(product: product) .onTapGesture {
                             coordinator.navigate(to: .productInfo(product: product.id))
                         }

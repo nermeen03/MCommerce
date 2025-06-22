@@ -9,17 +9,17 @@ import Foundation
 class HomeSearchViewModel : ObservableObject{
     private let useCase : FetchAllProductsUseCase
     @Published var products : [Product] = []
- 
-    @Published var maxPrice: Double = 150
+    @Published var maxPrice: Double = 100000
     @Published var minPrice: Double = 0
     @Published var searchText: String = "" {
         didSet {
           
-            if let newMax = filteredProducts.map(\.price.currency).max() {
-                       maxPrice = newMax
-                       selectedMaxPrice = newMax
+           
+            maxPrice = filteredProducts.map{$0.price.currency}.max() ?? maxPrice
+                       selectedMaxPrice = maxPrice
+            print("gggggggg")
                        minPrice = filteredProducts.map(\.price.currency).min() ?? 0
-                  }
+                  
         }
     }
 
@@ -34,11 +34,14 @@ var filteredProducts: [Product] {
                         .split(separator: " ")
                         .contains { word in word.starts(with: searchText.lowercased().trimmingCharacters(in: .whitespaces)) }
                 }
-                .filter { $0.price.currency <= selectedMaxPrice }
-                .sorted { $0.price.currency > $1.price.currency }
+               
         }
         return myProducts
         
+    }
+    var filteredProductPrice: [Product] {
+        return filteredProducts.filter { $0.price.currency <= selectedMaxPrice }
+            .sorted { $0.price.currency > $1.price.currency }
     }
 
     init(useCase: FetchAllProductsUseCase) {

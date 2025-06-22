@@ -24,16 +24,16 @@ class ProductViewModel: ObservableObject {
     private let addFavUseCase : AddFavProdUseCase
     private let deleteFavUseCase : DeleteFavProdUseCase
     private let checkProductsUseCase : CheckFavouriteProdUseCase
-    private let cartUseCase : AddInCartUseCase
+    private let cartViewModel : AddCartViewModel
     
     private let productId : String
-    init(useCase : ProductInfoUseCase, id : String , deleteFavUseCase : DeleteFavProdUseCase , checkProductsUseCase : CheckFavouriteProdUseCase , AddFavUseCase : AddFavProdUseCase, cartUseCase : AddInCartUseCase){
+    init(useCase : ProductInfoUseCase, id : String , deleteFavUseCase : DeleteFavProdUseCase , checkProductsUseCase : CheckFavouriteProdUseCase , AddFavUseCase : AddFavProdUseCase, cartUseCase : AddCartViewModel){
         self.FetchInfoUseCase = useCase
         self.productId = id
         self.deleteFavUseCase = deleteFavUseCase
         self.checkProductsUseCase = checkProductsUseCase
         self.addFavUseCase = AddFavUseCase
-        self.cartUseCase = cartUseCase
+        self.cartViewModel = cartUseCase
         FetchInfoUseCase.getProductById(productId: productId) { [weak self] product in
             switch product {
             case .success(let product):
@@ -73,100 +73,100 @@ class ProductViewModel: ObservableObject {
             self?.isLoading = false
         }
     }
-        func addToFav(){
-            if UserDefaultsManager.shared.isLoggedIn() {
-                guard let product = product,
-                      let imageUrl = product.images.first else {
-                    print("Invalid product data")
-                    return
-                }
-                
-                let favProd = FavoriteProduct(
-                    productId: product.id.filter{$0.isNumber},
-                    title: product.title,
-                    imageUrl: imageUrl
-                )
-                
-                addFavUseCase.execute(product: favProd) { [weak self] result in
-                    switch result {
-                    case .success:
-                        print("")
-                        
-                    case .failure(let error):
-                        print("")
-                        
-                    }
-                }
-            }
-        }
-        func deleteFromFav(){
-            if UserDefaultsManager.shared.isLoggedIn() {
-                deleteFavUseCase.execute(productId: self.productId.filter{$0.isNumber}) { [weak self] result in
-                    switch result {
-                    case .success:
-                        print("")
-                        
-                    case .failure(let error):
-                        print("")
-                        
-                    }
-                }
-            }
-        }
-        
-        private func extractOptionsAndPrices(from variants: [VariantDto]) {
-            var colors: Set<String> = []
-            var sizes: Set<String> = []
-            var priceMap: [String: String] = [:]
-            
-            for variant in variants {
-                var color: String?
-                var size: String?
-                
-                for option in variant.selectedOptions {
-                    if option.name.lowercased() == "color" {
-                        color = option.value
-                        colors.insert(option.value)
-                    } else if option.name.lowercased() == "size" {
-                        size = option.value
-                        sizes.insert(option.value)
-                    }
-                }
-                
-                // Build key like "black|OS"
-                if let c = color, let s = size {
-                    let key = "\(c)|\(s)"
-                    priceMap[key] = variant.price
-                }
-            }
-            
-            self.availableColors = Array(colors)
-            self.availableSizes = Array(sizes)
-            self.variantPriceMap = priceMap
-        }
-        
-        func priceForSelected(color: String, size: String) -> String? {
-            return variantPriceMap["\(color)|\(size)"]
-        }
-        func updatePriceForSelection() {
-            guard let color = selectedColor, let size = selectedSize else {
-                price = nil
+    func addToFav(){
+        if UserDefaultsManager.shared.isLoggedIn() {
+            guard let product = product,
+                  let imageUrl = product.images.first else {
+                print("Invalid product data")
                 return
             }
-            price = priceForSelected(color: color, size: size)
-        }
-        func colorFromName(_ name: String) -> Color {
-            switch name.lowercased() {
-            case "red": return .red
-            case "blue": return .blue
-            case "black": return .black
-            case "green": return .green
-            case "yellow": return .yellow
-            case "orange": return .orange
-            case "gray": return .gray
-            default: return .clear // fallback for unknown names
+            
+            let favProd = FavoriteProduct(
+                productId: product.id.filter{$0.isNumber},
+                title: product.title,
+                imageUrl: imageUrl
+            )
+            
+            addFavUseCase.execute(product: favProd) { [weak self] result in
+                switch result {
+                case .success:
+                    print("")
+                    
+                case .failure(let error):
+                    print("")
+                    
+                }
             }
         }
+    }
+    func deleteFromFav(){
+        if UserDefaultsManager.shared.isLoggedIn() {
+            deleteFavUseCase.execute(productId: self.productId.filter{$0.isNumber}) { [weak self] result in
+                switch result {
+                case .success:
+                    print("")
+                    
+                case .failure(let error):
+                    print("")
+                    
+                }
+            }
+        }
+    }
+    
+    private func extractOptionsAndPrices(from variants: [VariantDto]) {
+        var colors: Set<String> = []
+        var sizes: Set<String> = []
+        var priceMap: [String: String] = [:]
+        
+        for variant in variants {
+            var color: String?
+            var size: String?
+            
+            for option in variant.selectedOptions {
+                if option.name.lowercased() == "color" {
+                    color = option.value
+                    colors.insert(option.value)
+                } else if option.name.lowercased() == "size" {
+                    size = option.value
+                    sizes.insert(option.value)
+                }
+            }
+            
+            // Build key like "black|OS"
+            if let c = color, let s = size {
+                let key = "\(c)|\(s)"
+                priceMap[key] = variant.price
+            }
+        }
+        
+        self.availableColors = Array(colors)
+        self.availableSizes = Array(sizes)
+        self.variantPriceMap = priceMap
+    }
+    
+    func priceForSelected(color: String, size: String) -> String? {
+        return variantPriceMap["\(color)|\(size)"]
+    }
+    func updatePriceForSelection() {
+        guard let color = selectedColor, let size = selectedSize else {
+            price = nil
+            return
+        }
+        price = priceForSelected(color: color, size: size)
+    }
+    func colorFromName(_ name: String) -> Color {
+        switch name.lowercased() {
+        case "red": return .red
+        case "blue": return .blue
+        case "black": return .black
+        case "green": return .green
+        case "yellow": return .yellow
+        case "orange": return .orange
+        case "gray": return .gray
+        default: return .clear // fallback for unknown names
+        }
+    }
     func addToCart() {
         guard let product = product else { return }
         
@@ -174,19 +174,17 @@ class ProductViewModel: ObservableObject {
             print("⚠️ Please select color and size first")
             return
         }
-        print("❌ check1")
-
         guard let selectedVariant = product.variants.first(where: {
             $0.title.contains(selectedColor) && $0.title.contains(selectedSize)
         }) else {
             print("❗ No matching variant found for selection")
             return
         }
-        print("❌ check2")
-        self.cartUseCase.addOrUpdateProduct(product: product, productVariant: selectedVariant) { _ in
-            print("✅ Product added to cart")
-        }
-    }
-
+        let saveProduct = CartItem(id: product.id, variantId: product.variants.first?.id ?? "", title: product.title, price: product.variants.first?.price ?? "\(0)", currency: "USD", imageUrl: imageUrls.first, color: selectedColor, size: selectedSize)
+        
+        self.cartViewModel.addOrUpdateProduct(product: saveProduct, productVariant: selectedVariant.id)
         
     }
+    
+    
+}

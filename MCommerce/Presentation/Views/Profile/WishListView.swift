@@ -35,6 +35,7 @@ struct WishListView: View {
 }
 
 struct WishListTitle : View{
+    @EnvironmentObject var coordinator: AppCoordinator
     @ObservedObject var favViewModel: ProfileFavouriteViewModel
     var body: some View {
         HStack {
@@ -42,7 +43,9 @@ struct WishListTitle : View{
                 .font(.headline)
             Spacer()
             if favViewModel.favouriteProducts.count > 4 {
-                Button("Read More", action: {})
+                Button("Read More", action: {
+                    coordinator.navigate(to: .favorites)
+                })
                     .font(.headline)
             }
         }
@@ -57,7 +60,7 @@ struct WishListItemsView: View {
 
     var body: some View {
         LazyVGrid(columns: columns, spacing: 16) {
-            ForEach(favViewModel.favouriteProducts) { product in
+            ForEach(favViewModel.favouriteProducts.prefix(4)) { product in
                 VStack(alignment: .leading, spacing: 6) {
                     if let url = URL(string: product.imageUrl) {
                         ImageView(url: url)

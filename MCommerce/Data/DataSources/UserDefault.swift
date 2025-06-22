@@ -19,6 +19,7 @@ class UserDefaultsManager {
     private let lastNameKey = "LAST_NAME"
     private let phoneNumberKey = "PHONE_NUMBER"
     private let cartIdKey = "CART_ID"
+    private let cartCountKey = "CART_COUNT"
     
     private init() {}
     
@@ -95,5 +96,11 @@ class UserDefaultsManager {
     }
     func clearCartId() {
         UserDefaults.standard.removeObject(forKey: cartIdKey)
+    }
+    func setCartBadgeCount(_ cartCount: Int) {
+        UserDefaults.standard.set(cartCount, forKey: cartCountKey)
+    }
+    func getCartCount() -> Int? {
+        UserDefaults.standard.integer(forKey: cartCountKey)
     }
 }

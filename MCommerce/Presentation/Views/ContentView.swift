@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     //@EnvironmentObject var coordinator: BrandsCoordinator
-
     init() {
         if UserDefaultsManager.shared.isLoggedIn() {
             print("User ID: \(UserDefaultsManager.shared.getUserId() ?? "No ID")")
@@ -27,9 +26,6 @@ struct ContentView: View {
     }    
 }
 
-#Preview {
-    ContentView()
-}
 
 
 

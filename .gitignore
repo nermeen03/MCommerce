@@ -33,3 +33,4 @@ xcuserdata/
 **/xcshareddata/WorkspaceSettings.xcsettings
 Config.xcconfig
 *.pbxproj
+*.js

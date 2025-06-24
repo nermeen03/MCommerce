@@ -44,13 +44,20 @@ class GetCartViewModel : ObservableObject{
         self.addCartVM = addCartVM
     }
     
-    func getProducts(){
+    func getProducts(completion: @escaping (String?) -> Void) {
         isLoading = true
-        getCartUseCase.getCart(completion: {[weak self]  result in
+        getCartUseCase.getCart(completion: { [weak self] result in
             self?.isLoading = false
-            self?.cartItems = result
+            switch result {
+            case .success(let items):
+                self?.cartItems = items
+                completion(items.first?.checkoutUrl)
+            case .failure:
+                completion(nil)
+            }
         })
     }
+
     func removeProductFromCart(cartItem: CartItem) {
         var product = cartItem
         self.cartBadgeVM.badgeCount -= cartItem.quantity ?? 0
@@ -72,11 +79,14 @@ class GetCartViewModel : ObservableObject{
                     if cartItem.quantity ?? 0 >= 1 {
                         self.addCartVM.addOrUpdateProduct(product: cartItem, productVariant: cartItem.variantId ?? "")
                     }
-                    self.getProducts()
+                    self.getProducts { checkoutUrl in
+                        print("Checkout URL after update: \(checkoutUrl ?? "nil")")
+                    }
                 case .failure(let error):
                     print("❌ Failed to delete product: \(error)")
                 }
             }
+
         }
     }
 }

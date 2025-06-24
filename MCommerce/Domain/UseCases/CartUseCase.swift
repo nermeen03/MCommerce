@@ -43,18 +43,17 @@ struct AddInCartUseCase{
 struct GetCartUseCase{
     let cartRepo : CartRepo
     
-    func getCart(completion : @escaping ([CartItem]) -> Void){
-        guard let cartId = UserDefaultsManager.shared.getCartId() else {return}
-        cartRepo.getCartItems(cartId: cartId) {result in
-            switch result {
-            case .success(let items):
-                completion(items)
-            case .failure(let error):
-                completion([])
-                print("Error fetching cart: \(error)")
-            }
+    func getCart(completion: @escaping (Result<[CartItem], NetworkError>) -> Void) {
+        guard let cartId = UserDefaultsManager.shared.getCartId() else {
+            completion(.failure(.invalidResponse))
+            return
+        }
+
+        cartRepo.getCartItems(cartId: cartId) { result in
+            completion(result) 
         }
     }
+
     func removeProductFromCart(cartItem: CartItem, completion: @escaping (Result<String, NetworkError>) -> Void) {
         guard let cartId = UserDefaultsManager.shared.getCartId() else { return }
         

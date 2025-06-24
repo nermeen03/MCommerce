@@ -59,10 +59,14 @@ struct ProfileView: View {
                 }
             }else{
                 VStack(alignment: .center, content: {
+                    HStack(alignment: .center, content: {
+                        Text("Welcome Guest").font(.title)
+                    }).padding(.bottom , 64)
                     Button(action: {
+                        coordinator.navigate(to: .login)
                     }) {
                         Text("Login")
-                            .font(.system(size: 40, weight: .heavy))
+                            .font(.system(size: 24, weight: .heavy))
                             .frame(width: UIScreen.main.bounds.width - 200, height: 90)
                             .foregroundColor(.yellow)
                             .background(Color.blue)
@@ -70,14 +74,16 @@ struct ProfileView: View {
                     }
                     
                     Button(action: {
+                        coordinator.navigate(to: .signup)
                     }) {
                         Text("Register")
-                            .font(.system(size: 40, weight: .heavy))
+                            .font(.system(size: 24, weight: .heavy))
                             .frame(width: UIScreen.main.bounds.width - 200, height: 90)
                             .foregroundColor(.blue)
                             .background(Color.yellow)
                             .cornerRadius(12)
                     }
+                    Spacer()
                 })
             }
         }

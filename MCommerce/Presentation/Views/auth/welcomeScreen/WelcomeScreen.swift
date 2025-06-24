@@ -51,7 +51,8 @@ struct WelcomeScreen: View {
                         backgroundColor: .clear,
                         verticalOffset: -20,
                         action: {
-                            coordinator.navigate(to: .home)
+                            coordinator.navigate(to: .main)
+                            UserDefaultsManager.shared.enseureGuestmode()
                         }
                     )
                 }

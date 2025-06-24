@@ -34,29 +34,35 @@ class GetCartViewModel : ObservableObject{
     
     @Published var cartItems: [CartItem] = []
     @Published var isLoading: Bool = false
+    @Published var isLoggedIn : Bool
     let getCartUseCase : GetCartUseCase
     var cartBadgeVM : CartBadgeViewModel
     var addCartVM : AddCartViewModel
     
     init(getCartUseCase: GetCartUseCase, cartBadgeVM : CartBadgeViewModel, addCartVM : AddCartViewModel) {
         self.getCartUseCase = getCartUseCase
+        self.isLoggedIn = UserDefaultsManager.shared.isLoggedIn()
         self.cartBadgeVM = cartBadgeVM
         self.addCartVM = addCartVM
     }
     
     func getProducts(completion: @escaping (String?) -> Void) {
         isLoading = true
-        getCartUseCase.getCart(completion: { [weak self] result in
-            self?.isLoading = false
-            switch result {
-            case .success(let items):
-                self?.cartItems = items
-                completion(items.first?.checkoutUrl)
-            case .failure:
-                completion(nil)
-            }
-        })
-    }
+        if(isLoggedIn){
+            getCartUseCase.getCart(completion: { [weak self] result in
+                self?.isLoading = false
+                switch result {
+                case .success(let items):
+                    self?.cartItems = items
+                    completion(items.first?.checkoutUrl)
+                case .failure:
+                    completion(nil)
+                }
+            })
+        }
+        else {
+            isLoading = false
+        }}
 
     func removeProductFromCart(cartItem: CartItem) {
         var product = cartItem

@@ -69,7 +69,16 @@ class UserDefaultsManager {
         UserDefaults.standard.set(email, forKey: emailKey)
         UserDefaults.standard.set(firstName, forKey: firstNameKey)
         UserDefaults.standard.set(lastName, forKey: lastNameKey)
+        
        
+        
+    }
+    func enseureGuestmode(){
+        UserDefaults.standard.set(false , forKey: isLoggedInKey)
+        UserDefaults.standard.removeObject(forKey: emailKey)
+        UserDefaults.standard.removeObject(forKey: firstNameKey)
+        UserDefaults.standard.removeObject(forKey: lastNameKey)
+        UserDefaults.standard.removeObject(forKey: userIdKey)
         
     }
     func getEmail() -> String? {

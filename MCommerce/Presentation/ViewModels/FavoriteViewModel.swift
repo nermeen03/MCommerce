@@ -14,6 +14,7 @@ class FavoriteViewModel : ObservableObject {
     }
     @Published var isLoading: Bool = true
     @Published var isAlertShowing: Bool = false
+    @Published var isLoggedIn: Bool
     @Published var searchText: String = ""{
         didSet{
             filterProducts()
@@ -27,15 +28,17 @@ class FavoriteViewModel : ObservableObject {
     init(getProductsUseCase: GetFavProdUseCase , deleteProductUseCase: DeleteFavProdUseCase ) {
         self.getProductsUseCase = getProductsUseCase
         self.deleteProductUseCase = deleteProductUseCase
-        
-        self.getProductsUseCase.execute { [weak self] result in
+        self.isLoggedIn = UserDefaultsManager.shared.isLoggedIn()
+        print(self.isLoggedIn)
+        if(isLoggedIn){
+            self.getProductsUseCase.execute { [weak self] result in
             switch result {
             case .success(let favorites):
                 self?.favorites = favorites
             case .failure:
                 break
             }
-        }
+        }}
     }
     
     func deleteProduct(id: String){

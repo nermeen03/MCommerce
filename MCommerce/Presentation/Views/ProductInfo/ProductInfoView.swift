@@ -93,41 +93,41 @@ struct ProductInfoView: View {
                 
                 
                 Spacer()
-                
-                HStack {
-                    Button(action: {
-                        if viewModel.isFav {
-                            viewModel.isAlertActive = true
-                        }else{
-                            viewModel.addToFav()
-                            viewModel.isFav.toggle()
+                if (viewModel.isLoggedIn){
+                    HStack {
+                        Button(action: {
+                            if viewModel.isFav {
+                                viewModel.isAlertActive = true
+                            }else{
+                                viewModel.addToFav()
+                                viewModel.isFav.toggle()
+                            }
+                            
+                        }) {
+                            Image(systemName: viewModel.isFav ? "heart.fill" : "heart")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(.deepPurple)
+                                .padding(12)
+                                .background(Circle().fill(Color.gray.opacity(0.1)))
                         }
                         
-                    }) {
-                        Image(systemName: viewModel.isFav ? "heart.fill" : "heart")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 20, height: 20)
-                            .foregroundColor(.deepPurple)
-                            .padding(12)
-                            .background(Circle().fill(Color.gray.opacity(0.1)))
-                    }
-                    
-                    CustomButton(
-                        text: "Add to bag",
-                        textColor: .white,
-                        backgroundColor: .deepPurple,
-                        verticalOffset: 0,
-                        action: {
-                            viewModel.addToCart()
-                            showToast = true
+                        CustomButton(
+                            text: "Add to bag",
+                            textColor: .white,
+                            backgroundColor: .deepPurple,
+                            verticalOffset: 0,
+                            action: {
+                                viewModel.addToCart()
+                                showToast = true
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                     showToast = false
+                                }
                             }
-                        }
-                    )
-                }
-                .padding(.horizontal)
+                        )
+                    }
+                    .padding(.horizontal)}
                 
                 
             }}.toast(isShowing: $showToast, message: "Saved to cart!")

@@ -11,25 +11,32 @@ struct FavView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     @StateObject var viewModel: FavoriteViewModel = DIContainer.shared.resolveFavoritesViewModel()
     var body: some View {
-        if(viewModel.isLoading){
+        if(!viewModel.isLoggedIn){
             VStack{
-                ProgressView().progressViewStyle(CircularProgressViewStyle()).scaleEffect(2)
+              
+                Text("You must login to see your favorites").font(.title2).bold().bold().foregroundColor(.gray)
             }.frame(maxWidth: .infinity, maxHeight: .infinity ).background(.white.opacity(0.7))
         }
-        else{
-            VStack{
-                SearchBarView(searchText: $viewModel.searchText).padding()
-                List{
-                    
-                    ForEach(viewModel.filteredFavorites){
-                        prod in
-                        FavCard(product: prod).onTapGesture {
-                            coordinator.navigate(to: .productInfo(product: prod.id!))
-                        }
-                    }.onDelete(perform: delete)
-                }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            }.listStyle(.plain)
-        }
+        else {
+            if(viewModel.isLoading){
+                VStack{
+                    ProgressView().progressViewStyle(CircularProgressViewStyle()).scaleEffect(2)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity ).background(.white.opacity(0.7))
+            }
+            else{
+                VStack{
+                    SearchBarView(searchText: $viewModel.searchText).padding()
+                    List{
+                        
+                        ForEach(viewModel.filteredFavorites){
+                            prod in
+                            FavCard(product: prod).onTapGesture {
+                                coordinator.navigate(to: .productInfo(product: prod.id!))
+                            }
+                        }.onDelete(perform: delete)
+                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                }.listStyle(.plain)
+            }}
         }
     func delete(at offsets : IndexSet){
         for index in offsets {

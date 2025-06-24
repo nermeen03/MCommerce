@@ -21,6 +21,7 @@
 		FF07BD652E03541800022C79 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD642E03541800022C79 /* FirebaseCore */; };
 		FF07BD672E03541800022C79 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD662E03541800022C79 /* FirebaseFirestore */; };
 		FF07BD692E03541800022C79 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD682E03541800022C79 /* FirebaseFunctions */; };
+		FFAB065C2E0B5ECB0030AA01 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = FFAB065B2E0B5ECB0030AA01 /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */,
+				FFAB065C2E0B5ECB0030AA01 /* Lottie in Frameworks */,
 				A498F6212E09720100FD3B0B /* StripePaymentSheet in Frameworks */,
 				FF07BD5E2E034FFC00022C79 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				FF07BD5C2E034FFC00022C79 /* FirebaseAnalyticsIdentitySupport in Frameworks */,
@@ -128,6 +130,7 @@
 				A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+				FFAB065A2E0B5ECB0030AA01 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;
@@ -388,6 +391,14 @@
 				minimumVersion = 11.14.0;
 			};
 		};
+		FFAB065A2E0B5ECB0030AA01 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -455,6 +466,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFunctions;
+		};
+		FFAB065B2E0B5ECB0030AA01 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FFAB065A2E0B5ECB0030AA01 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

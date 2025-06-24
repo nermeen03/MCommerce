@@ -24,19 +24,31 @@ struct FavView: View {
                 }.frame(maxWidth: .infinity, maxHeight: .infinity ).background(.white.opacity(0.7))
             }
             else{
-                VStack{
-                    SearchBarView(searchText: $viewModel.searchText).padding()
-                    List{
-                        
-                        ForEach(viewModel.filteredFavorites){
-                            prod in
-                            FavCard(product: prod).onTapGesture {
-                                coordinator.navigate(to: .productInfo(product: prod.id!))
-                            }
-                        }.onDelete(perform: delete)
-                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                }.listStyle(.plain)
-            }}
+                if viewModel.favorites.isEmpty {
+                    VStack {
+                              
+                               LottieView(animationName: "tradia") 
+                                   .frame(width: 200, height: 200)
+                        Text("You have no favorites")
+                            .font(.title).bold().foregroundColor(.gray)
+                    
+                           }.frame(maxWidth: .infinity, maxHeight: .infinity ).background(.white.opacity(0.7))
+                }
+                else{
+                    VStack{
+                        SearchBarView(searchText: $viewModel.searchText).padding()
+                        List{
+                            
+                            ForEach(viewModel.filteredFavorites){
+                                prod in
+                                FavCard(product: prod).onTapGesture {
+                                    coordinator.navigate(to: .productInfo(product: prod.id!))
+                                }
+                            }.onDelete(perform: delete)
+                        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }.listStyle(.plain)
+                }}// else
+        }
         }
     func delete(at offsets : IndexSet){
         for index in offsets {

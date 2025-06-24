@@ -20,6 +20,7 @@ class UserDefaultsManager {
     private let phoneNumberKey = "PHONE_NUMBER"
     private let cartIdKey = "CART_ID"
     private let cartCountKey = "CART_COUNT"
+    private let accessTokenKey = "ACCESS_TOKEN"
     
     private init() {}
     
@@ -52,7 +53,12 @@ class UserDefaultsManager {
     func getCurrency() -> String {
         UserDefaults.standard.string(forKey: currencyKey) ?? "USD"
     }
-    
+    func setAccessToken(_ token: String) {
+        UserDefaults.standard.set(token, forKey: accessTokenKey)
+    }
+    func getAccessToken() -> String? {
+        UserDefaults.standard.string(forKey: accessTokenKey)
+    }
     func setLoggedIn(_ loggedIn: Bool) {
         UserDefaults.standard.set(loggedIn, forKey: isLoggedInKey)
     }
@@ -73,12 +79,14 @@ class UserDefaultsManager {
        
         
     }
+    
     func enseureGuestmode(){
         UserDefaults.standard.set(false , forKey: isLoggedInKey)
         UserDefaults.standard.removeObject(forKey: emailKey)
         UserDefaults.standard.removeObject(forKey: firstNameKey)
         UserDefaults.standard.removeObject(forKey: lastNameKey)
         UserDefaults.standard.removeObject(forKey: userIdKey)
+        UserDefaults.standard.removeObject(forKey: accessTokenKey)
         
     }
     func getEmail() -> String? {

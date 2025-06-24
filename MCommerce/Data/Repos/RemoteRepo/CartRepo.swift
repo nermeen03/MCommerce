@@ -123,6 +123,8 @@ struct CartRepo {
         ApiCalling().callQueryApi(query: query) { (result: Result<GetCartResponse, NetworkError>) in
             switch result {
             case .success(let response):
+                let checkoutUrl = response.data?.cart?.checkoutUrl ?? ""
+                print(response.data?.cart?.checkoutUrl ?? "No checkout URL")
                 let items = response.data?.cart?.lines?.edges.map { edge -> CartItem in
                     let variantParts = edge.node.merchandise.title.components(separatedBy: " / ")
                     return CartItem(
@@ -134,7 +136,8 @@ struct CartRepo {
                         currency: edge.node.merchandise.price.currencyCode ?? "USD",
                         imageUrl: edge.node.merchandise.product.featuredImage?.url,
                         color: variantParts.count > 1 ? variantParts.last : nil,
-                        size: variantParts.first
+                        size: variantParts.first,
+                        checkoutUrl: checkoutUrl
                     )
                 } ?? []
                 completion(.success(items))

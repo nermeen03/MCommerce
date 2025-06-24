@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CartListView: View {
-    
+    @State private var showSafari = false
+       @State private var safariURL: URL? = nil
     @ObservedObject var cartViewModel: GetCartViewModel
     var body: some View {
         VStack {
@@ -53,7 +54,14 @@ struct CartListView: View {
                         
                         Section {
                             Button(action: {
-                                // Proceed to checkout action
+                                cartViewModel.getProducts { checkoutUrl in
+                                    if let urlString = checkoutUrl, let url = URL(string: urlString) {
+                                        safariURL = url
+                                        showSafari = true
+                                    } else {
+                                        print("❌ Invalid or missing checkout URL")
+                                    }
+                                }
                             }) {
                                 Text("Proceed to Checkout")
                                     .frame(maxWidth: .infinity)
@@ -61,6 +69,11 @@ struct CartListView: View {
                                     .background(Color.blue)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
+                            }
+                            .sheet(isPresented: $showSafari) {
+                                if let url = safariURL {
+                                    SafariView(url: url)
+                                }
                             }
                             .listRowBackground(Color.clear)
                             .padding(.bottom, 80)
@@ -72,8 +85,11 @@ struct CartListView: View {
         }
         .onAppear {
             if cartViewModel.cartItems.isEmpty {
-                cartViewModel.getProducts()
+                cartViewModel.getProducts { checkoutUrl in
+                   
+                }
             }
+
         }
     }
     

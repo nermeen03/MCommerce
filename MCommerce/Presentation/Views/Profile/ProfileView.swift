@@ -15,29 +15,33 @@ struct ProfileView: View {
     
     var body: some View {
         VStack{
+            
             HStack {
                 Spacer()
                 Text("Profile")
                     .font(.largeTitle)
-                    .bold().padding(.trailing,50)
-                Button(action: {
-                    print("Favorite")
-                }) {
-                    Image(systemName: "cart")
-                        .padding(8)
-                        .background(Color.gray.opacity(0.2))
-                        .clipShape(Circle())
-                }
-
-                Button(action: {
-                    coordinator.navigate(to: .setting)
-                }) {
-                    Image(systemName: "gear")
-                        .padding(8)
-                        .background(Color.gray.opacity(0.2))
-                        .clipShape(Circle())
-                }
-            }
+                    .bold().padding(.trailing, loggedIn ? 50 : 10)
+                if(!loggedIn){
+                    Spacer() }
+                if loggedIn{
+                    Button(action: {
+                        print("Favorite")
+                    }) {
+                        Image(systemName: "cart")
+                            .padding(8)
+                            .background(Color.gray.opacity(0.2))
+                            .clipShape(Circle())
+                    }
+                    
+                    Button(action: {
+                        coordinator.navigate(to: .setting)
+                    }) {
+                        Image(systemName: "gear")
+                            .padding(8)
+                            .background(Color.gray.opacity(0.2))
+                            .clipShape(Circle())
+                    }
+                }}
             .padding(.horizontal)
             .onAppear{
                 profileViewModel.getData()

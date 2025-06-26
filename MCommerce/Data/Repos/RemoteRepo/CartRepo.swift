@@ -9,31 +9,75 @@ import Foundation
 
 struct CartRepo {
     
-    func createCart(completion: @escaping (Result<String, NetworkError>) -> Void) {
-        let mutation = """
-        mutation {
-          cartCreate {
-            cart {
-              id
-              checkoutUrl
-            }
-          }
-        }
-        """
-        
-        ApiCalling().callQueryApi(query: mutation) { (result: Result<CartCreateResponse, NetworkError>) in
-            switch result {
-            case .success(let response):
-                if let cartId = response.data?.cartCreate?.cart?.id {
-                    completion(.success(cartId))
-                } else {
-                    completion(.failure(.invalidResponse))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
+    private let accessTokenKey = "ACCESS_TOKEN"
+       private let defaults = UserDefaults.standard
+       private var customerAccessToken: String? {
+           defaults.string(forKey: accessTokenKey)
+       }
+       func createCart(completion: @escaping (Result<String, NetworkError>) -> Void) {
+           let buyerIdentitySnippet: String = {
+               guard let token = customerAccessToken else { return "" }
+               return """
+                   buyerIdentity: {
+                     customerAccessToken: "\(token)"
+                   },
+               """
+           }()
+
+           let mutation = """
+           mutation {
+             cartCreate(
+               input: {
+                 \(buyerIdentitySnippet)
+               }
+             ) {
+               cart {
+                 id
+                 checkoutUrl
+               }
+               userErrors { field message }
+             }
+           }
+           """
+
+           ApiCalling().callQueryApi(query: mutation) { (result: Result<CartCreateResponse, NetworkError>) in
+               switch result {
+               case .success(let response):
+                   if let cartId = response.data?.cartCreate?.cart?.id {
+                       completion(.success(cartId))
+                   } else {
+                       completion(.failure(.invalidResponse))
+                   }
+               case .failure(let error):
+                   completion(.failure(error))
+               }
+           }
+       }
+//    func createCart(completion: @escaping (Result<String, NetworkError>) -> Void) {
+//        let mutation = """
+//        mutation {
+//          cartCreate {
+//            cart {
+//              id
+//              checkoutUrl
+//            }
+//          }
+//        }
+//        """
+//        
+//        ApiCalling().callQueryApi(query: mutation) { (result: Result<CartCreateResponse, NetworkError>) in
+//            switch result {
+//            case .success(let response):
+//                if let cartId = response.data?.cartCreate?.cart?.id {
+//                    completion(.success(cartId))
+//                } else {
+//                    completion(.failure(.invalidResponse))
+//                }
+//            case .failure(let error):
+//                completion(.failure(error))
+//            }
+//        }
+//    }
     
     func addProductToCart(cartId: String, cartItem: CartItem, variantId: String, quantity: Int = 1, completion: @escaping (Result<String, NetworkError>) -> Void) {
         print("Adding to Cart: \(cartItem)")

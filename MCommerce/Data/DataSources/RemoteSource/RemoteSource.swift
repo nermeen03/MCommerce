@@ -82,7 +82,7 @@ struct ApiCalling : RemoteServicesProtocol{
        ) { result in
            completion(result)
            switch result {
-           case .success(let response):
+           case .success(_):
                print("")
 //               print("GraphQL Response:", response)
            case .failure(let error):

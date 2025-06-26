@@ -27,6 +27,7 @@ class AppCoordinator: ObservableObject {
         case addressForm(address: AddressDetailViewModel?)
         case addressDetails(address: AddressDetailViewModel)
         case search
+        case checkout(price : Double, items : [CartItem])
         
     }
     

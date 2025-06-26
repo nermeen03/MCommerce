@@ -5,7 +5,7 @@
 //  Created by Nermeen Mohamed on 21/06/2025.
 //
 
-struct CartItem : Identifiable, Equatable {
+struct CartItem : Identifiable, Equatable, Codable, Hashable {
     let id: String
     let variantId: String?
     var quantity: Int?

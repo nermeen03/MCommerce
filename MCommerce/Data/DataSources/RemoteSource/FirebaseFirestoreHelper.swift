@@ -16,9 +16,9 @@ class FirebaseFirestoreHelper {
     private init() {}
     private let db = Firestore.firestore()
     private let favCollection = "favorites"
+    private let orderCollection = "favorites"
     private let userCollection = "users"
     let firestoreUserId = UserDefaultsManager.shared.getUserId()!.replacingOccurrences(of: "/", with: "_")
-    // MARK: - Add Product to Favorites
     func addProductToFavorites(product: FavoriteProduct, completion: @escaping (Result<Void, Error>) -> Void) {
     print("add clciked zzzsjsjjsjjshhshhhssgsssgsgssshshhshshssjsjsbaab")
         do {
@@ -79,5 +79,37 @@ class FirebaseFirestoreHelper {
             }
         }
     
+
+    func addOrderId(orderId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let data: [String: Any] = [
+            "createdAt": FieldValue.serverTimestamp()
+        ]
+        let sanitizedId = orderId.replacingOccurrences(of: "/", with: "_")
+
+        db.collection(userCollection)
+            .document(firestoreUserId)
+            .collection(orderCollection)
+            .document(sanitizedId)
+            .setData(data) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+    }
+    func getAllOrderIds(completion: @escaping (Result<[String], Error>) -> Void) {
+        db.collection(userCollection)
+            .document(firestoreUserId)
+            .collection(orderCollection)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                } else if let snapshot = snapshot {
+                    let orderIds = snapshot.documents.map { $0.documentID.replacingOccurrences(of: "_", with: "/") }
+                    completion(.success(orderIds))
+                }
+            }
+    }
 
 }

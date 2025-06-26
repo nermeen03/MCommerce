@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A42EAA2D2E0DF7DE00651202 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = A42EAA2C2E0DF7DE00651202 /* Lottie */; };
 		A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A43B2C5A2E002D4200585788 /* Alamofire */; };
-		A498F61C2E0971EF00FD3B0B /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = A498F61B2E0971EF00FD3B0B /* Stripe */; };
-		A498F61E2E0971EF00FD3B0B /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = A498F61D2E0971EF00FD3B0B /* StripeApplePay */; };
-		A498F6212E09720100FD3B0B /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = A498F6202E09720100FD3B0B /* StripePaymentSheet */; };
+		C4015E992E0958E400DC9C0C /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = C4015E982E0958E400DC9C0C /* Stripe */; };
+		C4015E9B2E0958E400DC9C0C /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = C4015E9A2E0958E400DC9C0C /* StripeApplePay */; };
+		C4015E9D2E0958E400DC9C0C /* StripeCardScan in Frameworks */ = {isa = PBXBuildFile; productRef = C4015E9C2E0958E400DC9C0C /* StripeCardScan */; };
+		C4015E9F2E0958E400DC9C0C /* StripeFinancialConnections in Frameworks */ = {isa = PBXBuildFile; productRef = C4015E9E2E0958E400DC9C0C /* StripeFinancialConnections */; };
+		C4015EA12E0958E400DC9C0C /* StripeIdentity in Frameworks */ = {isa = PBXBuildFile; productRef = C4015EA02E0958E400DC9C0C /* StripeIdentity */; };
+		C4015EA42E09590900DC9C0C /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = C4015EA32E09590900DC9C0C /* StripePaymentSheet */; };
 		C4BFBA272E0074E200EA1F6F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */; };
 		FF07BD562E034FFC00022C79 /* FirebaseAI in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD552E034FFC00022C79 /* FirebaseAI */; };
 		FF07BD582E034FFC00022C79 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD572E034FFC00022C79 /* FirebaseAnalytics */; };
@@ -21,7 +25,6 @@
 		FF07BD652E03541800022C79 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD642E03541800022C79 /* FirebaseCore */; };
 		FF07BD672E03541800022C79 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD662E03541800022C79 /* FirebaseFirestore */; };
 		FF07BD692E03541800022C79 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD682E03541800022C79 /* FirebaseFunctions */; };
-		FFAB065C2E0B5ECB0030AA01 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = FFAB065B2E0B5ECB0030AA01 /* Lottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,18 +45,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4015EA42E09590900DC9C0C /* StripePaymentSheet in Frameworks */,
 				A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */,
-				FFAB065C2E0B5ECB0030AA01 /* Lottie in Frameworks */,
-				A498F6212E09720100FD3B0B /* StripePaymentSheet in Frameworks */,
 				FF07BD5E2E034FFC00022C79 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				FF07BD5C2E034FFC00022C79 /* FirebaseAnalyticsIdentitySupport in Frameworks */,
+				C4015E9F2E0958E400DC9C0C /* StripeFinancialConnections in Frameworks */,
 				FF07BD562E034FFC00022C79 /* FirebaseAI in Frameworks */,
+				A42EAA2D2E0DF7DE00651202 /* Lottie in Frameworks */,
 				FF07BD582E034FFC00022C79 /* FirebaseAnalytics in Frameworks */,
 				FF07BD672E03541800022C79 /* FirebaseFirestore in Frameworks */,
 				FF07BD632E03541800022C79 /* FirebaseAuth in Frameworks */,
-				A498F61C2E0971EF00FD3B0B /* Stripe in Frameworks */,
+				C4015E9D2E0958E400DC9C0C /* StripeCardScan in Frameworks */,
+				C4015E992E0958E400DC9C0C /* Stripe in Frameworks */,
 				FF07BD692E03541800022C79 /* FirebaseFunctions in Frameworks */,
-				A498F61E2E0971EF00FD3B0B /* StripeApplePay in Frameworks */,
+				C4015E9B2E0958E400DC9C0C /* StripeApplePay in Frameworks */,
+				C4015EA12E0958E400DC9C0C /* StripeIdentity in Frameworks */,
 				FF07BD652E03541800022C79 /* FirebaseCore in Frameworks */,
 				FF07BD5A2E034FFC00022C79 /* FirebaseAnalyticsCore in Frameworks */,
 			);
@@ -62,7 +68,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A498F61F2E09720100FD3B0B /* Frameworks */ = {
+		C4015EA22E09590900DC9C0C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -75,7 +81,7 @@
 				C4BFBA262E0074E200EA1F6F /* Config.xcconfig */,
 				C48224552DFE1529000E8729 /* MCommerce */,
 				A43B2C272E00203300585788 /* MCommerce.app */,
-				A498F61F2E09720100FD3B0B /* Frameworks */,
+				C4015EA22E09590900DC9C0C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,8 +135,8 @@
 			packageReferences = (
 				A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
-				FFAB065A2E0B5ECB0030AA01 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+				A42EAA2B2E0DF7DE00651202 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;
@@ -367,6 +373,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A42EAA2B2E0DF7DE00651202 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
 		A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -375,12 +389,12 @@
 				minimumVersion = 5.10.2;
 			};
 		};
-		A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
+		C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 24.16.0;
+				minimumVersion = 23.27.2;
 			};
 		};
 		FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -391,35 +405,47 @@
 				minimumVersion = 11.14.0;
 			};
 		};
-		FFAB065A2E0B5ECB0030AA01 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.5.2;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A42EAA2C2E0DF7DE00651202 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A42EAA2B2E0DF7DE00651202 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		A43B2C5A2E002D4200585788 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A43B2C592E002D4200585788 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		A498F61B2E0971EF00FD3B0B /* Stripe */ = {
+		C4015E982E0958E400DC9C0C /* Stripe */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			package = C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = Stripe;
 		};
-		A498F61D2E0971EF00FD3B0B /* StripeApplePay */ = {
+		C4015E9A2E0958E400DC9C0C /* StripeApplePay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			package = C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = StripeApplePay;
 		};
-		A498F6202E09720100FD3B0B /* StripePaymentSheet */ = {
+		C4015E9C2E0958E400DC9C0C /* StripeCardScan */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			package = C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeCardScan;
+		};
+		C4015E9E2E0958E400DC9C0C /* StripeFinancialConnections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeFinancialConnections;
+		};
+		C4015EA02E0958E400DC9C0C /* StripeIdentity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeIdentity;
+		};
+		C4015EA32E09590900DC9C0C /* StripePaymentSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4015E972E0958E400DC9C0C /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = StripePaymentSheet;
 		};
 		FF07BD552E034FFC00022C79 /* FirebaseAI */ = {
@@ -466,11 +492,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFunctions;
-		};
-		FFAB065B2E0B5ECB0030AA01 /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = FFAB065A2E0B5ECB0030AA01 /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

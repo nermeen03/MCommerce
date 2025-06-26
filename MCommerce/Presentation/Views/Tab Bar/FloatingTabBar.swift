@@ -13,7 +13,7 @@ enum Tab: String, CaseIterable {
     case home = "house.fill"
     case search = "magnifyingglass"
     case cart = "cart.fill"
-    case favorites = "heart.fill"
+//    case favorites = "heart.fill"
     case profile = "person.fill"
 }
 
@@ -31,12 +31,12 @@ struct FloatingTabBar: View {
                         ZStack {
                             if selectedTab == tab {
                                 Circle()
-                                    .fill(Color.orange.opacity(0.3))
+                                    .fill(Color.deepPurple.opacity(0.3))
                                     .frame(width: 44, height: 44)
                             }
                             Image(systemName: tab.rawValue)
                                 .font(.system(size: 22, weight: .semibold))
-                                .foregroundColor(selectedTab == tab ? .orange : .gray)
+                                .foregroundColor(selectedTab == tab ? .deepPurple : .gray)
                         }
 
                         if tab == .cart && cartBadgeVM.badgeCount > 0 {
@@ -48,16 +48,19 @@ struct FloatingTabBar: View {
                                 .offset(x: 10, y: -10).onAppear{
                                 }
                         }
-                    }
+                    }.frame(maxWidth: .infinity)
                 }
             }
         }
+        .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
         .padding(.horizontal, 30)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
         .shadow(color: Color.black.opacity(0.1), radius: 20, x: 0, y: 10)
+        
         .padding(.horizontal, 24)
+        
     }
 }
 

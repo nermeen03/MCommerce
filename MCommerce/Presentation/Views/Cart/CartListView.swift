@@ -10,6 +10,8 @@ import SwiftUI
 struct CartListView: View {
     
     @ObservedObject var cartViewModel: GetCartViewModel
+    @EnvironmentObject var coordinator: AppCoordinator
+
     var body: some View {
         VStack {
             if cartViewModel.isLoading {
@@ -54,6 +56,12 @@ struct CartListView: View {
                         Section {
                             Button(action: {
                                 // Proceed to checkout action
+                                var totalPrice = 0.0
+                                cartViewModel.cartItems.forEach { item in
+                                    totalPrice += Double(item.quantity ?? 0) * (Double(item.price) ?? 0.0)
+
+                                }
+                                coordinator.navigate(to: .checkout(price: totalPrice, items: cartViewModel.cartItems))
                             }) {
                                 Text("Proceed to Checkout")
                                     .frame(maxWidth: .infinity)
@@ -71,9 +79,8 @@ struct CartListView: View {
             }
         }
         .onAppear {
-            if cartViewModel.cartItems.isEmpty {
-                cartViewModel.getProducts()
-            }
+            cartViewModel.cartItems.removeAll()
+            cartViewModel.getProducts()
         }
     }
     

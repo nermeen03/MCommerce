@@ -45,11 +45,16 @@ class GetCartViewModel : ObservableObject{
     }
     
     func getProducts(){
-        isLoading = true
-        getCartUseCase.getCart(completion: {[weak self]  result in
-            self?.isLoading = false
-            self?.cartItems = result
-        })
+        if UserDefaultsManager.shared.getCartId() != nil{
+            isLoading = true
+
+            getCartUseCase.getCart(completion: {[weak self]  result in
+                self?.isLoading = false
+                self?.cartItems = result
+            })
+        }else{
+            isLoading = false
+        }
     }
     func removeProductFromCart(cartItem: CartItem) {
         var product = cartItem

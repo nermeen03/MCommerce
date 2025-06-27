@@ -28,7 +28,9 @@ class AppCoordinator: ObservableObject {
         case addressDetails(address: AddressDetailViewModel)
         case search
         case checkout(price : Double, items : [CartItem])
-        
+        case orderDetails(OrderDataResponse)
+        case myOrders
+
     }
     
     func navigate(to destination: Destination) {

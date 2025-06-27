@@ -15,4 +15,6 @@ struct CartItem : Identifiable, Equatable, Codable, Hashable {
     let imageUrl: String?
     let color: String?
     let size: String?
+    let checkoutUrl: String
+
 }

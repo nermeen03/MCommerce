@@ -19,6 +19,7 @@ class ProductViewModel: ObservableObject {
     @Published  var selectedSize: String? = nil
     @Published var price: String? = nil
     @Published var isFav: Bool = false
+    @Published var isLoggedIn: Bool
     @Published var isAlertActive: Bool = false
     private let FetchInfoUseCase : ProductInfoUseCase
     private let addFavUseCase : AddFavProdUseCase
@@ -34,6 +35,8 @@ class ProductViewModel: ObservableObject {
         self.checkProductsUseCase = checkProductsUseCase
         self.addFavUseCase = AddFavUseCase
         self.cartViewModel = cartUseCase
+        self.isLoggedIn = UserDefaultsManager.shared.isLoggedIn()
+        print(isLoggedIn)
         FetchInfoUseCase.getProductById(productId: productId) { [weak self] product in
             switch product {
             case .success(let product):
@@ -48,7 +51,7 @@ class ProductViewModel: ObservableObject {
                 }
                 
                 
-                self?.checkFav()
+                    self?.checkFav()
                 
                 
                 product.variants.forEach { variant in
@@ -68,9 +71,13 @@ class ProductViewModel: ObservableObject {
         
     }
     func checkFav(){
-        checkProductsUseCase.execute(productId: productId.filter{$0.isNumber}) { [weak self] exist in
-            self?.isFav = exist
-            self?.isLoading = false
+        if(isLoggedIn){
+            checkProductsUseCase.execute(productId: productId.filter{$0.isNumber}) { [weak self] exist in
+                self?.isFav = exist
+                self?.isLoading = false
+            }}
+        else{
+            self.isLoading = false
         }
     }
     func addToFav(){
@@ -180,7 +187,7 @@ class ProductViewModel: ObservableObject {
             print("❗ No matching variant found for selection")
             return
         }
-        let saveProduct = CartItem(id: product.id, variantId: product.variants.first?.id ?? "", title: product.title, price: product.variants.first?.price ?? "\(0)", currency: "USD", imageUrl: imageUrls.first, color: selectedColor, size: selectedSize)
+        let saveProduct = CartItem(id: product.id, variantId: product.variants.first?.id ?? "", title: product.title, price: product.variants.first?.price ?? "\(0)", currency: "USD", imageUrl: imageUrls.first, color: selectedColor, size: selectedSize, checkoutUrl: "")
         
         self.cartViewModel.addOrUpdateProduct(product: saveProduct, productVariant: selectedVariant.id)
         

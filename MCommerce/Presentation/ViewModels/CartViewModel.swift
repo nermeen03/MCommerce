@@ -34,12 +34,14 @@ class GetCartViewModel : ObservableObject{
     
     @Published var cartItems: [CartItem] = []
     @Published var isLoading: Bool = false
+    @Published var isLoggedIn : Bool
     let getCartUseCase : GetCartUseCase
     var cartBadgeVM : CartBadgeViewModel
     var addCartVM : AddCartViewModel
     
     init(getCartUseCase: GetCartUseCase, cartBadgeVM : CartBadgeViewModel, addCartVM : AddCartViewModel) {
         self.getCartUseCase = getCartUseCase
+        self.isLoggedIn = UserDefaultsManager.shared.isLoggedIn()
         self.cartBadgeVM = cartBadgeVM
         self.addCartVM = addCartVM
     }
@@ -50,7 +52,12 @@ class GetCartViewModel : ObservableObject{
 
             getCartUseCase.getCart(completion: {[weak self]  result in
                 self?.isLoading = false
-                self?.cartItems = result
+                switch result {
+                case .success(let response):
+                    self?.cartItems = response
+                case .failure:
+                    self?.cartItems = []
+                }
             })
         }else{
             isLoading = false
@@ -82,6 +89,7 @@ class GetCartViewModel : ObservableObject{
                     print("❌ Failed to delete product: \(error)")
                 }
             }
+
         }
     }
 }

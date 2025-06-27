@@ -13,6 +13,7 @@ struct CheckoutView: View {
     let items : [CartItem]
     @State var showAddressAlert : Bool = false
     
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -124,7 +125,6 @@ struct CheckoutView: View {
                         }
                         .padding(.horizontal)
                     }
-                    
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Have a coupon?")
                             .font(.headline)
@@ -198,13 +198,13 @@ struct CheckoutView: View {
                             let totalInCents = Int(totalPrice * 100)
                             model.paymentAmount = totalInCents
                             model.updatePaymentSheet()
-
+                            
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                 if let controller = UIApplication.shared.connectedScenes
                                     .compactMap({ $0 as? UIWindowScene })
                                     .flatMap({ $0.windows })
                                     .first(where: \.isKeyWindow)?.rootViewController {
-
+                                    
                                     model.presentPaymentSheet(from: controller) { result in
                                         switch result {
                                         case .completed:

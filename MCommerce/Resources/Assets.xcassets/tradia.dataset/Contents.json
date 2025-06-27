@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "tradia.json",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

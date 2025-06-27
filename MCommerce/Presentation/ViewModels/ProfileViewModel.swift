@@ -10,15 +10,21 @@ import Foundation
 class ProfileViewModel{
     let favViewModel : ProfileFavouriteViewModel
     let orderViewModel : ProfileOrderViewModel
+    var isLogged : Bool
     
     init(favViewModel: ProfileFavouriteViewModel, orderViewModel: ProfileOrderViewModel) {
         self.favViewModel = favViewModel
         self.orderViewModel = orderViewModel
+        self.isLogged = UserDefaultsManager.shared.isLoggedIn()
     }
 
     func getData() {
-        favViewModel.getFavouriteProducts()
-        orderViewModel.getOrder()
+        if !isLogged {
+            orderViewModel.isLoading = false
+            favViewModel.isLoading = false
+        }else{
+            favViewModel.getFavouriteProducts()
+            orderViewModel.getOrder()}
     }
     
 }

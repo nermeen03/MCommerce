@@ -15,29 +15,33 @@ struct ProfileView: View {
     
     var body: some View {
         VStack{
+            
             HStack {
                 Spacer()
                 Text("Profile")
                     .font(.largeTitle)
-                    .bold().padding(.trailing,50)
-                Button(action: {
-                    print("Favorite")
-                }) {
-                    Image(systemName: "cart")
-                        .padding(8)
-                        .background(Color.gray.opacity(0.2))
-                        .clipShape(Circle())
-                }
-
-                Button(action: {
-                    coordinator.navigate(to: .setting)
-                }) {
-                    Image(systemName: "gear")
-                        .padding(8)
-                        .background(Color.gray.opacity(0.2))
-                        .clipShape(Circle())
-                }
-            }
+                    .bold().padding(.trailing, loggedIn ? 50 : 10)
+                if(!loggedIn){
+                    Spacer() }
+                if loggedIn{
+                    Button(action: {
+                        print("Favorite")
+                    }) {
+                        Image(systemName: "cart")
+                            .padding(8)
+                            .background(Color.gray.opacity(0.2))
+                            .clipShape(Circle())
+                    }
+                    
+                    Button(action: {
+                        coordinator.navigate(to: .setting)
+                    }) {
+                        Image(systemName: "gear")
+                            .padding(8)
+                            .background(Color.gray.opacity(0.2))
+                            .clipShape(Circle())
+                    }
+                }}
             .padding(.horizontal)
             .onAppear{
                 profileViewModel.getData()
@@ -59,10 +63,14 @@ struct ProfileView: View {
                 }
             }else{
                 VStack(alignment: .center, content: {
+                    HStack(alignment: .center, content: {
+                        Text("Welcome Guest").font(.title)
+                    }).padding(.bottom , 64)
                     Button(action: {
+                        coordinator.navigate(to: .login)
                     }) {
                         Text("Login")
-                            .font(.system(size: 40, weight: .heavy))
+                            .font(.system(size: 24, weight: .heavy))
                             .frame(width: UIScreen.main.bounds.width - 200, height: 90)
                             .foregroundColor(.yellow)
                             .background(Color.blue)
@@ -70,14 +78,16 @@ struct ProfileView: View {
                     }
                     
                     Button(action: {
+                        coordinator.navigate(to: .signup)
                     }) {
                         Text("Register")
-                            .font(.system(size: 40, weight: .heavy))
+                            .font(.system(size: 24, weight: .heavy))
                             .frame(width: UIScreen.main.bounds.width - 200, height: 90)
                             .foregroundColor(.blue)
                             .background(Color.yellow)
                             .cornerRadius(12)
                     }
+                    Spacer()
                 })
             }
         }

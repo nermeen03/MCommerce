@@ -130,6 +130,7 @@ class RegisterViewModel : ObservableObject {
                 result in switch result {
                 case .success(let user):
                     print("User registered successfully: \(user.id)")
+                    
                     UserDefaultsManager.shared.saveUserId(user.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
                     UserDefaultsManager.shared.setLoggedIn(true)
                     UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)

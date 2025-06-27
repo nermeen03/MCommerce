@@ -164,27 +164,3 @@
 //            self.alertText = "Payment complete!"
 //        case .canceled:
 //            self.alertText = "Payment cancelled!"
-//        case .failed(let error):
-//            self.alertText = "Payment failed \(error.localizedDescription)"
-//        }
-//        
-//        showingAlert = true
-//    }
-//    
-//    func presentPaymentSheet(from viewController: UIViewController, onCompletion: @escaping (PaymentSheetResult) -> Void) {
-//        guard let paymentSheet = self.paymentSheet else {
-//            print("PaymentSheet not ready")
-//            return
-//        }
-//
-//        paymentSheet.present(from: viewController) { result in
-//            DispatchQueue.main.async {
-//                self.onPaymentCompletion(result: result)
-//                onCompletion(result)
-//            }
-//        }
-//    }
-//
-//}
-//
-//

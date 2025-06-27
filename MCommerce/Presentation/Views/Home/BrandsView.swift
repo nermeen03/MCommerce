@@ -9,77 +9,67 @@ import SwiftUI
 struct BrandsView: View {
     @StateObject var viewModel: HomeViewModel
     @EnvironmentObject var coordinator: AppCoordinator
+    private let cardSize: CGFloat = 170
+    private let horizontalSpacing: CGFloat = 16
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text("Brands")
-                    .font(.title3)
-                    .bold()
+                    .font(.title3).bold()
                 Spacer()
                 Image(systemName: "ellipsis")
+                    .foregroundStyle(.secondary)
             }
-
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
+                LazyHStack(spacing: horizontalSpacing) {
                     ForEach(viewModel.brands) { brand in
-                        ProductCard(title: brand.title, imageUrl: brand.imageUrl)
+                        BrandCard(brand: brand, size: cardSize)
                             .onTapGesture {
                                 coordinator.navigate(to: .brand(brand: brand))
                             }
                     }
                 }
+                .padding(.horizontal, horizontalSpacing)
             }
         }
         .padding(.horizontal)
     }
 }
-
-struct ProductCard: View {
-    var title: String
-    var imageUrl: String?
+struct BrandCard: View {
+    let brand: Brand
+    let size: CGFloat
 
     var body: some View {
         VStack(spacing: 8) {
-            if let imageUrl = imageUrl, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                    case .success(let image):
-                        image.resizable().scaledToFit()
-                    case .failure:
-                        Image(systemName: "photo")
-                    @unknown default:
-                        EmptyView()
-                    }
+            AsyncImage(url: URL(string: brand.imageUrl ?? "")) { phase in
+                switch phase {
+                case .empty:
+                    ProgressView()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                default:
+                    Image(systemName: "photo")
+                        .font(.largeTitle)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                .frame(height: 80)
-                .background(Color(.systemGray5))
-                .cornerRadius(10)
-            } else {
-                Image(systemName: "photo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 80)
-                    .padding()
-                    .background(Color(.systemGray5))
-                    .cornerRadius(10)
             }
-
-            Text(title)
-                .font(.subheadline)
+            .frame(width: size, height: size)
+            .background(Color(.systemGray5))
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            Text(brand.title)
+                .font(.footnote)
                 .multilineTextAlignment(.center)
-                .lineLimit(1)
+                .lineLimit(2)
+                .frame(width: size)
         }
-        .frame(width: 140)
-        .padding(.horizontal)
         .background(Color.white)
-        .cornerRadius(12)
-        .shadow(radius: 2)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .shadow(color: .black.opacity(0.1), radius: 3, y: 2)
     }
 }
-
-//#Preview {
-//    BrandsView(viewModel: viewModel)
-//}

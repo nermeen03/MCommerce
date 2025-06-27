@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct RecentlyViewedView: View {
-    @Binding var products : [Product]
+    @Binding var products: [Product]
     @EnvironmentObject var coordinator: AppCoordinator
-    
+
     var body: some View {
         VStack(alignment: .leading) {
             Text("You Might Like")
@@ -18,16 +18,24 @@ struct RecentlyViewedView: View {
                 .bold()
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
+                HStack(spacing: 15) {
                     ForEach(products) { product in
-                        ProductCard(title:  product.title  , imageUrl: product.imageUrl).onTapGesture {
+                        ProductHomeCard(
+                            imageUrl: product.imageUrl ?? "",
+                            title: extractTextBetweenPipes(from: product.title),
+                            price: "$\(product.price)",
+//                            backgroundColor: Color.white
+                        )
+                        .onTapGesture {
                             coordinator.navigate(to: .productInfo(product: product.id))
                         }
                     }
                 }
+                .padding(.horizontal)
             }
         }
     }
+
     func extractTextBetweenPipes(from title: String) -> String {
         let parts = title.split(separator: "|", omittingEmptySubsequences: false)
         if parts.count >= 3 {
@@ -37,4 +45,3 @@ struct RecentlyViewedView: View {
         }
     }
 }
-

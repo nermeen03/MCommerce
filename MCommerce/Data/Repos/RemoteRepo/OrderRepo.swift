@@ -2,7 +2,7 @@
 //  OrderRepo.swift
 //  MCommerce
 //
-//  Created by Nermeen Mohamed on 19/06/2025.
+//  Created by abram on 19/06/2025.
 //
 
 import Foundation
@@ -10,16 +10,121 @@ import SafariServices
 import SwiftUI
 
 struct OrderRepo {
+//    func getOrderTest(completion: @escaping (Result<[OrderDataResponse], NetworkError>) -> Void) {
+//        var orders : [OrderDataResponse] = []
+//        FirebaseFirestoreHelper.shared.getAllOrderIds{ (result) in
+//            switch result{
+//            case .success(let value):
+//                value.forEach {id in
+//                    let query = """
+//                        query {
+//                        draftOrder(id: "\(id)"){
+//                            id
+//                            name
+//                            email
+//                            status
+//                            createdAt
+//                            tags
+//                            appliedDiscount {
+//                              title
+//                              description
+//                              value
+//                              valueType
+//                              amount
+//                            }
+//
+//                            shippingAddress {
+//                              name
+//                              address1
+//                              address2
+//                              city
+//                              country
+//                              phone
+//                            }
+//
+//
+//                            lineItems(first: 50) {
+//                              edges {
+//                                node {
+//                                  id
+//                                  title
+//                                  quantity
+//                                  customAttributes {
+//                                    key
+//                                    value
+//                                  }
+//                                  appliedDiscount {
+//                                    title
+//                                    description
+//                                    value
+//                                    valueType
+//                                    amount
+//                                  }
+//                                  originalUnitPriceSet {
+//                                    shopMoney {
+//                                      amount
+//                                      currencyCode
+//                                    }
+//                                  }
+//                                  variant {
+//                                    id
+//                                    title
+//                                    sku
+//                                  }
+//                                }
+//                              }
+//                            }
+//
+//                            subtotalPriceSet {
+//                              shopMoney {
+//                                amount
+//                                currencyCode
+//                              }
+//                            }
+//
+//                            totalPriceSet {
+//                              shopMoney {
+//                                amount
+//                                currencyCode
+//                              }
+//                            }
+//                          }
+//                        }
+//
+//                        """
+//
+//                    ApiCalling().callQueryApi(query: query, useToken: true) { (result: Result<DraftOrderQueryResponse, NetworkError>) in
+//                        switch result{
+//                        case .success(let response):
+//                            if response.data.draftOrder.email == UserDefaultsManager.shared.getEmail(){
+//                                let order = response.data.draftOrder
+//                                orders.append(OrderDataResponse(productName: order.lineItems.edges.first?.node.variant?.title ?? "" , price: order.totalPriceSet.shopMoney.amount, currencyCode: order.totalPriceSet.shopMoney.currencyCode, createdAt: order.createdAt, productImage: order.lineItems.edges.first?.node.customAttributes.first?.value))
+//                            }
+//                            completion(.success(orders))
+//                        case .failure(let error):
+//                            completion(.failure(error))
+//                        }
+//                    }
+//                }
+//            case .failure(let error):
+//                completion(.failure(.invalidResponse))
+//            }
+//        }
+//    }
     func getOrderTest(completion: @escaping (Result<[OrderDataResponse], NetworkError>) -> Void) {
-        var orders : [OrderDataResponse] = []
-        print("getting order")
-        FirebaseFirestoreHelper.shared.getAllOrderIds{ (result) in
-            switch result{
-            case .success(let value):
-                value.forEach {id in
+        var orders: [OrderDataResponse] = []
+        
+        FirebaseFirestoreHelper.shared.getAllOrderIds { result in
+            switch result {
+            case .success(let ids):
+                let dispatchGroup = DispatchGroup()
+                
+                for id in ids {
+                    dispatchGroup.enter()
+                    
                     let query = """
-                        query {
-                        draftOrder(id: "\(id)"){
+                    query {
+                        draftOrder(id: "\(id)") {
                             id
                             name
                             email
@@ -27,87 +132,119 @@ struct OrderRepo {
                             createdAt
                             tags
                             appliedDiscount {
-                              title
-                              description
-                              value
-                              valueType
-                              amount
+                                title
+                                description
+                                value
+                                valueType
+                                amount
                             }
-
                             shippingAddress {
-                              name
-                              address1
-                              address2
-                              city
-                              country
-                              phone
+                                name
+                                address1
+                                address2
+                                city
+                                country
+                                phone
                             }
-
-
                             lineItems(first: 50) {
-                              edges {
-                                node {
-                                  id
-                                  title
-                                  quantity
-                                  customAttributes {
-                                    key
-                                    value
-                                  }
-                                  appliedDiscount {
-                                    title
-                                    description
-                                    value
-                                    valueType
-                                    amount
-                                  }
-                                  originalUnitPriceSet {
-                                    shopMoney {
-                                      amount
-                                      currencyCode
+                                edges {
+                                    node {
+                                        id
+                                        title
+                                        quantity
+                                        customAttributes {
+                                            key
+                                            value
+                                        }
+                                        appliedDiscount {
+                                            title
+                                            description
+                                            value
+                                            valueType
+                                            amount
+                                        }
+                                        originalUnitPriceSet {
+                                            shopMoney {
+                                                amount
+                                                currencyCode
+                                            }
+                                        }
+                                        variant {
+                                            id
+                                            title
+                                            sku
+                                        }
                                     }
-                                  }
-                                  variant {
-                                    id
-                                    title
-                                    sku
-                                  }
                                 }
-                              }
                             }
-
                             subtotalPriceSet {
-                              shopMoney {
-                                amount
-                                currencyCode
-                              }
+                                shopMoney {
+                                    amount
+                                    currencyCode
+                                }
                             }
-
                             totalPriceSet {
-                              shopMoney {
-                                amount
-                                currencyCode
-                              }
+                                shopMoney {
+                                    amount
+                                    currencyCode
+                                }
                             }
-                          }
                         }
-
-                        """
-
+                    }
+                    """
+                    
                     ApiCalling().callQueryApi(query: query, useToken: true) { (result: Result<DraftOrderQueryResponse, NetworkError>) in
-                        switch result{
+                        defer { dispatchGroup.leave() }
+
+                        switch result {
                         case .success(let response):
-                            if response.data.draftOrder.email == UserDefaultsManager.shared.getEmail(){
-                                let order = response.data.draftOrder
-                                orders.append(OrderDataResponse(price: order.totalPriceSet.shopMoney.amount, currencyCode: order.totalPriceSet.shopMoney.currencyCode, createdAt: order.createdAt, productImage: order.lineItems.edges.first?.node.customAttributes.first?.value))
+                            let order = response.data.draftOrder
+                            
+                            guard order.email == UserDefaultsManager.shared.getEmail() else { return }
+                            
+                            let items = order.lineItems.edges.map { edge in
+                                let node = edge.node
+                                let imageUrl = node.customAttributes.first(where: { $0.key == "imageUrl" })?.value
+                                
+                                return OrderItem(
+                                    id: node.id,
+                                    title: node.title,
+                                    quantity: node.quantity,
+                                    price: node.originalUnitPriceSet.shopMoney.amount,
+                                    currencyCode: node.originalUnitPriceSet.shopMoney.currencyCode,
+                                    imageURL: imageUrl
+                                )
                             }
-                            completion(.success(orders))
+                            
+                            let orderModel = OrderDataResponse(
+                                id: order.id,
+                                orderNumber: order.name,
+                                email: order.email,
+                                status: order.status,
+                                createdAt: order.createdAt,
+                                appliedDiscount: order.appliedDiscount,
+                                shippingAddress: order.shippingAddress,
+                                subtotal: order.subtotalPriceSet.shopMoney.amount,
+                                total: order.totalPriceSet.shopMoney.amount,
+                                currencyCode: order.totalPriceSet.shopMoney.currencyCode,
+                                items: items,
+                                productImage:order.lineItems.edges.first?.node.customAttributes.first?.value
+
+                            )
+                            
+                            orders.append(orderModel)
+                            
                         case .failure(let error):
-                            completion(.failure(error))
+                            print("Error loading order: \(error)")
                         }
                     }
                 }
-            case .failure(let error):
+                
+                dispatchGroup.notify(queue: .main) {
+                    completion(.success(orders))
+                }
+                
+            case .failure:
                 completion(.failure(.invalidResponse))
             }
         }

@@ -36,7 +36,7 @@ struct BannerView: View {
             HStack(spacing: 8) {
                 ForEach(0..<(1 + min(viewModel.discounts.count, maxCount)), id: \.self) { index in
                     Circle()
-                        .fill(currentIndex == index ? Color.orange : Color.gray.opacity(0.4))
+                        .fill(currentIndex == index ? Color.pinkPurple : Color.gray.opacity(0.4))
                         .frame(width: 8, height: 8)
                 }
             }

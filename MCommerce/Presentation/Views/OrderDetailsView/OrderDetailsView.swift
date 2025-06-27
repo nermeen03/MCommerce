@@ -8,56 +8,72 @@
 import SwiftUI
 
 struct OrderDetailsView: View {
-    var order: OrderModel = sampleOrder
+    let order: OrderDataResponse
 
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Vendor Info
                 VStack(spacing: 8) {
-                    Image(order.storeImage)
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(12)
+                    if let firstImage = order.items.first?.imageURL, let url = URL(string: firstImage) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .frame(width: 80, height: 80)
+                                .cornerRadius(12)
+                        } placeholder: {
+                            ProgressView()
+                                .frame(width: 80, height: 80)
+                        }
+                    } else {
+                        Image(systemName: "shippingbox")
+                            .resizable()
+                            .frame(width: 80, height: 80)
+                            .foregroundColor(.gray)
+                    }
 
-                    Text(order.storeName)
-                        .font(.title2).bold()
-
-                    Text("Ordered on \(order.orderDate)")
+                    Text("Ordered on \(order.dateFormatted)")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
                 .padding(.top)
-
-                // Progress
                 VStack(alignment: .leading, spacing: 12) {
                     Text(order.status)
                         .font(.headline)
 
-                    ProgressView(value: order.progress)
-                        .progressViewStyle(LinearProgressViewStyle(tint: Color.green))
+                    ProgressView(value: order.status.lowercased() == "completed" ? 1.0 : 0.5)
+                        .progressViewStyle(LinearProgressViewStyle(tint: .green))
                         .frame(height: 8)
                 }
                 .padding()
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(12)
-
-                // Products
                 VStack(spacing: 16) {
                     ForEach(order.items) { item in
                         HStack(spacing: 16) {
-                            Image(item.imageName)
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .cornerRadius(8)
-                                .background(Color.gray.opacity(0.1))
+                            if let imageURL = item.imageURL, let url = URL(string: imageURL) {
+                                AsyncImage(url: url) { image in
+                                    image
+                                        .resizable()
+                                        .frame(width: 50, height: 50)
+                                        .cornerRadius(8)
+                                } placeholder: {
+                                    ProgressView()
+                                        .frame(width: 50, height: 50)
+                                }
+                            } else {
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .cornerRadius(8)
+                                    .foregroundColor(.gray)
+                            }
 
                             VStack(alignment: .leading) {
                                 Text(item.title)
                                     .font(.subheadline)
                                     .foregroundColor(.primary)
 
-                                Text("Qty. \(item.quantity) • $\(String(format: "%.2f", item.price))")
+                                Text("Qty. \(item.quantity) • \(item.currencyCode) \(item.price)")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }
@@ -82,7 +98,7 @@ struct OrderDetailsView: View {
                     HStack {
                         Text("Total")
                         Spacer()
-                        Text("$\(String(format: "%.2f", order.total))")
+                        Text("\(order.currencyCode) \(order.total)")
                             .bold()
                     }
                 }
@@ -96,53 +112,6 @@ struct OrderDetailsView: View {
         }
         .navigationTitle("Orders")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Button(action: {}) {
-                    Image(systemName: "square.and.arrow.up")
-                }
-                Button(action: {}) {
-                    Image(systemName: "ellipsis")
-                }
-            }
-        }
+    
     }
 }
-
-#Preview {
-    OrderDetailsView()
-}
-
-// Updated Model
-struct OrderItemInfo: Identifiable {
-    let id = UUID()
-    let title: String
-    let imageName: String
-    let quantity: Int
-    let price: Double
-}
-
-struct OrderModel {
-    let storeName: String
-    let storeImage: String
-    let orderDate: String
-    let status: String
-    let progress: Double
-    let items: [OrderItemInfo]
-    let orderNumber: String
-    let total: Double
-}
-
-let sampleOrder = OrderModel(
-    storeName: "Pair Eyewear",
-    storeImage: "pair", // Add "pair" image to Assets
-    orderDate: "Friday",
-    status: "On the Way",
-    progress: 0.65,
-    items: [
-        OrderItemInfo(title: "The White - Kirby", imageName: "glasses1", quantity: 1, price: 25.00),
-        OrderItemInfo(title: "Black Sun Top - Kirby", imageName: "glasses2", quantity: 1, price: 30.00)
-    ],
-    orderNumber: "542614",
-    total: 55.00
-)

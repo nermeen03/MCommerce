@@ -50,9 +50,9 @@ struct ProductHomeCard: View {
 extension Color {
     static func randomPastel() -> Color {
         return Color(
-            red: Double.random(in: 0.6...0.9),
-            green: Double.random(in: 0.6...0.9),
-            blue: Double.random(in: 0.6...0.9)
+            red: Double.random(in: 0.9...1.0),
+            green: Double.random(in: 0.9...1.0),
+            blue: Double.random(in: 0.9...1.0)
         )
     }
 }

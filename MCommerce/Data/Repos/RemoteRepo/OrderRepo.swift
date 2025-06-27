@@ -12,7 +12,7 @@ import SwiftUI
 struct OrderRepo {
     func getOrderTest(completion: @escaping (Result<[OrderDataResponse], NetworkError>) -> Void) {
         var orders : [OrderDataResponse] = []
-
+        print("getting order")
         FirebaseFirestoreHelper.shared.getAllOrderIds{ (result) in
             switch result{
             case .success(let value):

@@ -63,21 +63,12 @@ class GetCartViewModel : ObservableObject{
             isLoading = false
         }
     }
-    func removeProductFromCart(cartItem: CartItem) {
+    func removeOneProductFromCart(cartItem: CartItem) {
         var product = cartItem
-        self.cartBadgeVM.badgeCount -= cartItem.quantity ?? 0
-        if cartItem.quantity ?? 0 >= 1 {
+        self.cartBadgeVM.badgeCount -= 1
+        if cartItem.quantity ?? 0 >= 1 {            
             product.quantity! -= 1
             getCartUseCase.updateProductInCart(product: product, completion: {result in
-                switch result {
-                case .success(let message):
-                    print(message)
-                case .failure(let error):
-                    print("❌ Failed to delete product: \(error)")
-                }
-            })
-        }else{
-            getCartUseCase.removeProductFromCart(cartItem: cartItem) { result in
                 switch result {
                 case .success(let message):
                     print(message)
@@ -88,8 +79,18 @@ class GetCartViewModel : ObservableObject{
                 case .failure(let error):
                     print("❌ Failed to delete product: \(error)")
                 }
+            })
+        }
+    }
+    func removeProductFromCart(cartItem: CartItem) {
+        self.cartBadgeVM.badgeCount -= cartItem.quantity ?? 0
+        getCartUseCase.removeProductFromCart(cartItem: cartItem) { result in
+            switch result {
+            case .success(let message):
+                print(message)
+            case .failure(let error):
+                print("❌ Failed to delete product: \(error)")
             }
-
         }
     }
 }

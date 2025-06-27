@@ -12,9 +12,11 @@ import FirebaseFirestore
 
 
 struct AddressFirebaseRepo{
-    let firestoreUserId = UserDefaultsManager.shared.getUserId()?.replacingOccurrences(of: "/", with: "_") ?? "User"
+    
     
     func getFromFireStore(completion : @escaping ([AddressInfo]) -> Void){
+        guard let firestoreUserId = UserDefaultsManager.shared.getUserId()?.replacingOccurrences(of: "/", with: "_") else{return}
+        print(firestoreUserId)
         let db = Firestore.firestore()
         let addressesRef = db.collection("users").document(firestoreUserId).collection("addresses")
         
@@ -33,6 +35,7 @@ struct AddressFirebaseRepo{
     }
     
     func saveToFireStore(address : AddressInfo){
+        guard let firestoreUserId = UserDefaultsManager.shared.getUserId()?.replacingOccurrences(of: "/", with: "_") else{return}
         let db = Firestore.firestore()
         let data = Mapper.mapToDict(from: address)
         
@@ -48,6 +51,7 @@ struct AddressFirebaseRepo{
     }
     
     func updateFireStore(address : AddressInfo){
+        guard let firestoreUserId = UserDefaultsManager.shared.getUserId()?.replacingOccurrences(of: "/", with: "_") else{return}
         let db = Firestore.firestore()
         
         let data = Mapper.mapToDict(from: address)
@@ -64,6 +68,7 @@ struct AddressFirebaseRepo{
     }
     
     func deleteAddressFromFirestore(addressId: String, completion : @escaping (Bool)->Void){
+        guard let firestoreUserId = UserDefaultsManager.shared.getUserId()?.replacingOccurrences(of: "/", with: "_") else{return}
         let db = Firestore.firestore()
         
         db.collection("users")
@@ -83,6 +88,7 @@ struct AddressFirebaseRepo{
     }
     
     func getDefaultAddress(completion : @escaping ((AddressInfo?) -> Void)){
+        guard let firestoreUserId = UserDefaultsManager.shared.getUserId()?.replacingOccurrences(of: "/", with: "_") else{return}
         let db = Firestore.firestore()
         
         db.collection("users")
@@ -93,7 +99,6 @@ struct AddressFirebaseRepo{
             .getDocuments { snapshot, error in
                 if let error = error {
                     print("Error fetching default address: \(error)")
-//                    self.defaultAddress = nil
                     completion(nil)
                 }
                 
@@ -101,25 +106,9 @@ struct AddressFirebaseRepo{
                     completion(Mapper.mapToAddress(docId: document.documentID, from: document.data()))
                 } else {
                     print("No default address found.")
-//                    self.defaultAddress = nil
                     completion(nil)
                 }
-                
-                
-//                DispatchQueue.main.async {
-//                    self.defaultAddress = AddressInfo(
-//                        defaultAddress: data["default"] as? Bool ?? false,
-//                        id: document.documentID,
-//                        address1: data["address1"] as? String,
-//                        address2: data["address2"] as? String,
-//                        city: data["city"] as? String,
-//                        zip: data["zip"] as? String,
-//                        country: data["country"] as? String,
-//                        phone: data["phone"] as? String,
-//                        name: data["name"] as? String,
-//                        type: data["type"] as? String ?? "Home"
-//                    )
-//                }
+            
             }
     }
     

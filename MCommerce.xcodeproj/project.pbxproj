@@ -24,8 +24,19 @@
 		FFAB065C2E0B5ECB0030AA01 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = FFAB065B2E0B5ECB0030AA01 /* Lottie */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C4B438982E0F4826007947E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C482244B2DFE1529000E8729 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C48224522DFE1529000E8729;
+			remoteInfo = MCommerce;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		A43B2C272E00203300585788 /* MCommerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCommerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4B438942E0F4826007947E9 /* MCommerceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MCommerceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4BFBA262E0074E200EA1F6F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -33,6 +44,11 @@
 		C48224552DFE1529000E8729 /* MCommerce */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = MCommerce;
+			sourceTree = "<group>";
+		};
+		C4B438952E0F4826007947E9 /* MCommerceTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MCommerceTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -59,6 +75,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C4B438912E0F4826007947E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -75,7 +98,9 @@
 				C4BFBA262E0074E200EA1F6F /* Config.xcconfig */,
 				C48224552DFE1529000E8729 /* MCommerce */,
 				A43B2C272E00203300585788 /* MCommerce.app */,
+				C4B438952E0F4826007947E9 /* MCommerceTests */,
 				A498F61F2E09720100FD3B0B /* Frameworks */,
+				C4B438942E0F4826007947E9 /* MCommerceTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +127,29 @@
 			productReference = A43B2C272E00203300585788 /* MCommerce.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C4B438932E0F4826007947E9 /* MCommerceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4B4389C2E0F4827007947E9 /* Build configuration list for PBXNativeTarget "MCommerceTests" */;
+			buildPhases = (
+				C4B438902E0F4826007947E9 /* Sources */,
+				C4B438912E0F4826007947E9 /* Frameworks */,
+				C4B438922E0F4826007947E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4B438992E0F4826007947E9 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C4B438952E0F4826007947E9 /* MCommerceTests */,
+			);
+			name = MCommerceTests;
+			packageProductDependencies = (
+			);
+			productName = MCommerceTests;
+			productReference = C4B438942E0F4826007947E9 /* MCommerceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -114,6 +162,10 @@
 				TargetAttributes = {
 					C48224522DFE1529000E8729 = {
 						CreatedOnToolsVersion = 16.4;
+					};
+					C4B438932E0F4826007947E9 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = C48224522DFE1529000E8729;
 					};
 				};
 			};
@@ -138,6 +190,7 @@
 			projectRoot = "";
 			targets = (
 				C48224522DFE1529000E8729 /* MCommerce */,
+				C4B438932E0F4826007947E9 /* MCommerceTests */,
 			);
 		};
 /* End PBXProject section */
@@ -151,6 +204,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C4B438922E0F4826007947E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -161,7 +221,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C4B438902E0F4826007947E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C4B438992E0F4826007947E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C48224522DFE1529000E8729 /* MCommerce */;
+			targetProxy = C4B438982E0F4826007947E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C482245C2DFE152B000E8729 /* Debug */ = {
@@ -343,6 +418,50 @@
 			};
 			name = Release;
 		};
+		C4B4389A2E0F4826007947E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = iti.MCommerceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MCommerce.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MCommerce";
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Debug;
+		};
+		C4B4389B2E0F4826007947E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = iti.MCommerceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MCommerce.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MCommerce";
+				XROS_DEPLOYMENT_TARGET = 2.5;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -360,6 +479,15 @@
 			buildConfigurations = (
 				C482245F2DFE152B000E8729 /* Debug */,
 				C48224602DFE152B000E8729 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C4B4389C2E0F4827007947E9 /* Build configuration list for PBXNativeTarget "MCommerceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4B4389A2E0F4826007947E9 /* Debug */,
+				C4B4389B2E0F4826007947E9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

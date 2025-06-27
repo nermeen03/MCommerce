@@ -67,17 +67,12 @@ class UserDefaultsManager {
         UserDefaults.standard.bool(forKey: isLoggedInKey)
     }
     
-    func logout() {
-        clearUserId()
-        setLoggedIn(false)
-    }
+
     func saveData(email : String , firstName : String , lastName : String){
+        setLoggedIn(true)
         UserDefaults.standard.set(email, forKey: emailKey)
         UserDefaults.standard.set(firstName, forKey: firstNameKey)
         UserDefaults.standard.set(lastName, forKey: lastNameKey)
-        
-       
-        
     }
     
     func enseureGuestmode(){
@@ -106,6 +101,7 @@ class UserDefaultsManager {
     }
     
     func setCartId(_ cartId: String) {
+        FirebaseFirestoreHelper.shared.saveCardId(cardId: cartId)
         UserDefaults.standard.set(cartId, forKey: cartIdKey)
     }
     func getCartId() -> String? {
@@ -113,6 +109,13 @@ class UserDefaultsManager {
     }
     func clearCartId() {
         UserDefaults.standard.removeObject(forKey: cartIdKey)
+        FirebaseFirestoreHelper.shared.removeAllCardIds { error in
+            if let error = error {
+                print("Failed to delete cards: \(error)")
+            } else {
+                print("All cards deleted successfully.")
+            }
+        }
     }
     func setCartBadgeCount(_ cartCount: Int) {
         UserDefaults.standard.set(cartCount, forKey: cartCountKey)

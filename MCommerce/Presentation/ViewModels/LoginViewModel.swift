@@ -65,16 +65,24 @@ class LoginViewModel : ObservableObject {
                         case .success(let user):
                             print("User ID: \(user.id)")
                             UserDefaultsManager.shared.saveUserId(user.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
-                            UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)
-                            UserDefaultsManager.shared.setLoggedIn(true)
-                        
-                            DispatchQueue.main.async {
-                                self.isLogged = true
-                                self.isLoading = false
-                           //     self.isLoggedIn = true
-//                                self.coordinator.navigate(to: .home)
+
+                            FirebaseFirestoreHelper.shared.getCardId { result in
+                                if let result = result {
+                                    UserDefaultsManager.shared.setCartId(result)
+                                    print("Cart ID set: \(result)")
+                                } else {
+                                    print("No cart ID found")
+                                }
+
+                                UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)
+                                UserDefaultsManager.shared.setLoggedIn(true)
+
+                                DispatchQueue.main.async {
+                                    self.isLogged = true
+                                    self.isLoading = false
+                                }
                             }
-                        
+
                         case .failure(let error):
                             print("Failed to get user ID: \(error)")
                             DispatchQueue.main.async {

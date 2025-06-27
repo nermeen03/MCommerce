@@ -174,7 +174,7 @@ class AuthenticationRepo : AuthenticationRepositoryProtocol , ObservableObject {
                     switch result {
                     case .success(let response):
                         if let customerAccessToken = response.data.customerAccessTokenCreate.customerAccessToken {
-                            completion(.success(response.data.customerAccessTokenCreate.customerAccessToken!))
+                                completion(.success(customerAccessToken))
                         }
                         else{
                             completion(.failure(NetworkError.custom(message: response.data.customerAccessTokenCreate.userErrors.first?.message ?? "Wrong Credentials")))

@@ -56,10 +56,17 @@ struct GetCartUseCase{
 
     func removeProductFromCart(cartItem: CartItem, completion: @escaping (Result<String, NetworkError>) -> Void) {
         guard let cartId = UserDefaultsManager.shared.getCartId() else { return }
-        
-        cartRepo.deleteCartLine(cartId: cartId, lineId: cartItem.id) { result in
-            completion(result)
+        cartRepo.getCartLineId(for: cartId, variantId: cartItem.variantId!) { lineId in
+            if let lineId = lineId {
+                cartRepo.deleteCartLine(cartId: cartId, lineId: lineId) { result in
+                    completion(result)
+                }
+            } else {
+                print("Could not find matching line ID for variantId")
+                completion(.failure(.invalidResponse))
+            }
         }
+
     }
     func updateProductInCart(product : CartItem, completion: @escaping (Result<String, NetworkError>) -> Void){
         guard let cartId = UserDefaultsManager.shared.getCartId() else { return }

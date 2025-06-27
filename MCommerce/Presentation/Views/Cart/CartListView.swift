@@ -35,25 +35,24 @@ struct CartListView: View {
                         Spacer()
                     } else {
                         List {
-                            ForEach(cartViewModel.cartItems) { item in
+                            ForEach(cartViewModel.cartItems.indices) { index in
+                                let item = cartViewModel.cartItems[index]
                                 CartProductCard(
-                                    product: item,
-                                    onIncrease: {
-                                        if let index = cartViewModel.cartItems.firstIndex(where: { $0.id == item.id }) {
+                                        product: item,
+                                        quantity: $cartViewModel.cartItems[index].quantity,
+                                        onIncrease: {
                                             if cartViewModel.cartItems[index].quantity! < 5 {
                                                 cartViewModel.cartItems[index].quantity! += 1
-                                                cartViewModel.addCartVM.addOrUpdateProduct(product: item, productVariant : item.variantId!)
+                                                cartViewModel.addCartVM.addOrUpdateProduct(product: item, productVariant: item.variantId!)
+                                            }
+                                        },
+                                        onDecrease: {
+                                            if cartViewModel.cartItems[index].quantity! > 1 {
+                                                cartViewModel.cartItems[index].quantity! -= 1
+                                                cartViewModel.removeOneProductFromCart(cartItem: item)
                                             }
                                         }
-                                    },
-                                    onDecrease: {
-                                        if let index = cartViewModel.cartItems.firstIndex(where: { $0.id == item.id }), cartViewModel.cartItems[index].quantity! > 1 {
-                                            cartViewModel.cartItems[index].quantity! -= 1
-                                            cartViewModel.removeProductFromCart(cartItem: item)
-                                            
-                                        }
-                                    }
-                                )
+                                    )
                                 .listRowSeparator(.hidden)
                                 .listRowInsets(EdgeInsets())
                             }
@@ -61,7 +60,6 @@ struct CartListView: View {
                         }
                         Section {
                             Button(action: {
-                                // Proceed to checkout action
                                 var totalPrice = 0.0
                                 cartViewModel.cartItems.forEach { item in
                                     totalPrice += Double(item.quantity ?? 0) * (Double(item.price) ?? 0.0)
@@ -75,7 +73,7 @@ struct CartListView: View {
                                     .background(Color.blue)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
-                            }
+                            }.padding(.bottom, 80)
                         }
                         .listStyle(.plain)
                     }
@@ -90,7 +88,7 @@ struct CartListView: View {
     func deleteItems(at offsets: IndexSet) {
         for index in offsets {
             let item = cartViewModel.cartItems[index]
-            cartViewModel.removeProductFromCart(cartItem: item)
+            cartViewModel.removeProductFromCart(cartItem: item)            
         }
     }
 }

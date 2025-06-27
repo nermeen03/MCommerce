@@ -54,7 +54,7 @@ struct ProfileView: View {
                     VStack {
                         let userName = UserDefaultsManager.shared.getFirstName() ?? "User"
                         HStack(alignment: .center, content: {
-                            Text("Welcome \(userName)").font(.title)
+                            Text("Welcome \(userName)").font(.title).padding()
                         })
                         OrdersView(viewModel: profileViewModel.orderViewModel)
                         WishListView(favViewModel: profileViewModel.favViewModel)

@@ -27,66 +27,76 @@ struct AddressListView: View {
                     .scaledToFit()
                     .frame(width: 250, height: 250)
 
-                Text("No Address Found").font(.largeTitle)
+                Text("No Address Found")
+                    .font(.largeTitle)
                 Spacer()
             } else {
-                List {
-                    ForEach(viewModel.addresses) { address in
-                        VStack(alignment: .leading, spacing: 8) {
-                            VStack(alignment: .leading, spacing: 4) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text("Your Addresses")
+                            .font(.headline)
+                            .padding(.horizontal)
+
+                        ForEach(viewModel.addresses) { address in
+                            VStack(alignment: .leading, spacing: 8) {
                                 HStack {
                                     Text(address.type)
                                         .font(.headline)
                                     Spacer()
                                     Text(address.phone)
+                                        .font(.subheadline)
                                         .foregroundColor(.secondary)
                                 }
-                                HStack {
+
+                                HStack(alignment: .top) {
                                     Text(address.address2 + ", " + address.address1)
                                         .font(.subheadline)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
                                     Image(systemName: "pencil")
                                         .padding(8)
                                         .background(Color.gray.opacity(0.2))
                                         .clipShape(Circle())
                                         .onTapGesture {
-                                            coordinator.navigate(to: .addressForm(address: DIContainer.shared.resolveAddressDetailViewModel(address: address)))
+                                            coordinator.navigate(to: .addressForm(
+                                                address: DIContainer.shared.resolveAddressDetailViewModel(address: address)
+                                            ))
                                         }
                                 }
                             }
-                            .contentShape(Rectangle())
+                            .padding()
+                            .background(Color(.systemBackground))
+                            .cornerRadius(12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(address.defaultAddress == true ? Color.red : Color.clear, lineWidth: 2)
+                            )
+                            .shadow(radius: 2)
+                            .padding(.horizontal)
                             .onTapGesture {
-                                coordinator.navigate(to: .addressDetails(address: DIContainer.shared.resolveAddressDetailViewModel(address: address)))
+                                coordinator.navigate(to: .addressDetails(
+                                    address: DIContainer.shared.resolveAddressDetailViewModel(address: address)
+                                ))
                             }
                         }
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(address.defaultAddress == true ? Color.red : Color.clear, lineWidth: 2)
-                        )
-                        .shadow(radius: 2)
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets())
-                        .padding(.vertical, 5)
+                        .onDelete { indexSet in
+                            viewModel.deleteAddress(at: indexSet)
+                        }
                     }
-                    .onDelete { indexSet in
-                        viewModel.deleteAddress(at: indexSet)
-                    }
-                }.padding()
-                .listStyle(PlainListStyle())
+                    .padding(.top)
+                }
             }
 
+            // Add Address Button
             Button(action: {
                 coordinator.navigate(to: .addressForm(address: nil))
             }) {
                 Text("Add New Address")
-                    .padding()
-                    .frame(maxWidth: .infinity)
+                    .font(.system(size: 18, weight: .bold))
+                    .frame(maxWidth: .infinity, minHeight: 50)
                     .background(Color.blue)
                     .foregroundColor(.white)
-                    .cornerRadius(10)
+                    .cornerRadius(12)
             }
             .padding()
         }
@@ -94,7 +104,6 @@ struct AddressListView: View {
             viewModel.fetchAddresses()
         }
     }
-
 
 }
 

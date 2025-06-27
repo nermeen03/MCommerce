@@ -62,6 +62,12 @@ struct MCommerceApp: App {
                                 DIContainer.shared.resolveHomeSearchView()
                             case .checkout(let price , let items):
                                 CheckoutView(viewModel: CheckoutViewModel(addressUseCases: AddressUseCases()), totalPrice: price, items: items)
+                            case .orderDetails(let order):
+                                    OrderDetailsView(order: order)
+                            case .myOrders:
+                                MyOrderView(viewModel: ProfileOrderViewModel(getOrderUseCase: getOrderUseCase(orderRepo: OrderRepo())))
+                               
+                                }
                             }
                         }
                 }
@@ -71,4 +77,4 @@ struct MCommerceApp: App {
         
     }
     
-}
+

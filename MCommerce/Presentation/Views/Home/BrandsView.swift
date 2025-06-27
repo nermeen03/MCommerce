@@ -9,7 +9,7 @@ import SwiftUI
 struct BrandsView: View {
     @StateObject var viewModel: HomeViewModel
     @EnvironmentObject var coordinator: AppCoordinator
-    private let cardSize: CGFloat = 160
+    private let cardSize: CGFloat = 170
     private let horizontalSpacing: CGFloat = 16
 
     var body: some View {

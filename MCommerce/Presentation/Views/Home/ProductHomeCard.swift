@@ -42,7 +42,7 @@ struct ProductHomeCard: View {
                 .padding(.horizontal, 8)
         }
         .frame(width: 180, height: 200)
-        .background(backgroundColor.opacity(0.3))
+        .background(backgroundColor.opacity(0.8))
         .cornerRadius(15)
         .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
     }

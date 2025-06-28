@@ -66,6 +66,7 @@ struct CartLine: Codable {
 //}
 
 struct ProductInfo: Codable {
+    let id : String
     let title: String
     let featuredImage: FeaturedImage?
 }

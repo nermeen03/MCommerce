@@ -21,7 +21,8 @@ struct MCommerceApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var coordinator = AppCoordinator()
     @StateObject var currencyViewModel = CurrencyViewModel()
-    
+    @StateObject private var cartVM = CartBadgeVM.shared
+
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
@@ -73,6 +74,7 @@ struct MCommerceApp: App {
                 }
                 .environmentObject(coordinator)
                 .environmentObject(currencyViewModel)
+                .environmentObject(cartVM)
         }
         
     }

@@ -10,19 +10,16 @@ import Foundation
 class AddCartViewModel : ObservableObject{
     
     @Published var result : String?
-    var cartBadgeVM : CartBadgeViewModel
     let addCartUseCase : AddInCartUseCase
     
-    init(addCartUseCase: AddInCartUseCase, cartBadgeVM : CartBadgeViewModel) {
+    init(addCartUseCase: AddInCartUseCase) {
         self.addCartUseCase = addCartUseCase
-        self.cartBadgeVM = cartBadgeVM
     }
     
     func addOrUpdateProduct(product: CartItem,productVariant: String, quantity: Int = 1) {
         addCartUseCase.addOrUpdateProduct(product: product, productVariantId: productVariant,completion: { result in
             switch result {
             case .success(let message):
-                self.cartBadgeVM.badgeCount += 1
                 self.result = message
             case .failure(let error):
                 self.result = error.localizedDescription
@@ -36,13 +33,11 @@ class GetCartViewModel : ObservableObject{
     @Published var isLoading: Bool = false
     @Published var isLoggedIn : Bool
     let getCartUseCase : GetCartUseCase
-    var cartBadgeVM : CartBadgeViewModel
     var addCartVM : AddCartViewModel
     
-    init(getCartUseCase: GetCartUseCase, cartBadgeVM : CartBadgeViewModel, addCartVM : AddCartViewModel) {
+    init(getCartUseCase: GetCartUseCase,addCartVM : AddCartViewModel) {
         self.getCartUseCase = getCartUseCase
         self.isLoggedIn = UserDefaultsManager.shared.isLoggedIn()
-        self.cartBadgeVM = cartBadgeVM
         self.addCartVM = addCartVM
     }
     
@@ -65,8 +60,7 @@ class GetCartViewModel : ObservableObject{
     }
     func removeOneProductFromCart(cartItem: CartItem) {
         var product = cartItem
-        self.cartBadgeVM.badgeCount -= 1
-        if cartItem.quantity ?? 0 >= 1 {            
+        if cartItem.quantity ?? 0 >= 1 {
             product.quantity! -= 1
             getCartUseCase.updateProductInCart(product: product, completion: {result in
                 switch result {
@@ -83,11 +77,11 @@ class GetCartViewModel : ObservableObject{
         }
     }
     func removeProductFromCart(cartItem: CartItem) {
-        self.cartBadgeVM.badgeCount -= cartItem.quantity ?? 0
         getCartUseCase.removeProductFromCart(cartItem: cartItem) { result in
             switch result {
             case .success(let message):
                 print(message)
+                self.getProducts()
             case .failure(let error):
                 print("❌ Failed to delete product: \(error)")
             }

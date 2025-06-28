@@ -24,7 +24,7 @@ struct MainTabView: View {
                     DIContainer.shared.resolveProfile()
                 }
             }
-            FloatingTabBar(selectedTab: $selectedTab, cartBadgeVM: DIContainer.shared.resolveCartBadgeCount())
+            FloatingTabBar(selectedTab: $selectedTab)
         }.navigationBarHidden( true)
     }
 }

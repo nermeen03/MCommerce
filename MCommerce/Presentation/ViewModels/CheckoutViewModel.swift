@@ -25,6 +25,10 @@ class CheckoutViewModel: ObservableObject {
     
     @Published var orderPlaced = false
     @Published var orderMessage: String = ""
+    
+    @Published var showAddressAlert = false
+
+    
 
     enum PaymentMethod: String, Identifiable {
         case cod = "Cash on Delivery"
@@ -51,13 +55,19 @@ class CheckoutViewModel: ObservableObject {
         }
     }
     
-    func fetchAddresses(){
+    func fetchAddresses() {
         isAddressesLoading = true
-        addressUseCases.getFromFireStore{[weak self] result in
-            self?.addresses = result
-            self?.isAddressesLoading = false
+        addressUseCases.getFromFireStore { [weak self] result in
+            DispatchQueue.main.async {
+                self?.addresses = result
+                self?.isAddressesLoading = false
+                if result.isEmpty {
+                    self?.showAddressAlert = true  // Must be on main thread
+                }
+            }
         }
     }
+
     
     func placeOrder(items : [CartItem]){
         OrderRepo().createOrder(

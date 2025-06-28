@@ -106,6 +106,7 @@ struct CartRepo {
                         currencyCode
                       }
                       product {
+                        id
                         title
                         featuredImage {
                           url
@@ -129,6 +130,7 @@ struct CartRepo {
                     let variantParts = edge.node.merchandise.title.components(separatedBy: " / ")
                     return CartItem(
                         id: edge.node.id,
+                        productId: edge.node.merchandise.product.id,
                         variantId: edge.node.merchandise.id,
                         quantity: edge.node.quantity,
                         title: edge.node.merchandise.product.title,

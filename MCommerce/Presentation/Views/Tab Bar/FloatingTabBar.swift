@@ -18,7 +18,7 @@ enum Tab: String, CaseIterable {
 
 struct FloatingTabBar: View {
     @Binding var selectedTab: Tab
-    var cartBadgeVM: CartBadgeViewModel
+    @EnvironmentObject var cartVM: CartBadgeVM
 //    @State var count = 0
     
     
@@ -38,8 +38,8 @@ struct FloatingTabBar: View {
                                 .foregroundColor(selectedTab == tab ? .deepPurple : .gray)
                         }
 
-                        if tab == .cart && cartBadgeVM.badgeCount > 0 {
-                            Text("\((cartBadgeVM.badgeCount))")
+                        if tab == .cart && cartVM.badgeCount > 0 {
+                            Text("\((cartVM.badgeCount))")
                                 .font(.caption2)
                                 .foregroundColor(.white)
                                 .padding(5)

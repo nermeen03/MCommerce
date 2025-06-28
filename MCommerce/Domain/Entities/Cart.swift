@@ -7,6 +7,7 @@
 
 struct CartItem : Identifiable, Equatable, Codable, Hashable {
     let id: String
+    let productId : String
     let variantId: String?
     var quantity: Int?
     let title: String

@@ -13,7 +13,6 @@ enum Tab: String, CaseIterable {
     case home = "house.fill"
     case search = "magnifyingglass"
     case cart = "cart.fill"
-    case favorites = "heart.fill"
     case profile = "person.fill"
 }
 

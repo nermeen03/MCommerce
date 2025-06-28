@@ -20,8 +20,6 @@ struct MainTabView: View {
                     CategoriesView()
                 case .cart:
                     DIContainer.shared.resolveCartView()
-                case .favorites:
-                    FavView()  .id(DIContainer.shared.resolveFavoritesViewModel().refreshToken)
                 case .profile:
                     DIContainer.shared.resolveProfile()
                 }

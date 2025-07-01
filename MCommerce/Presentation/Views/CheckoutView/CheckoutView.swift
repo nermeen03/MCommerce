@@ -32,7 +32,7 @@ struct CheckoutView: View {
                                 Text(item.title)
                                     .font(.title2).fontWeight(.semibold)
 
-                                Text("$\(item.price) x \(item.quantity ?? 1)")
+                                Text("$\(item.price.currency) x \(item.quantity ?? 1)")
                                     .foregroundColor(.orange)
                                     .font(.title3).bold()
                             }
@@ -154,7 +154,7 @@ struct CheckoutView: View {
                     }
 
                     // MARK: - Order Summary
-                    let subtotal = totalPrice
+                    let subtotal = totalPrice.currency
                     let discountAmount = subtotal * viewModel.discountPercentage
                     let total = subtotal - discountAmount
 

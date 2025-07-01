@@ -73,12 +73,12 @@ final class NetworkService {
             headers: afHeaders
         )
         .validate()
-//        .responseData { response in
-//            if let data = response.data,
-//               let jsonString = String(data: data, encoding: .utf8) {
-//                print("RAW RESPONSE: \(jsonString)")
-//            }
-//        }
+        .responseData { response in
+            if let data = response.data,
+               let jsonString = String(data: data, encoding: .utf8) {
+                print("RAW RESPONSE: \(jsonString)")
+            }
+        }
 
         .responseDecodable(of: T.self) { response in
             switch response.result {

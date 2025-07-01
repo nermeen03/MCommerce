@@ -18,14 +18,20 @@ struct CheckoutView: View {
     var body: some View {
             ScrollView {
                 VStack(spacing: 24) {
-                    // MARK: - Items
                     ForEach(items) { item in
                         HStack(spacing: 16) {
-                            Image(systemName: "cart")
-                                .font(.system(size: 40))
-                                .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                            AsyncImage(url: URL(string: item.imageUrl ?? "")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Color.gray.opacity(0.1)
+                            }
+                            .frame(width: 100, height: 100)
+                            .background(Color.gray.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .clipped()
+
 
                             VStack(alignment: .leading) {
                                 Text(item.title)
@@ -40,7 +46,6 @@ struct CheckoutView: View {
                         .padding(.horizontal)
                     }
 
-                    // MARK: - Shipping Address Section
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Shipping Address")
                             .font(.headline)
@@ -86,8 +91,6 @@ struct CheckoutView: View {
                             }
                         }
                     }
-
-                    // MARK: - Payment Method
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Payment Method")
                             .font(.headline)
@@ -120,7 +123,6 @@ struct CheckoutView: View {
                         .padding(.horizontal)
                     }
 
-                    // MARK: - Coupon Section
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Have a coupon?")
                             .font(.headline)
@@ -152,7 +154,6 @@ struct CheckoutView: View {
                         }
                     }
 
-                    // MARK: - Order Summary
                     let subtotal = totalPrice.currency
                     let discountAmount = subtotal * viewModel.discountPercentage
                     let total = subtotal - discountAmount
@@ -188,7 +189,6 @@ struct CheckoutView: View {
                     }
                     .padding(.horizontal)
 
-                    // MARK: - Place Order Button
                     Button(action: {
                         showWaiting = true
 
@@ -259,7 +259,7 @@ struct CheckoutView: View {
                     )
                 }
             }.alert(isPresented: $viewModel.showAddressAlert) {
-                print("Showing address alert")  // Debugging statement
+                print("Showing address alert")
                 return Alert(
                     title: Text("Addresses"),
                     message: Text("You need to add an address first."),

@@ -14,7 +14,7 @@ struct WelcomeScreen: View {
 
     var body: some View {
             ZStack {
-                Image("welcomeBg")
+                Image("welcomeB")
                     .resizable()
                     .scaledToFill()
                     .edgesIgnoringSafeArea(.all)

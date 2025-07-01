@@ -24,7 +24,7 @@ struct CustomButton: View {
                 } else {
                     Text(text)
                         .font(.title2)
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: .init(300))
                 }
             }
             .padding(.vertical, 12)

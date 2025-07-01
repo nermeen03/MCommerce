@@ -11,6 +11,7 @@
 		A498F61C2E0971EF00FD3B0B /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = A498F61B2E0971EF00FD3B0B /* Stripe */; };
 		A498F61E2E0971EF00FD3B0B /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = A498F61D2E0971EF00FD3B0B /* StripeApplePay */; };
 		A498F6212E09720100FD3B0B /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = A498F6202E09720100FD3B0B /* StripePaymentSheet */; };
+		C48BC3ED2E13C26D00944DDE /* Connectivity in Frameworks */ = {isa = PBXBuildFile; productRef = C48BC3EC2E13C26D00944DDE /* Connectivity */; };
 		C4BFBA272E0074E200EA1F6F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C4BFBA262E0074E200EA1F6F /* Config.xcconfig */; };
 		FF07BD562E034FFC00022C79 /* FirebaseAI in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD552E034FFC00022C79 /* FirebaseAI */; };
 		FF07BD582E034FFC00022C79 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = FF07BD572E034FFC00022C79 /* FirebaseAnalytics */; };
@@ -58,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C48BC3ED2E13C26D00944DDE /* Connectivity in Frameworks */,
 				A43B2C5B2E002D4200585788 /* Alamofire in Frameworks */,
 				FFAB065C2E0B5ECB0030AA01 /* Lottie in Frameworks */,
 				A498F6212E09720100FD3B0B /* StripePaymentSheet in Frameworks */,
@@ -183,6 +185,7 @@
 				FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 				FFAB065A2E0B5ECB0030AA01 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				C48BC3EB2E13C26D00944DDE /* XCRemoteSwiftPackageReference "Connectivity" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C482244A2DFE1529000E8729;
@@ -511,6 +514,14 @@
 				minimumVersion = 24.16.0;
 			};
 		};
+		C48BC3EB2E13C26D00944DDE /* XCRemoteSwiftPackageReference "Connectivity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rwbutler/Connectivity";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.1;
+			};
+		};
 		FF07BD542E034FFC00022C79 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -549,6 +560,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A498F61A2E0971EF00FD3B0B /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = StripePaymentSheet;
+		};
+		C48BC3EC2E13C26D00944DDE /* Connectivity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C48BC3EB2E13C26D00944DDE /* XCRemoteSwiftPackageReference "Connectivity" */;
+			productName = Connectivity;
 		};
 		FF07BD552E034FFC00022C79 /* FirebaseAI */ = {
 			isa = XCSwiftPackageProductDependency;

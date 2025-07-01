@@ -35,7 +35,6 @@ struct HomeView: View {
                 }
                 .padding()
             }
-            //        .padding(.bottom, 60)
             .safeAreaInset(edge: .bottom) {
                 Color.clear.frame(height: 50)
             }

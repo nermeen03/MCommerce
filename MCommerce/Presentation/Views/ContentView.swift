@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    //@EnvironmentObject var coordinator: BrandsCoordinator
     init() {
         if UserDefaultsManager.shared.isLoggedIn() {
             print("User ID: \(UserDefaultsManager.shared.getUserId() ?? "No ID")")
         }
-        //            UserDefaultsManager.shared.saveUserId("")
-        //            UserDefaultsManager.shared.setLoggedIn(false)
     }
 
     var body: some View {

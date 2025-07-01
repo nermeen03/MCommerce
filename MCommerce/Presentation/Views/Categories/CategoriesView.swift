@@ -17,10 +17,6 @@ struct CategoriesView: View {
                 // Search and cart bar
                 HStack {
                     SearchBarView(searchText: $viewModel.searchText)
-
-//                    Image(systemName: "cart")
-//                        .font(.title2)
-//                        .padding(.leading, 5)
                 }
                 .padding()
 

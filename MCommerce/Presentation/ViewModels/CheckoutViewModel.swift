@@ -62,7 +62,10 @@ class CheckoutViewModel: ObservableObject {
                 self?.addresses = result
                 self?.isAddressesLoading = false
                 if result.isEmpty {
-                    self?.showAddressAlert = true  // Must be on main thread
+                    print("No addresses found, showing alert.")  // Debugging statement
+                    self?.showAddressAlert = true
+                } else {
+                    print("Addresses fetched successfully.")  // Debugging statement
                 }
             }
         }

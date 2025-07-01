@@ -144,7 +144,11 @@ class FirebaseFirestoreHelper {
                     completion(nil)
                 } else if let snapshot = snapshot {
                     let cardId = snapshot.documents.map { $0.documentID.replacingOccurrences(of: "_", with: "/") }
-                    completion(cardId[0])
+                    if !cardId.isEmpty {
+                        completion(cardId[0])
+                    }else{
+                        completion(nil)
+                    }
                 }
             }
     }

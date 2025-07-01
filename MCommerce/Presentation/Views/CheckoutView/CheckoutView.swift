@@ -16,7 +16,6 @@ struct CheckoutView: View {
     let items: [CartItem]
 
     var body: some View {
-        NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
                     // MARK: - Items
@@ -238,18 +237,8 @@ struct CheckoutView: View {
                 .onAppear {
                         viewModel.fetchAddresses()
                 }
-                .alert(isPresented: $viewModel.showAddressAlert) {
-                    Alert(
-                        title: Text("Addresses"),
-                        message: Text("You need to add an address first."),
-                        primaryButton: .default(Text("Add")) {
-                            coordinator.navigate(to: .addressForm(address: nil))
-                        },
-                        secondaryButton: .cancel {
-                            coordinator.goBack()
-                        }
-                    )
-                }
+                
+
                 .alert(isPresented: $showError) {
                     Alert(
                         title: Text("Payment Status"),
@@ -257,6 +246,30 @@ struct CheckoutView: View {
                         dismissButton: .default(Text("OK"))
                     )
                 }
+                .alert(isPresented: $viewModel.orderPlaced) {
+                    Alert(
+                        title: Text("Order Placed"),
+                        message: Text(viewModel.orderMessage),
+                        dismissButton: .default(Text("OK")) {
+                            cartVM.badgeCount = 0
+                            showWaiting = false
+                            viewModel.orderPlaced = false
+                            coordinator.goBack()
+                        }
+                    )
+                }
+            }.alert(isPresented: $viewModel.showAddressAlert) {
+                print("Showing address alert")  // Debugging statement
+                return Alert(
+                    title: Text("Addresses"),
+                    message: Text("You need to add an address first."),
+                    primaryButton: .default(Text("Add")) {
+                        coordinator.navigate(to: .addressForm(address: nil))
+                    },
+                    secondaryButton: .cancel {
+                        coordinator.goBack()
+                    }
+                )
             }
 
             .overlay(
@@ -274,18 +287,4 @@ struct CheckoutView: View {
                 }
             )
         }
-
-        .alert(isPresented: $viewModel.orderPlaced) {
-            Alert(
-                title: Text("Order Placed"),
-                message: Text(viewModel.orderMessage),
-                dismissButton: .default(Text("OK")) {
-                    cartVM.badgeCount = 0
-                    showWaiting = false
-                    viewModel.orderPlaced = false
-                    coordinator.goBack()
-                }
-            )
-        }
-    }
 }

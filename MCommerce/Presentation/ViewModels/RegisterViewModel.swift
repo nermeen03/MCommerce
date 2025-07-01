@@ -131,16 +131,6 @@ class RegisterViewModel : ObservableObject {
                 case .success(let user):
                     print("User registered successfully: \(user.id)")
                     
-                    CartRepo().createCart(completion: {result in
-                        switch result {
-                        case .success(let response):
-                            print("Done")
-                            FirebaseFirestoreHelper.shared.saveCardId(cardId: response)
-                        case .failure(let failure):
-                            print(failure)
-                        }
-                    })
-                    
                     UserDefaultsManager.shared.saveUserId(user.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
                     UserDefaultsManager.shared.setLoggedIn(true)
                     UserDefaultsManager.shared.saveData(email: user.email, firstName: user.firstName, lastName: user.lastName)

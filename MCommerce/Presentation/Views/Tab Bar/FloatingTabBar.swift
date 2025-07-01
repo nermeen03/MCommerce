@@ -11,7 +11,7 @@ import SwiftUI
 
 enum Tab: String, CaseIterable {
     case home = "house.fill"
-    case search = "magnifyingglass"
+    case search = "square.grid.2x2"
     case cart = "cart.fill"
     case profile = "person.fill"
 }

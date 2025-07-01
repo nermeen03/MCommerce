@@ -17,13 +17,14 @@ enum HTTPMethod: String {
 }
 
 enum NetworkError: Error {
-    case invalidURL
+    case invalidURL 
     case requestFailed(Error)
     case invalidResponse
     case decodingError(Error)
     case custom(message: String)
 
 }
+
 
 final class NetworkService {
     

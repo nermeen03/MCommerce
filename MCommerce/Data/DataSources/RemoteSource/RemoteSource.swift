@@ -9,47 +9,47 @@ import Foundation
 import Alamofire
 
 struct ApiCalling : RemoteServicesProtocol{
-    func callRestApi(parameters: [String : Any], method: HTTPMethod, json: String) {
-        
-    }
-    
-    let networkService = NetworkService.shared
-    func createCustomer() {
-        guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] ,let apiKey = Bundle.main.infoDictionary?["API_KEY"], let token = Bundle.main.infoDictionary?["ADMIN_TOKEN"],let key = Bundle.main.infoDictionary?["ADMIN_KEY"] else{
-            return
-        }
-        
-        let url = "https://\(apiKey):\(token)\(key)@\(baseURL)/admin/api/2022-01/customers.json"
-          
-            let headers: HTTPHeaders = [
-                "Content-Type": "application/json"
-            ]
-
-            let parameters: [String: Any] = [
-                "customer": [
-                    "first_name": "Nermeen",
-                    "id" : "1024064673",
-                    "last_name": "Mohamed",
-                    "email": "nermeennnn55@gmail.com",
-                    "phone": "+201234567840",
-                    "verified_email": true,
-                    "password": "YourSecurePassword12@",
-                    "password_confirmation": "YourSecurePassword12@",
-                    "accepts_marketing": true
-                ]
-            ]
-
-            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-                .validate()
-                .responseJSON { response in
-                    switch response.result {
-                    case .success(let value):
-                        print("✅ Customer created: \(value)")
-                    case .failure(let error):
-                        print("❌ Error: \(error)")
-                    }
-                }
-        }
+//    func callRestApi(parameters: [String : Any], method: HTTPMethod, json: String) {
+//        
+//    }
+//    
+   let networkService = NetworkService.shared
+//    func createCustomer() {
+//        guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] ,let apiKey = Bundle.main.infoDictionary?["API_KEY"], let token = Bundle.main.infoDictionary?["ADMIN_TOKEN"],let key = Bundle.main.infoDictionary?["ADMIN_KEY"] else{
+//            return
+//        }
+//        
+//        let url = "https://\(apiKey):\(token)\(key)@\(baseURL)/admin/api/2022-01/customers.json"
+//          
+//            let headers: HTTPHeaders = [
+//                "Content-Type": "application/json"
+//            ]
+//
+//            let parameters: [String: Any] = [
+//                "customer": [
+//                    "first_name": "Nermeen",
+//                    "id" : "1024064673",
+//                    "last_name": "Mohamed",
+//                    "email": "nermeennnn55@gmail.com",
+//                    "phone": "+201234567840",
+//                    "verified_email": true,
+//                    "password": "YourSecurePassword12@",
+//                    "password_confirmation": "YourSecurePassword12@",
+//                    "accepts_marketing": true
+//                ]
+//            ]
+//
+//            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+//                .validate()
+//                .responseJSON { response in
+//                    switch response.result {
+//                    case .success(let value):
+//                        print("✅ Customer created: \(value)")
+//                    case .failure(let error):
+//                        print("❌ Error: \(error)")
+//                    }
+//                }
+//        }
     
     func callQueryApi<T: Decodable>(query: String, variables: [String: Any]? = nil, useToken : Bool = false, completion : @escaping (Result<T, NetworkError>) -> Void) {
         guard let baseURL = Bundle.main.infoDictionary?["BASE_URL"] as? String,

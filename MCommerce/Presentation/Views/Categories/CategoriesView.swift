@@ -84,7 +84,7 @@ struct CategoriesView: View {
                                     }
                                 }
                             }
-                            .padding()
+                            .padding(.bottom ,50)
                         }
 
                         Spacer()

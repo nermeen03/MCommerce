@@ -59,6 +59,9 @@ class AddressFormViewModel : ObservableObject{
     @Published var defaultAddress : Bool = false
     @Published var errorMessage : ValidationError? = nil
     
+    @Published var currentAlert: AddressAlert?
+
+    
     init(defaultUseCase: DefaultAddressUseCase, mapAddressUseCase: MapAddressUserCase, addressUseCases: AddressUseCases, addressDetailViewModel:AddressDetailViewModel? = nil) {
         self.defaultUseCase = defaultUseCase
         self.mapAddressUseCase = mapAddressUseCase
@@ -68,16 +71,19 @@ class AddressFormViewModel : ObservableObject{
     
     func validateAllFields(phoneNumber:String, address1:String, address2:String) -> String? {
         if let error = Validation.validatePhone(phoneNumber: phoneNumber) {
-            errorMessage = ValidationError(message: error)
+            currentAlert = .validationError(error)
             return error }
         if let error = Validation.validateAddress1(address1: address1) {
-            errorMessage = ValidationError(message: error)
+            currentAlert = .validationError(error)
             return error }
         if let error = Validation.validateAddress1(address1: address2) {
-            errorMessage = ValidationError(message: error)
+            currentAlert = .validationError(error)
             return error }
-        errorMessage = nil
         return nil
+    }
+    
+    func setError(){
+        currentAlert = .changeDefaultAddress
     }
     
 
@@ -165,3 +171,18 @@ struct Validation {
     }
 
 }
+
+enum AddressAlert: Identifiable {
+    case validationError(String)
+    case changeDefaultAddress
+    
+    var id: String {
+        switch self {
+        case .validationError(let message):
+            return "validationError-\(message)"
+        case .changeDefaultAddress:
+            return "changeDefaultAddress"
+        }
+    }
+}
+

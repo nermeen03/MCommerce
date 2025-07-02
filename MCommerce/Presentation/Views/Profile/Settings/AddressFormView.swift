@@ -14,7 +14,6 @@ struct AddressFormView: View {
     @State private var phoneNumber: String = ""
     @State private var name: String = ""
     @State private var isDefault: Bool = false
-    @State private var showToast: Bool = false
     
     @State private var showMap = false
     @State private var selectedCoordinate: CLLocationCoordinate2D?
@@ -24,7 +23,7 @@ struct AddressFormView: View {
     var types = ["Home","Work","School","Other"]
     
     @ObservedObject var viewModel : AddressFormViewModel
-    
+
     
     var body: some View {
         ScrollView {
@@ -152,14 +151,14 @@ struct AddressFormView: View {
                             )
                             if viewModel.addressDetailViewModel == nil {
                                 if viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true && isDefault == true{
-                                    showToast = true
+                                    viewModel.setError()
                                 }else{
                                     viewModel.saveAddress(address: newAddress)
                                     coordinator.goBack()
                                 }
                             } else {
                                 if viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true && isDefault == true{
-                                    showToast = true
+                                    viewModel.setError()
                                 }else{
                                     viewModel.addressDetailViewModel?.address = newAddress
                                     viewModel.saveAddress(address: newAddress, update: true)
@@ -176,9 +175,6 @@ struct AddressFormView: View {
                 }
             }
             .padding()
-            .alert(item: $viewModel.errorMessage) { msg in
-                Alert(title: Text("Validation Error"), message: Text(msg.message), dismissButton: .default(Text("OK")))
-            }
             .onAppear {
                 viewModel.getDefaultAddress()
                 if let address = viewModel.addressDetailViewModel?.address {
@@ -193,31 +189,55 @@ struct AddressFormView: View {
             }
             
         }
-        .alert(isPresented: $showToast) {
-            let id = viewModel.addressDetailViewModel?.address?.id ?? UUID().uuidString
-            let newAddress = AddressInfo(
-                defaultAddress: false,
-                id: id,
-                address1: address1,
-                address2: address2,
-                city: selectedCity,
-                country: selectedCountry,
-                phone: phoneNumber,
-                type: selectedType
-            )
-            return Alert(title: Text("Do you want to change?"), message: Text("There is already a default address set."), primaryButton: .destructive(Text("Change and Save")) {
-                viewModel.switchDeafult(address: newAddress)
-                coordinator.goBack()
-            }, secondaryButton: .cancel(Text("Don't Change and Save")){
-                if viewModel.addressDetailViewModel == nil {
-                    viewModel.saveAddress(address: newAddress)
-                }else{
-                    viewModel.saveAddress(address: newAddress, update: true)
-                }
-                coordinator.goBack()
-            })
+        .alert(item: $viewModel.currentAlert) { alert in
+            switch alert {
+            case .validationError(let message):
+                return Alert(
+                    title: Text("Validation Error"),
+                    message: Text(message),
+                    dismissButton: .default(Text("OK"))
+                )
+            case .changeDefaultAddress:
+                return Alert(
+                    title: Text("Do you want to change?"),
+                    message: Text("There is already a default address set."),
+                    primaryButton: .destructive(Text("Change and Save")) {
+                        let id = viewModel.addressDetailViewModel?.address?.id ?? UUID().uuidString
+                        let newAddress = AddressInfo(
+                            defaultAddress: false,
+                            id: id,
+                            address1: address1,
+                            address2: address2,
+                            city: selectedCity,
+                            country: selectedCountry,
+                            phone: phoneNumber,
+                            type: selectedType
+                        )
+                        viewModel.switchDeafult(address: newAddress)
+                        coordinator.goBack()
+                    },
+                    secondaryButton: .cancel(Text("Don't Change and Save")) {
+                        let id = viewModel.addressDetailViewModel?.address?.id ?? UUID().uuidString
+                        let newAddress = AddressInfo(
+                            defaultAddress: false,
+                            id: id,
+                            address1: address1,
+                            address2: address2,
+                            city: selectedCity,
+                            country: selectedCountry,
+                            phone: phoneNumber,
+                            type: selectedType
+                        )
+                        if viewModel.addressDetailViewModel == nil {
+                            viewModel.saveAddress(address: newAddress)
+                        } else {
+                            viewModel.saveAddress(address: newAddress, update: true)
+                        }
+                        coordinator.goBack()
+                    }
+                )
+            }
         }
-        
     }
     
 }

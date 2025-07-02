@@ -14,13 +14,18 @@ struct CheckoutView: View {
     let items: [CartItem]
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                ForEach(items) { item in
-                    HStack(spacing: 16) {
-                        Image(systemName: "cart")
-                            .font(.system(size: 40))
-                            .frame(width: 60, height: 60)
+            ScrollView {
+                VStack(spacing: 24) {
+                    ForEach(items) { item in
+                        HStack(spacing: 16) {
+                            AsyncImage(url: URL(string: item.imageUrl ?? "")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Color.gray.opacity(0.1)
+                            }
+                            .frame(width: 100, height: 100)
                             .background(Color.gray.opacity(0.1))
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         
@@ -260,6 +265,18 @@ struct CheckoutView: View {
                         }
                     )
                 }
+            }.alert(isPresented: $viewModel.showAddressAlert) {
+                print("Showing address alert")
+                return Alert(
+                    title: Text("Addresses"),
+                    message: Text("You need to add an address first."),
+                    primaryButton: .default(Text("Add")) {
+                        coordinator.navigate(to: .addressForm(address: nil))
+                    },
+                    secondaryButton: .cancel {
+                        coordinator.goBack()
+                    }
+                )
             }
             
             .overlay(

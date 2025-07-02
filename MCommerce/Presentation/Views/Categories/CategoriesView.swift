@@ -10,6 +10,7 @@ import SwiftUI
 struct CategoriesView: View {
     @StateObject private var viewModel = CategoriesViewModel()
     @EnvironmentObject  var coordinator: AppCoordinator
+    @State var isExpanded: Bool = false
 
     var body: some View {
         NavigationView {
@@ -17,12 +18,11 @@ struct CategoriesView: View {
                 // Search and cart bar
                 HStack {
                     SearchBarView(searchText: $viewModel.searchText)
-
-                    Image(systemName: "cart")
-                        .font(.title2)
-                        .padding(.leading, 5)
+                    ExpandedFilter(isFilterExpanded: $isExpanded)
+                    
                 }
                 .padding()
+                FilterBarView(isExpanded: $isExpanded, selectedMaxPrice: $viewModel.selectedMaxPrice, minPrice: $viewModel.minPrice, maxPrice: $viewModel.maxPrice)
 
                 HStack(spacing: 0) {
                     // Sidebar Main Categories
@@ -30,7 +30,7 @@ struct CategoriesView: View {
                         VStack(alignment: .leading, spacing: 20) {
                             ForEach(viewModel.mainCategories) { category in
                                 Text(category.title)
-                                    .foregroundColor(category.title == viewModel.selectedMainCategory ? .blue : .black)
+                                    .foregroundColor(category.title == viewModel.selectedMainCategory ? .deepPurple : .black)
                                     .bold(category.title == viewModel.selectedMainCategory)
                                     .onTapGesture {
                                         viewModel.didSelectMainCategory(category)
@@ -53,15 +53,16 @@ struct CategoriesView: View {
                                         viewModel.resetFilter()
                                     }
                                     .padding(.horizontal)
+                                    .colorMultiply(.deepPurple)
                                     .padding(.vertical, 8)
-                                    .background(viewModel.selectedProductType.isEmpty ? Color.blue.opacity(0.2) : Color.clear)
+                                    .background(viewModel.selectedProductType.isEmpty ? Color.pinkPurple.opacity(0.2) : Color.clear)
                                     .cornerRadius(8)
 
                                     ForEach(viewModel.productTypes, id: \.self) { type in
                                         Text(type)
                                             .padding(.horizontal)
                                             .padding(.vertical, 8)
-                                            .background(viewModel.selectedProductType == type ? Color.blue.opacity(0.2) : Color.clear)
+                                            .background(viewModel.selectedProductType == type ? Color.pinkPurple.opacity(0.2) : Color.clear)
                                             .cornerRadius(8)
                                             .onTapGesture {
                                                 viewModel.selectProductType(type)
@@ -87,7 +88,7 @@ struct CategoriesView: View {
                                     }
                                 }
                             }
-                            .padding()
+                            .padding(.bottom ,50)
                         }
 
                         Spacer()

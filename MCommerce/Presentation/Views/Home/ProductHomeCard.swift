@@ -20,14 +20,18 @@ struct ProductHomeCard: View {
                 AsyncImage(url: URL(string: imageUrl)) { image in
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 120, height: 120)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 140, height: 140)
+                        .clipShape(Circle())
+                        .shadow(radius: 6)
                 } placeholder: {
                     Color.gray.opacity(0.2)
                         .frame(width: 120, height: 120)
+                        .clipShape(Circle())
                 }
             }
             .frame(maxWidth: .infinity, alignment: .center)
+
 
 
             Text(title)

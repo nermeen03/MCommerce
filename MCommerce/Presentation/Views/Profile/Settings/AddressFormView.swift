@@ -46,10 +46,11 @@ struct AddressFormView: View {
 
                 Divider()
 
-                VStack(spacing: 16) {
+                VStack {
                     FormField(title: "Street Address") {
                         TextField("Street Address", text: $address1)
                     }
+                    
                     FormField(title: "Apartment, suite, etc.") {
                         TextField("Apartment, suite, etc.", text: $address2)
                     }
@@ -76,7 +77,7 @@ struct AddressFormView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
+                            .padding(.vertical, 8)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(Color.secondary, lineWidth: 1)
@@ -85,35 +86,30 @@ struct AddressFormView: View {
                     }
                     .frame(maxWidth: .infinity)
 
-                    Button("Pick on Map") {
-                        showMap = true
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .sheet(isPresented: $showMap) {
-                        LocationPickerMap { coordinate in
-                            self.selectedCoordinate = coordinate
-                            viewModel.getAddressFromMap(for: coordinate) { street, apartment, city, country in
-                                address1 = street ?? "Unknown"
-                                address2 = apartment ?? "Unknown"
+                    LocationPickerMap { coordinate in
+                        self.selectedCoordinate = coordinate
+                        viewModel.getAddressFromMap(for: coordinate) { street, apartment, city, country in
+                            address1 = street ?? "Unknown"
+                            address2 = apartment ?? "Unknown"
 
-                                if let city = city {
-                                    if !cities.contains(city) { cities.append(city) }
-                                    selectedCity = city
-                                } else {
-                                    selectedCity = "Unknown"
-                                }
+                            if let city = city {
+                                if !cities.contains(city) { cities.append(city) }
+                                selectedCity = city
+                            } else {
+                                selectedCity = "Unknown"
+                            }
 
-                                if let country = country {
-                                    if !countries.contains(country) { countries.append(country) }
-                                    selectedCountry = country
-                                } else {
-                                    selectedCountry = "Unknown"
-                                }
-                                showMap = false
+                            if let country = country {
+                                if !countries.contains(country) { countries.append(country) }
+                                selectedCountry = country
+                            } else {
+                                selectedCountry = "Unknown"
                             }
                         }
                     }
+                    .frame(height: 300)
                 }
+
 
                 Divider()
 

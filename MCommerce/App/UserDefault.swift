@@ -51,7 +51,7 @@ class UserDefaultsManager {
     }
     
     func getCurrency() -> String {
-        UserDefaults.standard.string(forKey: currencyKey) ?? "USD"
+        UserDefaults.standard.string(forKey: currencyKey) ?? "EGP"
     }
     func setAccessToken(_ token: String) {
         UserDefaults.standard.set(token, forKey: accessTokenKey)

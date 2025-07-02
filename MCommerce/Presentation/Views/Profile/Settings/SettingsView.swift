@@ -44,7 +44,7 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     }
                 } else {
-                    Text("Unknown")
+                    Text("No Default")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }

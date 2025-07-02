@@ -17,22 +17,16 @@ struct ProfileView: View {
         VStack{
             
             HStack {
-                Spacer()
-                Text("Profile")
-                    .font(.largeTitle)
-                    .bold().padding(.trailing, loggedIn ? 50 : 10)
-                if(!loggedIn){
-                    Spacer() }
-                if loggedIn{
-                    Button(action: {
-                        print("Favorite")
-                    }) {
-                        Image(systemName: "cart")
-                            .padding(8)
-                            .background(Color.gray.opacity(0.2))
-                            .clipShape(Circle())
-                    }
-                    
+                if loggedIn {
+                    Spacer()
+                }
+
+                if loggedIn {
+                    Text("Profile")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding(.horizontal).padding(.leading, 20)
+                    Spacer()
                     Button(action: {
                         coordinator.navigate(to: .setting)
                     }) {
@@ -41,7 +35,16 @@ struct ProfileView: View {
                             .background(Color.gray.opacity(0.2))
                             .clipShape(Circle())
                     }
-                }}
+                }
+
+                if !loggedIn {
+                    Text("Profile")
+                        .font(.largeTitle)
+                        .bold()
+                        .padding(.horizontal)
+                    Spacer()
+                }
+            }
             .padding(.horizontal)
             .onAppear{
                 profileViewModel.getData()

@@ -43,9 +43,26 @@ struct CheckoutView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Shipping Address")
-                        .font(.headline)
-                        .padding(.horizontal)
+                    HStack {
+                        Text("Shipping Address")
+                            .font(.headline)
+                            .padding(.leading)
+                        Spacer()
+                        Button(action: {
+                            coordinator.navigate(to: .addressForm(address: nil))
+                        }) {
+                            Text("Add New Address")
+                                .font(.body)
+                                .padding(5)
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                                .shadow(radius: 5)
+                        }
+                        .padding(.trailing)
+                    }
+                    .padding(.vertical)
+
                     
                     if viewModel.isAddressesLoading {
                         ProgressView()
@@ -61,22 +78,41 @@ struct CheckoutView: View {
                                         viewModel.selectedAddress = Mapper.toAddress(address: selectedAddress)
                                     }
                                 }) {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(address.address1)
-                                        Text(address.address2)
-                                            .font(.caption)
-                                            .foregroundColor(.gray)
-                                        Text("Phone: \(address.phone)")
-                                            .font(.caption2)
-                                            .foregroundColor(.secondary)
+                                    HStack(spacing: 16) {
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            HStack {
+                                                Text(address.address1)
+                                                    .font(.body)
+                                                    .bold()
+                                                if !address.address2.isEmpty {
+                                                    Text(address.address2)
+                                                        .font(.caption)
+                                                        .foregroundColor(.gray)
+                                                }
+                                            }
+                                            HStack{
+                                                Spacer()
+                                                Text("Phone: \(address.phone)")
+                                                    .font(.caption)
+                                                    .foregroundColor(.secondary)
+                                                Spacer()
+                                            }
+                                        }
+                                        .padding(.vertical, 8)
+                                        
+                                        Spacer()
+                                        if viewModel.selectedAddressId == address.id {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.blue)
+                                        }
                                     }
                                     .padding()
                                     .background(
-                                        RoundedRectangle(cornerRadius: 10)
+                                        RoundedRectangle(cornerRadius: 12)
                                             .stroke(viewModel.selectedAddressId == address.id ? Color.blue : Color.gray.opacity(0.3), lineWidth: 1)
                                     )
+                                    .padding(.horizontal)
                                 }
-                                .padding(.horizontal)
                             }
                         }
                         .onAppear {
@@ -109,7 +145,7 @@ struct CheckoutView: View {
                             viewModel.selectedPaymentMethod = .stripe
                             model.preparePaymentSheet()
                         }) {
-                            Text("Other")
+                            Text("Pay Online")
                                 .padding()
                                 .frame(maxWidth: .infinity)
                                 .background(viewModel.selectedPaymentMethod == .stripe ? Color.blue : Color.gray.opacity(0.2))
@@ -255,9 +291,10 @@ struct CheckoutView: View {
                     )
                 case .noAddress:
                     return Alert(
-                        title: Text("Addresses"),
+                        title: Text("No Addresses!!"),
                         message: Text(viewModel.alertMessage),
                         primaryButton: .default(Text("Add")) {
+                            showWaiting = false
                             coordinator.navigate(to: .addressForm(address: nil))
                         },
                         secondaryButton: .cancel {

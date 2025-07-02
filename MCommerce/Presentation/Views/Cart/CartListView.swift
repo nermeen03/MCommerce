@@ -72,7 +72,7 @@ struct CartListView: View {
                                                 }
                                             }
                                         }
-                                ).toast(isShowing: $showToast, message: message)
+                                )
                                 .listRowSeparator(.hidden)
                                 .listRowInsets(EdgeInsets())
                                 .onTapGesture {
@@ -90,7 +90,7 @@ struct CartListView: View {
                                 }, secondaryButton: .cancel())
                             }
                             
-                        }
+                        }.toast(isShowing: $showToast, message: message)
                         Section {
                             Button(action: {
                                 var totalPrice = 0.0

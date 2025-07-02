@@ -65,10 +65,8 @@ class CheckoutViewModel: ObservableObject {
                 self?.isAddressesLoading = false
                 if result.isEmpty {
                     print("No addresses found, showing alert.")
-                    self?.activeAlert = .noAddress
-//                    self?.showAddressAlert = true
                 } else {
-                    print("Addresses fetched successfully.")  // Debugging statement
+                    print("Addresses fetched successfully.") 
                 }
             }
         }
@@ -76,10 +74,15 @@ class CheckoutViewModel: ObservableObject {
 
     
     func placeOrder(items : [CartItem]){
+        guard let selectedAddress = selectedAddress else {
+            self.activeAlert = .noAddress
+            self.alertMessage = "Please enter an address before placing the order"
+            return
+        }
         OrderRepo().createOrder(
             customerId: UserDefaultsManager.shared.getUserId() ?? "",
             cartItems: items,
-            shippingAddress: selectedAddress!, paymentMethod: selectedPaymentMethod.rawValue, discount: discountPercentage
+            shippingAddress: selectedAddress, paymentMethod: selectedPaymentMethod.rawValue, discount: discountPercentage
         ) { result in
             self.setOrderPlacedMessage()
         }

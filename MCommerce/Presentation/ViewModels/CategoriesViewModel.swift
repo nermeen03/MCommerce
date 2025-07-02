@@ -12,20 +12,32 @@ class CategoriesViewModel: ObservableObject {
     @Published var allProducts: [BrandProduct] = []
     @Published var productTypes: [String] = []
     @Published var selectedMainCategory: String = ""
-    @Published var selectedProductType: String = ""
-    @Published var searchText: String = ""
-
+    @Published var selectedProductType: String = "" {
+        didSet {
+            updatePriceFilterBounds()
+        }
+    }
+    @Published var searchText: String = "" {
+        didSet {
+         updatePriceFilterBounds()
+        }
+    }
+    @Published var maxPrice: Double = 100
+    @Published var minPrice: Double = 0
+    @Published var selectedMaxPrice : Double = 100
     private let productRepository: ProductRepositoryProtocol
 
     init(productRepository: ProductRepositoryProtocol = DIContainer.shared.productRepository) {
         self.productRepository = productRepository
     }
 
-    var displayedProducts: [BrandProduct] {
+    var displayedProductss: [BrandProduct] {
         var products = allProducts
 
         if !selectedProductType.isEmpty {
             products = products.filter { $0.productType == selectedProductType }
+          //  updatePriceFilterBounds()
+            
         }
 
         if !searchText.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -49,6 +61,19 @@ class CategoriesViewModel: ObservableObject {
         }
 
         return products
+    }
+    private func updatePriceFilterBounds() {
+        DispatchQueue.main.async {
+            let products = self.displayedProductss // not displayedProducts to avoid recursion
+            self.maxPrice = products.map { $0.price.currency }.max() ?? 100
+            self.selectedMaxPrice = self.maxPrice
+            self.minPrice = products.map { $0.price.currency }.min() ?? 0
+        }
+    }
+
+    var displayedProducts : [BrandProduct] {
+        return displayedProductss.filter { $0.price.currency <= selectedMaxPrice }
+            .sorted { $0.price.currency > $1.price.currency }
     }
 
     func loadMainCategories() {
@@ -85,6 +110,9 @@ class CategoriesViewModel: ObservableObject {
                 switch result {
                 case .success(let products):
                     self.allProducts = products
+                    self.maxPrice = products.map { $0.price.currency }.max() ?? 100
+                    self.selectedMaxPrice = self.maxPrice
+                    self.minPrice = products.map { $0.price.currency }.min() ?? 0
                     self.productTypes = Array(Set(products.map { $0.productType })).sorted()
                 case .failure(let error):
                     print("Failed to fetch products for \(category.title):", error)

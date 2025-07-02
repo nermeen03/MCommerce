@@ -19,13 +19,7 @@ struct Login: View {
                     viewModel.validatePassword(value)
                 }
                 
-                Text("Forgot your password?")
-                    .foregroundColor(.orangeCustom)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding()
-                    .onTapGesture {
-                        // Handle forgot password
-                    }
+               
                 
                 CustomButton(
                     text: "Login",
@@ -38,23 +32,11 @@ struct Login: View {
                     if isLogged {
                         coordinator.navigate(to: .main)
                     }
-                }
+                }.padding(.top , 16)
                 
-                Text("Or using another method")
-                    .font(.callout)
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.top, 24)
-                    .padding(.bottom, 8)
+               
                 
-                CustomButton(
-                    text: "Sign In with Google",
-                    textColor: .black,
-                    backgroundColor: .white,
-                    verticalOffset: 0,
-                    imageExist: true,
-                    action: {}
-                )
+             
                 
                     HStack {
                         Text("Don't have an account? ")
@@ -62,7 +44,7 @@ struct Login: View {
                             .foregroundColor(.black)
                         Text("Sign Up")
                             .font(.callout)
-                            .foregroundColor(.deepPurple)
+                            .foregroundColor(.orangeCustom)
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 16)
@@ -74,7 +56,7 @@ struct Login: View {
 //                    EmptyView()
 //                }
             }
-            .padding()
+            .padding(.horizontal)
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
             .alert("Loading...", isPresented: $viewModel.isLoading) { }

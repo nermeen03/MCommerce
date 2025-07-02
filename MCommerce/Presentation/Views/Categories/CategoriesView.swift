@@ -10,6 +10,7 @@ import SwiftUI
 struct CategoriesView: View {
     @StateObject private var viewModel = CategoriesViewModel()
     @EnvironmentObject  var coordinator: AppCoordinator
+    @State var isExpanded: Bool = false
 
     var body: some View {
         NavigationView {
@@ -17,8 +18,11 @@ struct CategoriesView: View {
                 // Search and cart bar
                 HStack {
                     SearchBarView(searchText: $viewModel.searchText)
+                    ExpandedFilter(isFilterExpanded: $isExpanded)
+                    
                 }
                 .padding()
+                FilterBarView(isExpanded: $isExpanded, selectedMaxPrice: $viewModel.selectedMaxPrice, minPrice: $viewModel.minPrice, maxPrice: $viewModel.maxPrice)
 
                 HStack(spacing: 0) {
                     // Sidebar Main Categories

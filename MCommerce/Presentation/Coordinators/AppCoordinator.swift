@@ -30,6 +30,7 @@ class AppCoordinator: ObservableObject {
         case checkout(price : Double, items : [CartItem])
         case orderDetails(OrderDataResponse)
         case myOrders
+        case onBoarding
 
     }
     

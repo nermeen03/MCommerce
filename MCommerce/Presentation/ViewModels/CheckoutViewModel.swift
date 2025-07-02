@@ -21,12 +21,14 @@ class CheckoutViewModel: ObservableObject {
     }
     
     @Published var addresses : [AddressInfo] = []
-    @Published var isAddressesLoading : Bool = true
+    @Published var isAddressesLoading : Bool = false
     
-    @Published var orderPlaced = false
-    @Published var orderMessage: String = ""
-    
-    @Published var showAddressAlert = false
+//    @Published var orderPlaced = false
+//    @Published var orderMessage: String = ""
+//    
+//    @Published var showAddressAlert = false
+    @Published var activeAlert: CheckoutAlert? = nil
+    @Published var alertMessage: String = ""
 
     
 
@@ -62,8 +64,9 @@ class CheckoutViewModel: ObservableObject {
                 self?.addresses = result
                 self?.isAddressesLoading = false
                 if result.isEmpty {
-                    print("No addresses found, showing alert.")  // Debugging statement
-                    self?.showAddressAlert = true
+                    print("No addresses found, showing alert.")
+                    self?.activeAlert = .noAddress
+//                    self?.showAddressAlert = true
                 } else {
                     print("Addresses fetched successfully.")  // Debugging statement
                 }
@@ -78,10 +81,38 @@ class CheckoutViewModel: ObservableObject {
             cartItems: items,
             shippingAddress: selectedAddress!, paymentMethod: selectedPaymentMethod.rawValue, discount: discountPercentage
         ) { result in
-            self.orderPlaced = true
-            self.orderMessage = result
+            self.setOrderPlacedMessage()
         }
     }
     
+    func setPaymentError() {
+        activeAlert = .paymentError
+        alertMessage = "Payment was canceled"
+    }
+    
+    func setOrderPlacedMessage() {
+        activeAlert = .orderPlaced
+        alertMessage = "Your order has been placed successfully!"
+    }
+    
+    func setNoAddressMessage() {
+        activeAlert = .noAddress
+        alertMessage = "You need to add an address first."
+    }
     
 }
+
+enum CheckoutAlert: Identifiable {
+    case paymentError
+    case orderPlaced
+    case noAddress
+
+    var id: String {
+        switch self {
+        case .paymentError: return "paymentError"
+        case .orderPlaced: return "orderPlaced"
+        case .noAddress: return "noAddress"
+        }
+    }
+}
+

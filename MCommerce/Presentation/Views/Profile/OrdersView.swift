@@ -47,6 +47,7 @@ struct OrdersView: View {
                     coordinator.navigate(to: .myOrders)
                 }
                 .font(.headline)
+                .foregroundStyle(Color.deepPurple)
             }
         }
         .padding()

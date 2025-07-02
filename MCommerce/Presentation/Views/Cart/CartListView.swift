@@ -103,7 +103,7 @@ struct CartListView: View {
                                 Text("Proceed to Checkout")
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(Color.blue)
+                                    .background(Color.deepPurple)
                                     .foregroundColor(.white)
                                     .cornerRadius(10)
                             }.padding(.bottom, 80)

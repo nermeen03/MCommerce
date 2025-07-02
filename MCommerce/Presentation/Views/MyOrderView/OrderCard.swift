@@ -57,9 +57,9 @@ struct OrderListCard: View {
                 VStack(alignment: .trailing, spacing: 6) {
                     Text(order.status)
                         .font(.caption)
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color.deepPurple)
                         .padding(6)
-                        .background(Capsule().stroke(Color.blue, lineWidth: 1))
+                        .background(Capsule().stroke(Color.deepPurple, lineWidth: 1))
 
                     Text("\(order.currencyCode) \(order.total)")
                         .font(.headline)

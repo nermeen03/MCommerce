@@ -18,7 +18,7 @@ struct AddressDetailView: View {
                     Text("Default")
                         .font(.caption)
                         .padding(4)
-                        .background(Color.blue.opacity(0.2))
+                        .background(Color.deepPurple.opacity(0.2))
                         .cornerRadius(6)
                 }
                 
@@ -30,6 +30,7 @@ struct AddressDetailView: View {
                     Text("Edit")
                         .font(.caption)
                         .padding(6)
+                        .foregroundStyle(Color.deepPurple)
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(8)
                 }

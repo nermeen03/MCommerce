@@ -102,7 +102,7 @@ struct AddressListView: View {
                 Text("Add New Address")
                     .font(.system(size: 18, weight: .bold))
                     .frame(maxWidth: .infinity, minHeight: 50)
-                    .background(Color.blue)
+                    .background(Color.deepPurple)
                     .foregroundColor(.white)
                     .cornerRadius(12)
             }

@@ -47,6 +47,7 @@ struct WishListTitle : View{
                     coordinator.navigate(to: .favorites)
                 })
                     .font(.headline)
+                    .foregroundStyle(Color.deepPurple)
             }
         }
         .padding()

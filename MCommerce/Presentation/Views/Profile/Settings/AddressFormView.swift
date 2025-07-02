@@ -42,11 +42,13 @@ struct AddressFormView: View {
                     FormField(title: "Type") {
                         Picker("Type", selection: $selectedType) {
                             ForEach(types, id: \.self) { type in
-                                Text(type)
+                                Text(type).foregroundStyle(Color.deepPurple)
                             }
+                            .foregroundStyle(Color.deepPurple)
                         }
+                        .foregroundStyle(Color.deepPurple)
                         .pickerStyle(MenuPickerStyle())
-                        .frame(maxWidth: 90,maxHeight: 23)
+                        .frame(maxWidth: 100,maxHeight: 23)
                     }
                 }
                 Divider()
@@ -65,6 +67,7 @@ struct AddressFormView: View {
                             Picker("City", selection: $selectedCity) {
                                 ForEach(cities, id: \.self) { Text($0) }
                             }
+                            .foregroundStyle(Color.deepPurple)
                             .pickerStyle(MenuPickerStyle())
                         }
 
@@ -72,6 +75,7 @@ struct AddressFormView: View {
                             Picker("Country", selection: $selectedCountry) {
                                 ForEach(countries, id: \.self) { Text($0) }
                             }
+                            .foregroundStyle(Color.deepPurple)
                             .pickerStyle(MenuPickerStyle())
                         }
                     }
@@ -170,7 +174,7 @@ struct AddressFormView: View {
                     }
                     .font(.system(size: 18, weight: .bold))
                     .frame(maxWidth: .infinity, minHeight: 50)
-                    .background(Color.blue)
+                    .background(Color.deepPurple)
                     .foregroundColor(.white)
                     .cornerRadius(12)
                 }

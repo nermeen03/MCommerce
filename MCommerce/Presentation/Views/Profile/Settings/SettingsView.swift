@@ -68,10 +68,11 @@ struct SettingsView: View {
                 Spacer()
                 Text(currencyViewModel.currentCurrency)
                     .font(.subheadline)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.deepPurple)
                 Image(systemName: "chevron.right")
                     .foregroundColor(.gray)
             }
+            
             .padding()
             .frame(width: UIScreen.main.bounds.width - 40)
             .background(Color(.systemBackground))

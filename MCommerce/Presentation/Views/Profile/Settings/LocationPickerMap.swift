@@ -29,7 +29,7 @@ struct LocationPickerMap: View {
                 onLocationChosen(region.center)
             }
             .padding()
-            .background(Color.blue)
+            .background(Color.deepPurple)
             .foregroundColor(.white)
             .clipShape(Capsule())
             .padding()

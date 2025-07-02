@@ -22,17 +22,20 @@ struct CurrencyPickerView: View {
                         Text(currency)
                         if currency == currencyViewModel.currentCurrency {
                             Spacer()
-                            Image(systemName: "checkmark").foregroundColor(.blue)
+                            Image(systemName: "checkmark").foregroundColor(Color.deepPurple)
                         }
                     }
                 }
+                .foregroundStyle(Color.deepPurple)
             }
+            .foregroundStyle(Color.deepPurple)
             .navigationTitle("Select Currency")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") {
                         dismiss()
                     }
+                    .foregroundStyle(Color.deepPurple)
                 }
             }
         }

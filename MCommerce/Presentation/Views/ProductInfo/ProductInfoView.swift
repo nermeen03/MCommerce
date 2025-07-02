@@ -12,6 +12,7 @@ struct ProductInfoView: View {
 //    @State private var selectedColor: String? = nil
 //  @State  var selectedSize: String? = nil
     @State var showToast : Bool = false
+    @EnvironmentObject var cartVM: CartBadgeVM
 
 
     var body: some View {
@@ -120,6 +121,7 @@ struct ProductInfoView: View {
                             verticalOffset: 0,
                             action: {
                                 viewModel.addToCart()
+                                cartVM.badgeCount += 1
                                 showToast = true
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                     showToast = false

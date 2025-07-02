@@ -1,36 +1,43 @@
 import SwiftUI
 
 struct CheckoutView: View {
-    @StateObject var viewModel : CheckoutViewModel
+    @StateObject var viewModel: CheckoutViewModel
     @ObservedObject var model = StripePaymentHandler()
     @EnvironmentObject var coordinator: AppCoordinator
-    
+    @EnvironmentObject var cartVM: CartBadgeVM
+
     @State private var isReady = false
     @State private var message = ""
     @State private var showError = false
-    
-    let totalPrice : Double
-    let items : [CartItem]
-    @State var showAddressAlert : Bool = false
-    
-    
+    @State private var showWaiting = false
+
+
+    let totalPrice: Double
+    let items: [CartItem]
+
     var body: some View {
-        NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
                     ForEach(items) { item in
                         HStack(spacing: 16) {
-                            Image(systemName: "cart")
-                                .font(.system(size: 40))
-                                .frame(width: 60, height: 60)
-                                .background(Color.gray.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                            
+                            AsyncImage(url: URL(string: item.imageUrl ?? "")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Color.gray.opacity(0.1)
+                            }
+                            .frame(width: 100, height: 100)
+                            .background(Color.gray.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .clipped()
+
+
                             VStack(alignment: .leading) {
                                 Text(item.title)
                                     .font(.title2).fontWeight(.semibold)
-                                
-                                Text("$\(item.price) x \(item.quantity ?? 1)")
+
+                                Text("$\(item.price.currency) x \(item.quantity ?? 1)")
                                     .foregroundColor(.orange)
                                     .font(.title3).bold()
                             }
@@ -38,22 +45,19 @@ struct CheckoutView: View {
                         }
                         .padding(.horizontal)
                     }
-                    
+
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Shipping Address")
                             .font(.headline)
                             .padding(.horizontal)
-                        
+
                         if viewModel.isAddressesLoading {
                             ProgressView()
                         } else if viewModel.addresses.isEmpty {
                             Text("No addresses found.")
                                 .padding(.horizontal)
-                                .onAppear {
-                                    showAddressAlert = true
-                                }
                         } else {
-                            VStack{
+                            VStack {
                                 ForEach(viewModel.addresses, id: \.id) { address in
                                     Button(action: {
                                         viewModel.selectedAddressId = address.id
@@ -78,27 +82,20 @@ struct CheckoutView: View {
                                     }
                                     .padding(.horizontal)
                                 }
-                            }.onAppear{
-                                viewModel.selectedAddressId = viewModel.addresses.filter({$0.defaultAddress}).first?.id ?? viewModel.addresses.first?.id
+                            }
+                            .onAppear {
+                                viewModel.selectedAddressId = viewModel.addresses.first(where: { $0.defaultAddress })?.id ?? viewModel.addresses.first?.id
                                 if let selectedAddress = viewModel.addresses.first(where: { $0.defaultAddress }) ?? viewModel.addresses.first {
                                     viewModel.selectedAddress = Mapper.toAddress(address: selectedAddress)
                                 }
-                                
                             }
                         }
                     }
-                    .alert(isPresented: $showAddressAlert) {
-                        Alert(
-                            title: Text("Addresses"),
-                            message: Text("You need to add an address first."),
-                            dismissButton: .default(Text("OK"))
-                        )
-                    }
-                    
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Payment Method")
                             .font(.headline)
                             .padding(.horizontal)
+
                         HStack {
                             Button(action: {
                                 viewModel.selectedPaymentMethod = .cod
@@ -110,7 +107,7 @@ struct CheckoutView: View {
                                     .cornerRadius(8)
                                     .foregroundColor(viewModel.selectedPaymentMethod == .cod ? .white : .black)
                             }
-                            
+
                             Button(action: {
                                 viewModel.selectedPaymentMethod = .stripe
                                 model.preparePaymentSheet()
@@ -125,16 +122,17 @@ struct CheckoutView: View {
                         }
                         .padding(.horizontal)
                     }
+
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Have a coupon?")
                             .font(.headline)
                             .padding(.horizontal)
-                        
+
                         HStack {
                             TextField("Enter coupon code", text: $viewModel.couponCode)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .padding(.horizontal)
-                            
+
                             Button("Apply") {
                                 viewModel.applyCoupon(viewModel.couponCode)
                             }
@@ -144,22 +142,22 @@ struct CheckoutView: View {
                             .foregroundColor(.white)
                             .cornerRadius(8)
                         }
-                        
+
                         if viewModel.isCouponApplied {
                             Text("Discount is applied!")
                                 .foregroundColor(.green)
                                 .padding(.horizontal)
-                        } else if !viewModel.couponCode.isEmpty && !viewModel.isCouponApplied{
+                        } else if !viewModel.couponCode.isEmpty {
                             Text("Invalid coupon")
                                 .foregroundColor(.red)
                                 .padding(.horizontal)
                         }
                     }
-                    
-                    let subtotal = totalPrice
+
+                    let subtotal = totalPrice.currency
                     let discountAmount = subtotal * viewModel.discountPercentage
                     let total = subtotal - discountAmount
-                    
+
                     VStack(spacing: 12) {
                         HStack {
                             Text("Items Cost")
@@ -190,27 +188,35 @@ struct CheckoutView: View {
                         }
                     }
                     .padding(.horizontal)
-                    
+
                     Button(action: {
+                        showWaiting = true
+
                         if viewModel.selectedPaymentMethod == .cod {
                             viewModel.placeOrder(items: items)
                         } else {
                             let totalInCents = Int(totalPrice * 100)
                             model.paymentAmount = totalInCents
                             model.updatePaymentSheet()
-                            
+
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                 if let controller = UIApplication.shared.connectedScenes
                                     .compactMap({ $0 as? UIWindowScene })
                                     .flatMap({ $0.windows })
                                     .first(where: \.isKeyWindow)?.rootViewController {
-                                    
+
                                     model.presentPaymentSheet(from: controller) { result in
                                         switch result {
                                         case .completed:
                                             viewModel.placeOrder(items: items)
-                                        default:
-                                            break
+                                        case .canceled:
+                                            showError = true
+                                            message = "Payment was canceled"
+                                            showWaiting = false
+                                        case .failed:
+                                            showError = true
+                                            message = "Payment failed. Try again later."
+                                            showWaiting = false
                                         }
                                     }
                                 }
@@ -225,35 +231,60 @@ struct CheckoutView: View {
                             .cornerRadius(28)
                     }
                     .padding(.horizontal)
-                    
                 }
                 .padding(.bottom)
                 .navigationTitle("Checkout")
                 .onAppear {
-                    if viewModel.addresses.isEmpty {
                         viewModel.fetchAddresses()
-                    }
                 }
+                
+
                 .alert(isPresented: $showError) {
-                    Alert(title: Text("Payment Status"), message: Text(message), dismissButton: .default(Text("OK")))
+                    Alert(
+                        title: Text("Payment Status"),
+                        message: Text(message),
+                        dismissButton: .default(Text("OK"))
+                    )
                 }
                 .alert(isPresented: $viewModel.orderPlaced) {
                     Alert(
                         title: Text("Order Placed"),
                         message: Text(viewModel.orderMessage),
-                        dismissButton: .default(Text("OK"), action: {
+                        dismissButton: .default(Text("OK")) {
+                            cartVM.badgeCount = 0
+                            showWaiting = false
                             viewModel.orderPlaced = false
                             coordinator.goBack()
-                        })
+                        }
                     )
                 }
+            }.alert(isPresented: $viewModel.showAddressAlert) {
+                print("Showing address alert")
+                return Alert(
+                    title: Text("Addresses"),
+                    message: Text("You need to add an address first."),
+                    primaryButton: .default(Text("Add")) {
+                        coordinator.navigate(to: .addressForm(address: nil))
+                    },
+                    secondaryButton: .cancel {
+                        coordinator.goBack()
+                    }
+                )
             }
-            .navigationTitle("Checkout")
-            .onAppear {
-                if viewModel.addresses.isEmpty {
-                    viewModel.fetchAddresses()
+
+            .overlay(
+                Group {
+                    if showWaiting {
+                        ZStack {
+                            Color.black.opacity(0.3).edgesIgnoringSafeArea(.all)
+                            ProgressView("Processing...")
+                                .padding()
+                                .background(Color.black.opacity(0.8))
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                        }
+                    }
                 }
-            }
+            )
         }
-    }
 }

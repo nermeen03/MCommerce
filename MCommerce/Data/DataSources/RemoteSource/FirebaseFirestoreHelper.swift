@@ -19,6 +19,7 @@ class FirebaseFirestoreHelper {
     private let orderCollection = "orders"
     private let cardCollection = "cards"
     private let userCollection = "users"
+    private let countCollection = "counts"
     let firestoreUserId = UserDefaultsManager.shared.getUserId()!.replacingOccurrences(of: "/", with: "_")
     func addProductToFavorites(product: FavoriteProduct, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
@@ -143,7 +144,11 @@ class FirebaseFirestoreHelper {
                     completion(nil)
                 } else if let snapshot = snapshot {
                     let cardId = snapshot.documents.map { $0.documentID.replacingOccurrences(of: "_", with: "/") }
-                    completion(cardId[0])
+                    if !cardId.isEmpty {
+                        completion(cardId[0])
+                    }else{
+                        completion(nil)
+                    }
                 }
             }
     }
@@ -170,6 +175,48 @@ class FirebaseFirestoreHelper {
                 
                 batch.commit { batchError in
                     completion?(batchError)
+                }
+            }
+    }
+
+    func saveOrUpdateBadgeCount(_ badge: Int) {
+        let badgeData = ["badgeCount": badge]
+
+        let docRef = db.collection(userCollection)
+            .document(firestoreUserId)
+            .collection(countCollection)
+            .document(countCollection)
+
+        docRef.setData(badgeData) { error in
+            if let error = error {
+                print("Error saving or updating badge count: \(error.localizedDescription)")
+            } else {
+                print("Badge count saved or updated successfully: \(badge)")
+            }
+        }
+    }
+
+    
+    func fetchBadgeCount(completion: @escaping (Int) -> Void) {
+        db.collection(userCollection)
+            .document(firestoreUserId)
+            .collection(countCollection)
+            .document(countCollection)
+            .getDocument { (document, error) in
+                if let error = error {
+                    print("Error fetching badge count: \(error.localizedDescription)")
+                    completion(0)
+                    return
+                }
+
+                if let document = document, document.exists {
+                    let data = document.data()
+                    let badge = data?["badgeCount"] as? Int
+                    print("Badge count fetched: \(badge ?? 0)")
+                    completion(badge ?? 0)
+                } else {
+                    print("Document does not exist.")
+                    completion(0)
                 }
             }
     }

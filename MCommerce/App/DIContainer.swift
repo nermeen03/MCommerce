@@ -20,7 +20,6 @@ final class DIContainer {
     let defaultAddressUserCase : DefaultAddressUseCase
     let mapAddressUseCase : MapAddressUserCase
     let cartRepo : CartRepo
-    var cartBadgeCount : CartBadgeViewModel = CartBadgeViewModel.shared
     
     //    let addressDetailsViewModel : AddressDetailViewModel
   
@@ -59,7 +58,7 @@ final class DIContainer {
         let addUseseCase = AddFavProdUseCase(repo: ProductFavouriteRepository())
         let deleteUseseCase = DeleteFavProdUseCase(repo: ProductFavouriteRepository())
         let checkProductsUseCase = CheckFavouriteProdUseCase(repo: ProductFavouriteRepository())
-        return ProductViewModel(useCase: useCase, id: id,deleteFavUseCase: deleteUseseCase, checkProductsUseCase: checkProductsUseCase ,AddFavUseCase: addUseseCase, cartUseCase: AddCartViewModel(addCartUseCase: AddInCartUseCase(cartRepo: CartRepo()), cartBadgeVM: cartBadgeCount))
+        return ProductViewModel(useCase: useCase, id: id,deleteFavUseCase: deleteUseseCase, checkProductsUseCase: checkProductsUseCase ,AddFavUseCase: addUseseCase, cartUseCase: AddCartViewModel(addCartUseCase: AddInCartUseCase(cartRepo: CartRepo())))
     }
     func resolveFavoritesViewModel() -> FavoriteViewModel {
         let repo = ProductFavouriteRepository()
@@ -139,15 +138,13 @@ final class DIContainer {
     }
     
     func resolveCartView() -> some View{
-        return CartListView(cartViewModel: GetCartViewModel(getCartUseCase: GetCartUseCase(cartRepo: cartRepo), cartBadgeVM: cartBadgeCount, addCartVM: AddCartViewModel(addCartUseCase: AddInCartUseCase(cartRepo: CartRepo()), cartBadgeVM: cartBadgeCount)))
+        return CartListView(cartViewModel: GetCartViewModel(getCartUseCase: GetCartUseCase(cartRepo: cartRepo), addCartVM: AddCartViewModel(addCartUseCase: AddInCartUseCase(cartRepo: CartRepo()))))
     }
     
     func resolveFavView() -> some View{
         return FavView(viewModel: FavoriteViewModel(getProductsUseCase: GetFavProdUseCase(repo: ProductFavouriteRepository()), deleteProductUseCase: DeleteFavProdUseCase(repo: ProductFavouriteRepository())))
     }
-    func resolveCartBadgeCount() -> CartBadgeViewModel {
-        return cartBadgeCount
-    }
+
     func resolveHomeSearchView() -> some View{
         return HomeSearchView(viewModel: HomeSearchViewModel(useCase: FetchAllProductsUseCase(repo: HomeRepository(service: ApiCalling()))))
     }

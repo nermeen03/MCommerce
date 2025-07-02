@@ -25,6 +25,8 @@ struct CartRepo {
             switch result {
             case .success(let response):
                 if let cartId = response.data?.cartCreate?.cart?.id {
+                    UserDefaultsManager.shared.setCartId(cartId)
+                    FirebaseFirestoreHelper.shared.saveCardId(cardId: cartId)
                     completion(.success(cartId))
                 } else {
                     completion(.failure(.invalidResponse))
@@ -36,7 +38,6 @@ struct CartRepo {
     }
     
     func addProductToCart(cartId: String, cartItem: CartItem, variantId: String, quantity: Int = 1, completion: @escaping (Result<String, NetworkError>) -> Void) {
-        print("Adding to Cart: \(cartItem)")
         
         let query = """
             mutation {
@@ -106,6 +107,7 @@ struct CartRepo {
                         currencyCode
                       }
                       product {
+                        id
                         title
                         featuredImage {
                           url
@@ -129,6 +131,7 @@ struct CartRepo {
                     let variantParts = edge.node.merchandise.title.components(separatedBy: " / ")
                     return CartItem(
                         id: edge.node.id,
+                        productId: edge.node.merchandise.product.id,
                         variantId: edge.node.merchandise.id,
                         quantity: edge.node.quantity,
                         title: edge.node.merchandise.product.title,

@@ -341,6 +341,15 @@ struct OrderRepo {
                                 completion(error.localizedDescription)
                             }
                         })
+                        CartRepo().createCart(completion: {result in
+                            switch result {
+                            case .success(let response):
+                                print("Done")
+                                FirebaseFirestoreHelper.shared.saveCardId(cardId: response)
+                            case .failure(let failure):
+                                print(failure)
+                            }
+                        })
                     case .failure(let error):
                         completion(error.localizedDescription)
                     }

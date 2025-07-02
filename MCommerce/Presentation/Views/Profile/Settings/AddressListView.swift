@@ -31,60 +31,60 @@ struct AddressListView: View {
                     .font(.largeTitle)
                 Spacer()
             } else {
-                ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         Text("Your Addresses")
                             .font(.headline)
                             .padding(.horizontal)
 
-                        ForEach(viewModel.addresses) { address in
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Text(address.type)
-                                        .font(.headline)
-                                    Spacer()
-                                    Text(address.phone)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
+                        List {
+                            ForEach(viewModel.addresses) { address in
+                                VStack(alignment: .leading, spacing: 8) {
+                                    HStack {
+                                        Text(address.type)
+                                            .font(.headline)
+                                        Spacer()
+                                        Text(address.phone)
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                    }
 
-                                HStack(alignment: .top) {
-                                    Text(address.address2 + ", " + address.address1)
-                                        .font(.subheadline)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                    Spacer()
-                                    Image(systemName: "pencil")
-                                        .padding(8)
-                                        .background(Color.gray.opacity(0.2))
-                                        .clipShape(Circle())
-                                        .onTapGesture {
-                                            coordinator.navigate(to: .addressForm(
-                                                address: DIContainer.shared.resolveAddressDetailViewModel(address: address)
-                                            ))
-                                        }
+                                    HStack(alignment: .top) {
+                                        Text(address.address2 + ", " + address.address1)
+                                            .font(.subheadline)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                        Spacer()
+                                        Image(systemName: "pencil")
+                                            .padding(8)
+                                            .background(Color.gray.opacity(0.2))
+                                            .clipShape(Circle())
+                                            .onTapGesture {
+                                                coordinator.navigate(to: .addressForm(
+                                                    address: DIContainer.shared.resolveAddressDetailViewModel(address: address)
+                                                ))
+                                            }
+                                    }
+                                }
+                                .padding()
+                                .background(Color(.systemBackground))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(address.defaultAddress == true ? Color.red : Color.clear, lineWidth: 2)
+                                )
+                                .shadow(radius: 2)
+                                .onTapGesture {
+                                    coordinator.navigate(to: .addressDetails(
+                                        address: DIContainer.shared.resolveAddressDetailViewModel(address: address)
+                                    ))
                                 }
                             }
-                            .padding()
-                            .background(Color(.systemBackground))
-                            .cornerRadius(12)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(address.defaultAddress == true ? Color.red : Color.clear, lineWidth: 2)
-                            )
-                            .shadow(radius: 2)
-                            .padding(.horizontal)
-                            .onTapGesture {
-                                coordinator.navigate(to: .addressDetails(
-                                    address: DIContainer.shared.resolveAddressDetailViewModel(address: address)
-                                ))
+                            .onDelete { indexSet in
+                                viewModel.deleteAddress(at: indexSet)
                             }
                         }
-                        .onDelete { indexSet in
-                            viewModel.deleteAddress(at: indexSet)
-                        }
-                    }
-                    .padding(.top)
-                }
+                        .listStyle(.plain)
+                    
+                }.padding(.top)
             }
 
             // Add Address Button

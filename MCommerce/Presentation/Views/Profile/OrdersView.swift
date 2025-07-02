@@ -73,8 +73,8 @@ struct OrdersView: View {
                     @unknown default:
                         EmptyView()
                     }
-                  
-                }
+                        
+                }.padding(.horizontal)
             } else {
                 Color.gray.frame(width: 120, height: 120)
                     .cornerRadius(8)

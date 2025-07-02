@@ -187,7 +187,7 @@ class ProductViewModel: ObservableObject {
             print("❗ No matching variant found for selection")
             return
         }
-        let saveProduct = CartItem(id: product.id, variantId: product.variants.first?.id ?? "", title: product.title, price: product.variants.first?.price ?? "\(0)", currency: "USD", imageUrl: imageUrls.first, color: selectedColor, size: selectedSize, checkoutUrl: "")
+        let saveProduct = CartItem(id: product.id,productId: productId ,variantId: product.variants.first?.id ?? "", title: product.title, price: product.variants.first?.price ?? "\(0)", currency: "USD", imageUrl: imageUrls.first, color: selectedColor, size: selectedSize, checkoutUrl: "")
         
         self.cartViewModel.addOrUpdateProduct(product: saveProduct, productVariant: selectedVariant.id)
         

@@ -10,7 +10,8 @@ import SwiftUI
 struct CartListView: View {
     @ObservedObject var cartViewModel: GetCartViewModel
     @EnvironmentObject var coordinator: AppCoordinator
-
+    @EnvironmentObject var cartVM: CartBadgeVM
+    
     var body: some View {
         VStack {
             if !cartViewModel.isLoggedIn {
@@ -44,19 +45,26 @@ struct CartListView: View {
                                             if cartViewModel.cartItems[index].quantity! < 5 {
                                                 cartViewModel.cartItems[index].quantity! += 1
                                                 cartViewModel.addCartVM.addOrUpdateProduct(product: item, productVariant: item.variantId!)
+                                                cartVM.badgeCount += 1
                                             }
                                         },
                                         onDecrease: {
                                             if cartViewModel.cartItems[index].quantity! > 1 {
                                                 cartViewModel.cartItems[index].quantity! -= 1
                                                 cartViewModel.removeOneProductFromCart(cartItem: item)
+                                                cartVM.badgeCount -= 1
                                             }
                                         }
                                     )
                                 .listRowSeparator(.hidden)
                                 .listRowInsets(EdgeInsets())
+                                .onTapGesture {
+                                    print(item)
+                                    coordinator.navigate(to: .productInfo(product: item.productId))
+                                }
                             }
                             .onDelete(perform: deleteItems)
+                            
                         }
                         Section {
                             Button(action: {
@@ -88,7 +96,8 @@ struct CartListView: View {
     func deleteItems(at offsets: IndexSet) {
         for index in offsets {
             let item = cartViewModel.cartItems[index]
-            cartViewModel.removeProductFromCart(cartItem: item)            
+            cartViewModel.removeProductFromCart(cartItem: item)
+            cartVM.badgeCount -= item.quantity ?? 1
         }
     }
 }

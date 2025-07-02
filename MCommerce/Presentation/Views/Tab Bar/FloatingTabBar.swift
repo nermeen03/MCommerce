@@ -11,15 +11,14 @@ import SwiftUI
 
 enum Tab: String, CaseIterable {
     case home = "house.fill"
-    case search = "magnifyingglass"
+    case search = "square.grid.2x2"
     case cart = "cart.fill"
-    case favorites = "heart.fill"
     case profile = "person.fill"
 }
 
 struct FloatingTabBar: View {
     @Binding var selectedTab: Tab
-    var cartBadgeVM: CartBadgeViewModel
+    @EnvironmentObject var cartVM: CartBadgeVM
 //    @State var count = 0
     
     
@@ -39,8 +38,8 @@ struct FloatingTabBar: View {
                                 .foregroundColor(selectedTab == tab ? .deepPurple : .gray)
                         }
 
-                        if tab == .cart && cartBadgeVM.badgeCount > 0 {
-                            Text("\((cartBadgeVM.badgeCount))")
+                        if tab == .cart && cartVM.badgeCount > 0 {
+                            Text("\((cartVM.badgeCount))")
                                 .font(.caption2)
                                 .foregroundColor(.white)
                                 .padding(5)

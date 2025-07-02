@@ -1,5 +1,5 @@
 {
-  "originHash" : "de4eb2a9b5dacb565a88296e177b0887abc22af6d3cc9fe68d7729a5c17efe15",
+  "originHash" : "9747faea437bb2c4a1ece47f5e4506482a131353472d6807cd9b73e5b4c1d4b4",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
         "version" : "11.2.0"
+      }
+    },
+    {
+      "identity" : "connectivity",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rwbutler/Connectivity",
+      "state" : {
+        "revision" : "30956aa751170afee0feb340714829dff159b265",
+        "version" : "8.0.1"
       }
     },
     {

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var coordinator: AppCoordinator
-    
     @State private var showCurrencyPicker = false
     @State private var showAboutUs = false
     @State private var showContactUs = false

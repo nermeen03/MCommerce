@@ -56,12 +56,12 @@ struct SearchProductCard: View {
                 Text("$".symbol + "\(String(format: "%.2f", product.price.currency))")
                     .font(.subheadline)
                 Spacer()
-                Button {
-                    // Handle cart
-                } label: {
-                    Image(systemName: "cart")
-                        .font(compact ? .caption : .body)
-                }
+//                Button {
+//                    // Handle cart
+//                } label: {
+//                    Image(systemName: "cart")
+//                        .font(compact ? .caption : .body)
+//                }
             }
         }
         .padding(compact ? 6 : 12)

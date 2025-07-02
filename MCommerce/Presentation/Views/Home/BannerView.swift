@@ -18,9 +18,15 @@ struct BannerView: View {
                 Image("staticCoupon")
                     .resizable()
                     .scaledToFill()
+                    .frame(
+                        width: UIScreen.main.bounds.width - 32,
+                        height: 220
+                    )
+                    .clipped()
                     .cornerRadius(12)
                     .padding(.horizontal, 16)
                     .tag(0)
+
 
                 ForEach(Array(viewModel.discounts.prefix(maxCount).enumerated()), id: \.offset) { index, discount in
                     DiscountCardView(discount: discount)

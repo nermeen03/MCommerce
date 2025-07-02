@@ -142,7 +142,7 @@ struct SettingsView: View {
             
             // Logout Button
             Button(action: {
-                settingsViewModel.currencyViewModel.selectCurrency("USD")
+                settingsViewModel.currencyViewModel.selectCurrency("EGP")
                 UserDefaultsManager.shared.clearAll()
                 coordinator.navigate(to: .welcome)
             }) {

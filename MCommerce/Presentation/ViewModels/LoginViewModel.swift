@@ -66,6 +66,12 @@ class LoginViewModel : ObservableObject {
                             print("User ID: \(user.id)")
                             UserDefaultsManager.shared.saveUserId(user.id.trimmingCharacters(in: .whitespaces).filter { $0.isNumber })
 
+                            FirebaseFirestoreHelper.shared.fetchBadgeCount {fetchedCount in
+                                DispatchQueue.main.async {
+                                    CartBadgeVM.shared.badgeCount = fetchedCount
+                                }
+                            }
+                            
                             FirebaseFirestoreHelper.shared.getCardId { result in
                                 if let result = result {
                                     UserDefaultsManager.shared.setCartId(result)

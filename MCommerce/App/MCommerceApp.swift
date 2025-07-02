@@ -92,6 +92,8 @@ struct MCommerceApp: App {
                             LazyView { OrderDetailsView(order: order) }
                         case .myOrders:
                             LazyView { MyOrderView(viewModel: ProfileOrderViewModel(getOrderUseCase: getOrderUseCase(orderRepo: OrderRepo()))) }
+                        case .onBoarding:
+                            LazyView{ OnboardingView()}
                         }
                     }
             }

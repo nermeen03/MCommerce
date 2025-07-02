@@ -18,7 +18,8 @@ struct ContentView: View {
         if UserDefaultsManager.shared.isLoggedIn() {
             MainTabView()
          } else {
-            WelcomeScreen()
+//            WelcomeScreen()
+             OnboardingView()
          }
     }    
 }

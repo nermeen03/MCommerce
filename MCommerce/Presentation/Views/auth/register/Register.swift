@@ -47,17 +47,7 @@ struct Register: View {
                         }
                     }
 
-                    // Alternative Sign-In Methods
-                    Text("Or using another method ")
-                        .font(.callout)
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.top, 24)
-                        .padding(.bottom, 8)
-
-                    CustomButton(text: "Continue with Google", textColor: .black, backgroundColor: .white, verticalOffset: 0, imageExist: true) {}
-
-                    // Sign In Link
+               
                         HStack {
                             Text("Already have an account?")
                                 .font(.callout)
@@ -65,7 +55,7 @@ struct Register: View {
 
                             Text("Sign In")
                                 .font(.callout)
-                                .foregroundColor(.deepPurple)
+                                .foregroundColor(.orangeCustom)
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.vertical, 16)

@@ -10,6 +10,8 @@ import SwiftUI
 struct FavView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     @StateObject var viewModel: FavoriteViewModel = DIContainer.shared.resolveFavoritesViewModel()
+    @State var showAlert : Bool = false
+    @State var indexToDelete : IndexSet?
     var body: some View {
         if(!viewModel.isLoggedIn){
             VStack{
@@ -44,7 +46,15 @@ struct FavView: View {
                                 FavCard(product: prod).onTapGesture {
                                     coordinator.navigate(to: .productInfo(product: prod.id!))
                                 }
-                            }.onDelete(perform: delete)
+                            }.onDelete(perform: { index in
+                                showAlert = true
+                                indexToDelete = index
+                            })
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: Text("Are you sure?"), message: Text("You want to delete this item?"), primaryButton: .destructive(Text("Delete")) {
+                                    delete(at: indexToDelete!)
+                                }, secondaryButton: .cancel())
+                            }
                         }.frame(maxWidth: .infinity, maxHeight: .infinity)
                     }.listStyle(.plain)
                 }}// else

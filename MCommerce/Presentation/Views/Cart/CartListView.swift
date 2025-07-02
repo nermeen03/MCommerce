@@ -12,6 +12,11 @@ struct CartListView: View {
     @EnvironmentObject var coordinator: AppCoordinator
     @EnvironmentObject var cartVM: CartBadgeVM
     
+    @State var showAlert : Bool = false
+    @State var indexToDelete : IndexSet?
+    @State var showToast : Bool = false
+    @State var message : String = ""
+    
     var body: some View {
         VStack {
             if !cartViewModel.isLoggedIn {
@@ -46,6 +51,12 @@ struct CartListView: View {
                                                 cartViewModel.cartItems[index].quantity! += 1
                                                 cartViewModel.addCartVM.addOrUpdateProduct(product: item, productVariant: item.variantId!)
                                                 cartVM.badgeCount += 1
+                                            }else{
+                                                message = "You can not buy more than 5 items"
+                                                showToast = true
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                    self.showToast = false
+                                                }
                                             }
                                         },
                                         onDecrease: {
@@ -53,9 +64,15 @@ struct CartListView: View {
                                                 cartViewModel.cartItems[index].quantity! -= 1
                                                 cartViewModel.removeOneProductFromCart(cartItem: item)
                                                 cartVM.badgeCount -= 1
+                                            }else{
+                                                message = "You can not buy less than 1 item"
+                                                showToast = true
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                    self.showToast = false
+                                                }
                                             }
                                         }
-                                    )
+                                ).toast(isShowing: $showToast, message: message)
                                 .listRowSeparator(.hidden)
                                 .listRowInsets(EdgeInsets())
                                 .onTapGesture {
@@ -63,7 +80,15 @@ struct CartListView: View {
                                     coordinator.navigate(to: .productInfo(product: item.productId))
                                 }
                             }
-                            .onDelete(perform: deleteItems)
+                            .onDelete(perform: { index in
+                                showAlert = true
+                                indexToDelete = index
+                            })
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: Text("Are you sure?"), message: Text("You want to delete this item?"), primaryButton: .destructive(Text("Delete")) {
+                                    deleteItems(at: indexToDelete!)
+                                }, secondaryButton: .cancel())
+                            }
                             
                         }
                         Section {

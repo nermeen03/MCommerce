@@ -54,6 +54,7 @@ class AddressFormViewModel : ObservableObject{
     var mapAddressUseCase : MapAddressUserCase
     var addressUseCases : AddressUseCases
     var addressDetailViewModel : AddressDetailViewModel?
+    var defaultAddressInfo : AddressInfo?
     
     @Published var defaultAddress : Bool = false
     @Published var errorMessage : ValidationError? = nil
@@ -96,8 +97,17 @@ class AddressFormViewModel : ObservableObject{
         defaultUseCase.getDefaultAddress(completion: {[weak self] result in
            if result != nil {
                self?.defaultAddress = true
+               self?.defaultAddressInfo = result!
             }
         })
+    }
+    func switchDeafult(address : AddressInfo){
+        guard let defaultAddress = defaultAddressInfo else { return }
+        address.defaultAddress.toggle()
+        addressUseCases.saveToFireStore(address: address)
+        defaultAddress.defaultAddress.toggle()
+        addressUseCases.updateFireStore(address: defaultAddress)
+
     }
 }
 
@@ -123,16 +133,24 @@ extension AddressDetailViewModel: Hashable {
 
 
 struct Validation {
-    static func validatePhone(phoneNumber:String) -> String? {
+    static func validatePhone(phoneNumber: String) -> String? {
         let trimmed = phoneNumber.trimmingCharacters(in: .whitespaces)
         if trimmed.isEmpty {
             return "Phone number is required."
         }
+
+        let digitsOnly = trimmed.filter { $0.isNumber }
+        if digitsOnly.count != 11{
+            return "Phone number must be between 11 digits."
+        }
+
         if !isValidPhone(trimmed) {
             return "Invalid phone number format."
         }
+
         return nil
     }
+
 
     static func validateAddress1(address1:String) -> String? {
         if address1.trimmingCharacters(in: .whitespaces).isEmpty {

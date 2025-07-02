@@ -78,13 +78,21 @@ struct AddressListView: View {
                                     ))
                                 }
                             }
-                            .onDelete { indexSet in
-                                viewModel.deleteAddress(at: indexSet)
-                            }
+                            .onDelete(perform: { index in
+                                showAlert = true
+                                indexSetToDelete = index
+                            })
+                            
                         }
                         .listStyle(.plain)
+                        
                     
                 }.padding(.top)
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Are you sure?"), message: Text("You want to delete this item?"), primaryButton: .destructive(Text("Delete")) {
+                        viewModel.deleteAddress(at: indexSetToDelete!)
+                    }, secondaryButton: .cancel())
+                }
             }
 
             // Add Address Button

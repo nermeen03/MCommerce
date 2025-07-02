@@ -124,17 +124,17 @@ struct AddressFormView: View {
                         .background(Color(.systemBackground))
                         .cornerRadius(12)
                         .shadow(radius: 2)
-                        .disabled(viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true)
-                        .opacity(viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true ? 0.5 : 1)
-                        .onTapGesture {
-                            if viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true {
-                                showToast = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    showToast = false
-                                }
-                            }
-                        }
-                        .toast(isShowing: $showToast, message: "There is already a default address set.")
+//                        .disabled(viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true)
+//                        .opacity(viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true ? 0.5 : 1)
+//                        .onTapGesture {
+//                            if viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true {
+//                                showToast = true
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                    showToast = false
+//                                }
+//                            }
+//                        }
+//                        .toast(isShowing: $showToast, message: "There is already a default address set.")
 
                     Button("Save Address") {
                         let validate = viewModel.validateAllFields(phoneNumber: phoneNumber, address1: address1, address2: address2)
@@ -151,12 +151,21 @@ struct AddressFormView: View {
                                 type: selectedType
                             )
                             if viewModel.addressDetailViewModel == nil {
-                                viewModel.saveAddress(address: newAddress)
+                                if viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true && isDefault == true{
+                                    showToast = true
+                                }else{
+                                    viewModel.saveAddress(address: newAddress)
+                                    coordinator.goBack()
+                                }
                             } else {
-                                viewModel.addressDetailViewModel?.address = newAddress
-                                viewModel.saveAddress(address: newAddress, update: true)
+                                if viewModel.defaultAddress && viewModel.addressDetailViewModel?.address?.defaultAddress != true && isDefault == true{
+                                    showToast = true
+                                }else{
+                                    viewModel.addressDetailViewModel?.address = newAddress
+                                    viewModel.saveAddress(address: newAddress, update: true)
+                                    coordinator.goBack()
+                                }
                             }
-                            coordinator.goBack()
                         }
                     }
                     .font(.system(size: 18, weight: .bold))
@@ -167,6 +176,9 @@ struct AddressFormView: View {
                 }
             }
             .padding()
+            .alert(item: $viewModel.errorMessage) { msg in
+                Alert(title: Text("Validation Error"), message: Text(msg.message), dismissButton: .default(Text("OK")))
+            }
             .onAppear {
                 viewModel.getDefaultAddress()
                 if let address = viewModel.addressDetailViewModel?.address {
@@ -179,10 +191,33 @@ struct AddressFormView: View {
                     selectedType = address.type
                 }
             }
+            
         }
-        .alert(item: $viewModel.errorMessage) { msg in
-            Alert(title: Text("Validation Error"), message: Text(msg.message), dismissButton: .default(Text("OK")))
+        .alert(isPresented: $showToast) {
+            let id = viewModel.addressDetailViewModel?.address?.id ?? UUID().uuidString
+            let newAddress = AddressInfo(
+                defaultAddress: false,
+                id: id,
+                address1: address1,
+                address2: address2,
+                city: selectedCity,
+                country: selectedCountry,
+                phone: phoneNumber,
+                type: selectedType
+            )
+            return Alert(title: Text("Do you want to change?"), message: Text("There is already a default address set."), primaryButton: .destructive(Text("Change and Save")) {
+                viewModel.switchDeafult(address: newAddress)
+                coordinator.goBack()
+            }, secondaryButton: .cancel(Text("Don't Change and Save")){
+                if viewModel.addressDetailViewModel == nil {
+                    viewModel.saveAddress(address: newAddress)
+                }else{
+                    viewModel.saveAddress(address: newAddress, update: true)
+                }
+                coordinator.goBack()
+            })
         }
+        
     }
     
 }

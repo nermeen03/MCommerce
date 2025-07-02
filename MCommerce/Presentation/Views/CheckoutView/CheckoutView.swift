@@ -31,7 +31,7 @@ struct CheckoutView: View {
                                 Text(item.title)
                                     .font(.title2).fontWeight(.semibold)
 
-                                Text("$\(item.price.currency) x \(item.quantity ?? 1)")
+                                Text("\("$".symbol)\(item.price.currency) x \(item.quantity ?? 1)")
                                     .foregroundColor(.orange)
                                     .font(.title3).bold()
                             }
@@ -161,7 +161,7 @@ struct CheckoutView: View {
                         HStack {
                             Text("Items Cost")
                             Spacer()
-                            Text("$\(subtotal, specifier: "%.2f")")
+                            Text("\("$".symbol)\(subtotal, specifier: "%.2f")")
                         }
                         HStack {
                             Text("Shipping & Handling")
@@ -173,7 +173,7 @@ struct CheckoutView: View {
                                 Text("Coupon Discount")
                                     .foregroundColor(.green)
                                 Spacer()
-                                Text("-$\(discountAmount, specifier: "%.2f")")
+                                Text("-\("$".symbol)\(discountAmount, specifier: "%.2f")")
                                     .foregroundColor(.green)
                             }
                         }
@@ -182,7 +182,7 @@ struct CheckoutView: View {
                             Text("Order Total")
                                 .font(.headline)
                             Spacer()
-                            Text("$\(total, specifier: "%.2f")")
+                            Text("\("$".symbol)\(total, specifier: "%.2f")")
                                 .font(.headline)
                         }
                     }

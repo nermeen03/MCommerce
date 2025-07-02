@@ -57,12 +57,13 @@ struct Login: View {
 //                }
             }
             .padding(.horizontal)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(false)
+            .navigationBarHidden(false)
             .alert("Loading...", isPresented: $viewModel.isLoading) { }
             .alert(viewModel.errorMessage, isPresented: $viewModel.showError) {
                 Button("OK", role: .cancel) {}
             }
+        
         
     }
 }

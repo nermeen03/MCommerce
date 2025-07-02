@@ -75,7 +75,7 @@ struct Register: View {
                    
                 }
             }
-            .navigationBarBackButtonHidden(true)
+            .navigationBarBackButtonHidden(false)
             .alert(viewModel.errorMessage, isPresented: $viewModel.showError) {
                 Button("Dismiss", role: .cancel) {
                     viewModel.errorMessage = ""

@@ -24,7 +24,7 @@ extension Double {
     var currency: Double {
         let currentCurrency = UserDefaultsManager.shared.getCurrency()
       
-        let adjustedValue = currentCurrency == "USD" ? self : self * 50
+        let adjustedValue = currentCurrency == "USD" ? self / 50 : self 
         return adjustedValue
     }
 

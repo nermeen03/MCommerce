@@ -266,7 +266,6 @@ struct CheckoutView: View {
                     )
                 }
             }
-            
             .overlay(
                 Group {
                     if showWaiting {

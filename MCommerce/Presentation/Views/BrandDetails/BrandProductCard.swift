@@ -38,12 +38,17 @@ struct BrandProductCard: View {
             Text(filteredTitle)
                 .font(compact ? .caption : .headline)
                 .lineLimit(2)
-
             HStack {
-                Text("$".symbol + "\(String(format: "%.2f", product.price.currency))")
+                Text(CurrencyFormatter.format(amountInEGP: product.price))
                     .font(.subheadline)
                 Spacer()
             }
+
+//            HStack {
+//                Text("$".currency + "\(String(format: "%.2f", product.price.currency))")
+//                    .font(.subheadline)
+//                Spacer()
+//            }
         }
         .padding(compact ? 6 : 12)
         .frame(width: compact ? 120 : 160, height: compact ? 180 : 300)

@@ -23,7 +23,7 @@ struct RecentlyViewedView: View {
                         ProductHomeCard(
                             imageUrl: product.imageUrl ?? "",
                             title: extractTextBetweenPipes(from: product.title),
-                            price: "$\(product.price)",
+                            price: CurrencyFormatter.format(amountInEGP: product.price)
 //                            backgroundColor: Color.white
                         )
                         .onTapGesture {

@@ -54,7 +54,7 @@ struct CheckoutView: View {
                             Text("Add New Address")
                                 .font(.body)
                                 .padding(5)
-                                .background(Color.blue)
+                                .background(Color.deepPurple)
                                 .foregroundColor(.white)
                                 .cornerRadius(8)
                                 .shadow(radius: 5)
@@ -83,6 +83,7 @@ struct CheckoutView: View {
                                             HStack {
                                                 Text(address.address1)
                                                     .font(.body)
+                                                    .foregroundStyle(Color.deepPurple)
                                                     .bold()
                                                 if !address.address2.isEmpty {
                                                     Text(address.address2)
@@ -103,13 +104,13 @@ struct CheckoutView: View {
                                         Spacer()
                                         if viewModel.selectedAddressId == address.id {
                                             Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(.blue)
+                                                .foregroundColor(.deepPurple)
                                         }
                                     }
                                     .padding()
                                     .background(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .stroke(viewModel.selectedAddressId == address.id ? Color.blue : Color.gray.opacity(0.3), lineWidth: 1)
+                                            .stroke(viewModel.selectedAddressId == address.id ? Color.deepPurple : Color.gray.opacity(0.3), lineWidth: 1)
                                     )
                                     .padding(.horizontal)
                                 }
@@ -136,7 +137,7 @@ struct CheckoutView: View {
                             Text("Cash on Delivery")
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(viewModel.selectedPaymentMethod == .cod ? Color.blue : Color.gray.opacity(0.2))
+                                .background(viewModel.selectedPaymentMethod == .cod ? Color.deepPurple : Color.gray.opacity(0.2))
                                 .cornerRadius(8)
                                 .foregroundColor(viewModel.selectedPaymentMethod == .cod ? .white : .black)
                         }
@@ -148,7 +149,7 @@ struct CheckoutView: View {
                             Text("Pay Online")
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(viewModel.selectedPaymentMethod == .stripe ? Color.blue : Color.gray.opacity(0.2))
+                                .background(viewModel.selectedPaymentMethod == .stripe ? Color.deepPurple : Color.gray.opacity(0.2))
                                 .cornerRadius(8)
                                 .foregroundColor(viewModel.selectedPaymentMethod == .stripe ? .white : .black)
                         }
@@ -171,10 +172,10 @@ struct CheckoutView: View {
                         }
                         .padding(.horizontal)
                         .padding(.vertical, 8)
-                        .background(Color.blue)
+                        .background(Color.deepPurple)
                         .foregroundColor(.white)
                         .cornerRadius(8)
-                    }
+                    }.padding()
                     
                     if viewModel.isCouponApplied {
                         Text("Discount is applied!")
@@ -260,7 +261,7 @@ struct CheckoutView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 56)
-                        .background(LinearGradient(colors: [.orange, .red], startPoint: .leading, endPoint: .trailing))
+                        .background(Color.deepPurple)
                         .cornerRadius(28)
                 }
                 .padding(.horizontal)

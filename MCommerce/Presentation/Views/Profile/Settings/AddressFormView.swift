@@ -40,16 +40,27 @@ struct AddressFormView: View {
 
                    
                     FormField(title: "Type") {
-                        Picker("Type", selection: $selectedType) {
+                        Menu {
                             ForEach(types, id: \.self) { type in
-                                Text(type).foregroundStyle(Color.deepPurple)
+                                Button(action: {
+                                    selectedType = type
+                                }) {
+                                    Text(type)
+                                        .foregroundColor(.deepPurple)
+                                }
                             }
-                            .foregroundStyle(Color.deepPurple)
+                        } label: {
+                            HStack {
+                                Text(selectedType.isEmpty ? "Select Type" : selectedType)
+                                    .foregroundColor(.deepPurple)
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.deepPurple)
+                            }
+                            .padding(.horizontal, 12)
                         }
-                        .foregroundStyle(Color.deepPurple)
-                        .pickerStyle(MenuPickerStyle())
-                        .frame(maxWidth: 100,maxHeight: 23)
                     }
+
                 }
                 Divider()
 
@@ -63,21 +74,50 @@ struct AddressFormView: View {
                     }
 
                     HStack(spacing: 16) {
-                        FormField(title: "City") {
-                            Picker("City", selection: $selectedCity) {
-                                ForEach(cities, id: \.self) { Text($0) }
+                        Menu {
+                            ForEach(cities, id: \.self) { city in
+                                Button(action: {
+                                    selectedCity = city
+                                }) {
+                                    Text(city)
+                                        .foregroundColor(.deepPurple)
+                                }
                             }
-                            .foregroundStyle(Color.deepPurple)
-                            .pickerStyle(MenuPickerStyle())
+                        } label: {
+                            HStack {
+                                Text(selectedCity.isEmpty ? "Select City" : selectedCity)
+                                    .foregroundColor(.deepPurple)
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.deepPurple)
+                            }
+                            .padding()
+                            .frame(height: 44)
+                            .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.5), lineWidth: 1))
+                        }
+                        
+                        Menu {
+                            ForEach(countries, id: \.self) { country in
+                                Button(action: {
+                                    selectedCountry = country
+                                }) {
+                                    Text(country)
+                                        .foregroundColor(.deepPurple)
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                Text(selectedCountry.isEmpty ? "Select Country" : selectedCountry)
+                                    .foregroundColor(.deepPurple)
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.deepPurple)
+                            }
+                            .padding()
+                            .frame(height: 44)
+                            .background(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.5), lineWidth: 1))
                         }
 
-                        FormField(title: "Country") {
-                            Picker("Country", selection: $selectedCountry) {
-                                ForEach(countries, id: \.self) { Text($0) }
-                            }
-                            .foregroundStyle(Color.deepPurple)
-                            .pickerStyle(MenuPickerStyle())
-                        }
                     }
 
                     HStack {

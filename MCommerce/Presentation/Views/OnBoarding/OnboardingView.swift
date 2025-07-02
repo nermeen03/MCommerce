@@ -39,8 +39,8 @@ struct OnboardingView: View {
                     Text(onboardingData[currentPage].title)
                         .font(.title)
                         .bold()
-                        .foregroundColor(.white)
-                        .background(Color.deepPurple.opacity(0.6))
+                        .foregroundColor(.black)
+                        .background(Color.white.opacity(0.8))
                         .cornerRadius(12)
                         .padding(.horizontal)
 
@@ -48,7 +48,7 @@ struct OnboardingView: View {
                         .font(.body)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
-                        .background(Color.deepPurple.opacity(0.6))
+//                        .background(Color.white.opacity(0.8))
                         .cornerRadius(12)
                         .padding(.horizontal)
                 }
@@ -57,7 +57,7 @@ struct OnboardingView: View {
                 HStack(spacing: 8) {
                     ForEach(0..<onboardingData.count, id: \.self) { index in
                         Circle()
-                            .fill(index == currentPage ? Color.deepPurple : Color.gray.opacity(0.4))
+                            .fill(index == currentPage ? Color.white : Color.gray.opacity(0.4))
                             .frame(width: 10, height: 10)
                     }
                 }

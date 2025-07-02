@@ -21,7 +21,7 @@ struct LocationPickerMap: View {
     var body: some View {
         VStack {
             Map(coordinateRegion: $region, interactionModes: .all, showsUserLocation: true, annotationItems: [region.center]) { coordinate in
-                MapMarker(coordinate: coordinate, tint: .red)
+                MapMarker(coordinate: coordinate, tint: .deepPurple)
             }
             .ignoresSafeArea()
 

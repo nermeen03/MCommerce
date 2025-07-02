@@ -28,22 +28,27 @@ struct AddressFormView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                
-                FormField(title: "Phone Number") {
-                    TextField("Phone Number", text: $phoneNumber)
-                        .keyboardType(.phonePad)
-                }
-                VStack(spacing: 16) {
+                HStack(alignment: .top) {
+
+                    FormField(title: "Phone Number") {
+                        TextField("Phone Number", text: $phoneNumber)
+                            .keyboardType(.phonePad)
+                            .textContentType(.telephoneNumber)
+                            .autocapitalization(.none)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                   
                     FormField(title: "Type") {
                         Picker("Type", selection: $selectedType) {
-                            ForEach(types, id: \.self) { Text($0) }
+                            ForEach(types, id: \.self) { type in
+                                Text(type)
+                            }
                         }
                         .pickerStyle(MenuPickerStyle())
+                        .frame(maxWidth: 90,maxHeight: 23)
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.center)
-
                 Divider()
 
                 VStack {

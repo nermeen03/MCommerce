@@ -13,13 +13,11 @@ struct BrandsView: View {
     private let horizontalSpacing: CGFloat = 16
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading) {
             HStack {
                 Text("Brands")
                     .font(.title3).bold()
                 Spacer()
-                Image(systemName: "ellipsis")
-                    .foregroundStyle(.secondary)
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: horizontalSpacing) {
@@ -30,7 +28,7 @@ struct BrandsView: View {
                             }
                     }
                 }
-                .padding(.horizontal, horizontalSpacing)
+                
             }
         }
         .padding(.horizontal)

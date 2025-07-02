@@ -21,7 +21,7 @@ struct ProductHomeCard: View {
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 140, height: 140)
+                        .frame(width: 130, height: 130)
                         .clipShape(Circle())
                         .shadow(radius: 6)
                 } placeholder: {

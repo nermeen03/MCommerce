@@ -23,6 +23,38 @@ struct CartListView: View {
                 VStack{
                     
                     Text("You must login to see your cart").font(.title2).bold().bold().foregroundColor(.gray)
+                    Button(action: {
+                        coordinator.navigate(to: .signup)
+                    }) {
+                        Text("Create account")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.deepPurple)
+                            .cornerRadius(8)
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+
+                    Button(action: {
+                        coordinator.navigate(to: .login)
+                    }) {
+                        Text("Sign in")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.gray.opacity(0.4), lineWidth: 1)
+                                    .fill(Color.gray.opacity(0.1))
+                            )
+                    }
+                    .padding(.horizontal)
+
                 }.frame(maxWidth: .infinity, maxHeight: .infinity ).background(.white.opacity(0.7))
             }
             else{

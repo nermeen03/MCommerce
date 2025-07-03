@@ -146,6 +146,7 @@ struct CheckoutView: View {
                                         .foregroundColor(viewModel.selectedPaymentMethod == .cod ? .white : .black)
                                         .onAppear{
                                             viewModel.selectedPaymentMethod = .stripe
+                                            model.preparePaymentSheet()
                                         }
                                 }
                                 .disabled(totalPrice > codLimit)

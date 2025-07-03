@@ -42,13 +42,13 @@ struct WishListTitle : View{
             Text("My WishLists")
                 .font(.headline)
             Spacer()
-            if favViewModel.favouriteProducts.count > 4 {
+//            if favViewModel.favouriteProducts.count > 4 {
                 Button("Read More", action: {
                     coordinator.navigate(to: .favorites)
                 })
                     .font(.headline)
                     .foregroundStyle(Color.deepPurple)
-            }
+//            }
         }
         .padding()
     }

@@ -8,7 +8,7 @@ struct CheckoutView: View {
 
     @State private var isReady = false
     @State private var showWaiting = false
-
+    let codLimit: Double = 500.0.currency
 
     let totalPrice: Double
     let items: [CartItem]
@@ -130,29 +130,43 @@ struct CheckoutView: View {
                         .font(.headline)
                         .padding(.horizontal)
                     
-                    HStack {
-                        Button(action: {
-                            viewModel.selectedPaymentMethod = .cod
-                        }) {
-                            Text("Cash on Delivery")
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(viewModel.selectedPaymentMethod == .cod ? Color.deepPurple : Color.gray.opacity(0.2))
-                                .cornerRadius(8)
-                                .foregroundColor(viewModel.selectedPaymentMethod == .cod ? .white : .black)
-                        }
                         
-                        Button(action: {
-                            viewModel.selectedPaymentMethod = .stripe
-                            model.preparePaymentSheet()
-                        }) {
-                            Text("Pay Online")
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(viewModel.selectedPaymentMethod == .stripe ? Color.deepPurple : Color.gray.opacity(0.2))
-                                .cornerRadius(8)
-                                .foregroundColor(viewModel.selectedPaymentMethod == .stripe ? .white : .black)
-                        }
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack{
+                                Button(action: {
+                                    if totalPrice < codLimit {
+                                        viewModel.selectedPaymentMethod = .cod
+                                    }
+                                }) {
+                                    Text("Cash on Delivery")
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(viewModel.selectedPaymentMethod == .cod ? Color.deepPurple : Color.gray.opacity(0.2))
+                                        .cornerRadius(8)
+                                        .foregroundColor(viewModel.selectedPaymentMethod == .cod ? .white : .black)
+                                        .onAppear{
+                                            viewModel.selectedPaymentMethod = .stripe
+                                        }
+                                }
+                                .disabled(totalPrice > codLimit)
+                                Button(action: {
+                                    viewModel.selectedPaymentMethod = .stripe
+                                    model.preparePaymentSheet()
+                                }) {
+                                    Text("Pay Online")
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(viewModel.selectedPaymentMethod == .stripe ? Color.deepPurple : Color.gray.opacity(0.2))
+                                        .cornerRadius(8)
+                                        .foregroundColor(viewModel.selectedPaymentMethod == .stripe ? .white : .black)
+                                }
+                            }
+                            if totalPrice > codLimit {
+                                Text("Cash on Delivery is not available for orders above \("$".symbol)\(codLimit, specifier: "%.2f")")
+                                    .foregroundColor(.red)
+                                    .font(.caption)
+                                    .padding(.horizontal)
+                            }
                     }
                     .padding(.horizontal)
                 }
